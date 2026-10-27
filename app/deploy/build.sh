@@ -1,5 +1,6 @@
 #!/bin/sh
-# 构建：在有网络的机器上下载后端依赖到 wheelhouse/、构建前端，再构建镜像（镜像构建过程不联网）。
+# 可选：离线构建。在有网络的机器上下载后端依赖到 wheelhouse/、构建前端，再构建镜像（镜像构建过程不联网）。
+# 能联网的机器直接 docker compose build 即可，镜像会自行安装依赖并构建前端。
 set -e
 cd "$(dirname "$0")/.."
 rm -rf backend/wheelhouse && mkdir -p backend/wheelhouse

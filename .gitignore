@@ -3,7 +3,8 @@ node_modules/
 .venv/
 app/frontend/dist/
 app/frontend/*.tsbuildinfo
-app/backend/wheelhouse/
+app/backend/wheelhouse/*
+!app/backend/wheelhouse/.gitkeep
 app/backend/data/
 app/backend/staticfiles/
 __pycache__/

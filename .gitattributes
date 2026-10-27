@@ -1,0 +1,2 @@
+# 部署脚本在 Linux 容器内执行，必须保持 LF 换行（Windows 上 git 默认会转成 CRLF）
+*.sh text eol=lf
