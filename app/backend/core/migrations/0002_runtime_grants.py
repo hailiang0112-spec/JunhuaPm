@@ -1,6 +1,14 @@
 """数据库授权（技术方案 §5.1.3）：app_runtime 对关键记录表只有 SELECT/INSERT。"""
 from django.db import migrations
 
+
+def apply_grants(apps, schema_editor):
+    # GRANT / pg_roles exist only on PostgreSQL. SQLite (desktop) has a single
+    # local user; skip. Fresh PostgreSQL installs still apply the same SQL.
+    if schema_editor.connection.vendor != "postgresql":
+        return
+    schema_editor.execute(SQL)
+
 KEY_TABLES = [
     "core_drawingversion", "core_drawingsignoff", "core_baselinerevision", "core_baselinesignoff",
     "core_baselineevent", "core_checkrecord", "core_checkphoto", "core_releaserecord", "core_coverevent",
@@ -24,4 +32,4 @@ END $$;
 
 class Migration(migrations.Migration):
     dependencies = [("core", "0001_initial")]
-    operations = [migrations.RunSQL(SQL, migrations.RunSQL.noop)]
+    operations = [migrations.RunPython(apply_grants, migrations.RunPython.noop)]

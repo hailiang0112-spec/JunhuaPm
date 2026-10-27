@@ -20,3 +20,9 @@ app/deploy/certs/
 # 测试运行时下载的大文件（证据包 ZIP、导出文件），结果与截图保留
 output/tests/e2e/**/downloads/
 output/tests/e2e/**/fixtures/*.zip
+
+# Mac 桌面打包产物（由 GitHub Actions 在 macOS 上生成）
+desktop/payload/
+desktop/build/cache/
+desktop/electron/node_modules/
+desktop/electron/dist/

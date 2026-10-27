@@ -4,6 +4,7 @@
 """
 import datetime
 import io
+import os
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
@@ -14,14 +15,25 @@ from rest_framework.test import APIClient
 
 from core.models import Checkpoint, DrawingSet, Project, User, WorkItem
 
-FONT = "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"
+# Docker images ship WenQuanYi. A Mac desktop app uses the system Songti / Hiragino face.
+FONT_CANDIDATES = [
+    os.environ.get("JH_FONT") or "",
+    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+    "/System/Library/Fonts/Supplemental/Songti.ttc",
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",
+    "/Library/Fonts/Arial Unicode.ttf",
+]
 
 
 def font(size):
-    try:
-        return ImageFont.truetype(FONT, size)
-    except OSError:
-        return ImageFont.load_default()
+    for path in FONT_CANDIDATES:
+        if not path or not os.path.exists(path):
+            continue
+        try:
+            return ImageFont.truetype(path, size)
+        except OSError:
+            continue
+    return ImageFont.load_default()
 
 
 def drawing_pdf(title, version, rooms, extra=()):
