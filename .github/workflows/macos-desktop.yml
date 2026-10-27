@@ -1,0 +1,81 @@
+name: macOS desktop app
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: macos-desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sqlite-smoke:
+    name: SQLite desktop smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: app/frontend/package-lock.json
+      - name: Install desktop Python dependencies
+        run: python -m pip install -r desktop/requirements.txt
+      - name: Build frontend
+        working-directory: app/frontend
+        run: npm ci && npm run build
+      - name: Migrate, seed, and log in against SQLite
+        run: bash desktop/smoke_sqlite.sh
+
+  mac-app:
+    name: Build JunhuaPm.app (arm64)
+    needs: sqlite-smoke
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: app/frontend/package-lock.json
+      - name: Build frontend
+        working-directory: app/frontend
+        run: npm ci && npm run build
+      - name: Bundle CPython runtime and app payload
+        run: bash desktop/build/assemble-mac-runtime.sh
+      - name: Free disk before packaging Electron
+        run: rm -rf app/frontend/node_modules
+      - name: Package unsigned arm64 .app
+        working-directory: desktop/electron
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: |
+          npm ci
+          npx electron-builder --mac dir --arm64
+          APP=$(find dist -name 'JunhuaPm.app' -type d | head -1)
+          test -n "$APP"
+          bash ../build/adhoc-sign.sh "$APP"
+          ditto -c -k --keepParent "$APP" "dist/JunhuaPm-mac-arm64.zip"
+          unzip -l dist/JunhuaPm-mac-arm64.zip | grep -q 'JunhuaPm.app/Contents/MacOS/'
+          unzip -l dist/JunhuaPm-mac-arm64.zip | grep -q 'Contents/Resources/frontend/index.html'
+          unzip -l dist/JunhuaPm-mac-arm64.zip | grep -q 'Contents/Resources/backend/manage.py'
+          unzip -l dist/JunhuaPm-mac-arm64.zip | grep -E 'Contents/Resources/runtime/bin/python3'
+          file "$APP/Contents/Resources/runtime/bin/python3.13" | grep -q 'arm64'
+      - name: Upload Mac app
+        uses: actions/upload-artifact@v4
+        with:
+          name: JunhuaPm-mac-arm64
+          path: desktop/electron/dist/JunhuaPm-mac-arm64.zip
+          if-no-files-found: error
+          retention-days: 14

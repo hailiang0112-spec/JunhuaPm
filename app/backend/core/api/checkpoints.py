@@ -1,7 +1,7 @@
 """检查点、对图核对、放行、覆盖登记与发现时点修正（F06，API-F06-01 ~ API-F06-03，SEQ-F06-01 ~ SEQ-F06-03）。"""
 from types import SimpleNamespace
 
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, connection, transaction
 from django.urls import path
 from django.utils import timezone
 from rest_framework.response import Response
@@ -190,8 +190,17 @@ class CheckpointList(ProjectView):
                                "covered_at", "latest_check_id", "latest_check__checked_at", "released_at",
                                "created_at"))
         released_ids = [r["id"] for r in light if r["status"] in ("已放行", "放行后发现不一致")]
-        proxy = dict(ReleaseRecord.objects.filter(checkpoint_id__in=released_ids).order_by("checkpoint_id", "-id")
-                     .distinct("checkpoint_id").values_list("checkpoint_id", "is_proxy"))
+        if connection.vendor == "postgresql":
+            proxy = dict(ReleaseRecord.objects.filter(checkpoint_id__in=released_ids)
+                         .order_by("checkpoint_id", "-id").distinct("checkpoint_id")
+                         .values_list("checkpoint_id", "is_proxy"))
+        else:
+            # SQLite has no DISTINCT ON. id order matches insertion; the last row
+            # per checkpoint is the newest release (same row PostgreSQL DISTINCT ON -id keeps).
+            proxy = {}
+            for cid, is_proxy in (ReleaseRecord.objects.filter(checkpoint_id__in=released_ids)
+                                  .order_by("id").values_list("checkpoint_id", "is_proxy")):
+                proxy[cid] = is_proxy
         rows = []
         counts = {c: 0 for c in CHIPS}
         summary = {"noCover": 0, "pending": 0, "timeout": 0, "inconsistent": 0, "inconsistentAfter": 0,

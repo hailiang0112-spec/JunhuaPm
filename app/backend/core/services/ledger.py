@@ -47,6 +47,25 @@ def record_fields(obj):
     return out
 
 
+def _lock_chain(project_id):
+    """Serialize appends for one project.
+
+    PostgreSQL uses a transaction advisory lock (the deploy path). SQLite has no
+    advisory locks; an UPDATE takes the database reserved lock for the rest of
+    this transaction so two desktop threads cannot mint the same seq. The unique
+    (project, seq) constraint is the backstop.
+    """
+    if connection.vendor == "postgresql":
+        with connection.cursor() as cur:
+            cur.execute("SELECT pg_advisory_xact_lock(%s, %s)", [7301, project_id])
+        return
+    from core.models import Project
+
+    table = Project._meta.db_table
+    with connection.cursor() as cur:
+        cur.execute(f'UPDATE "{table}" SET "id" = "id" WHERE "id" = %s', [project_id])
+
+
 def append(project_id, obj, extra=None):
     """在当前事务内把关键记录写入摘要链。调用方必须已在 transaction.atomic() 中保存 obj。"""
     assert transaction.get_connection().in_atomic_block, "ledger.append 必须在事务内调用"
@@ -54,8 +73,7 @@ def append(project_id, obj, extra=None):
     fields = record_fields(obj)
     if extra:
         fields.update(extra)
-    with connection.cursor() as cur:
-        cur.execute("SELECT pg_advisory_xact_lock(%s, %s)", [7301, project_id])
+    _lock_chain(project_id)
     last = LedgerEntry.objects.filter(project_id=project_id).order_by("-seq").first()
     prev = last.hash if last else GENESIS
     seq = (last.seq + 1) if last else 1

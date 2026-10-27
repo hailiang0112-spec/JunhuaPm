@@ -1,0 +1,62 @@
+{
+  "name": "junhua-pm",
+  "productName": "JunhuaPm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "君华装修项目管理平台桌面版",
+  "main": "main.js",
+  "author": "Junhua",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --mac dir --arm64"
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.junhua.pm.desktop",
+    "productName": "JunhuaPm",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../payload/runtime",
+        "to": "runtime"
+      },
+      {
+        "from": "../payload/backend",
+        "to": "backend"
+      },
+      {
+        "from": "../payload/frontend",
+        "to": "frontend"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "icon.png",
+      "identity": null,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": false,
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "extendInfo": {
+        "CFBundleDisplayName": "君华装修项目管理",
+        "NSHighResolutionCapable": true
+      }
+    }
+  }
+}

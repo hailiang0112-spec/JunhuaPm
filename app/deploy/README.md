@@ -52,6 +52,10 @@
   - `SEED_BASE=0`，不要执行 `seed_demo`；由公司管理员账号新建项目并邀请真实成员（首个管理员账号可在 web 容器里用 `python manage.py shell` 创建）。
 - 每日 02:30 自动备份；恢复演练：`./restore_drill.sh <备份目录>`（见 `output/tests/运维演练记录-RULE-06.md`）。
 
+## Mac 免安装桌面版
+
+不需要 Docker。Apple 芯片 Mac 可下载双击运行的 `JunhuaPm.app`（内置本地数据库与演示账号）。下载、第一次打开和数据位置见 [desktop/使用说明.md](../../desktop/使用说明.md)。公司服务器部署仍用上面的 Docker。
+
 ## 常见问题
 
 - **Windows 上 `docker compose build` 报 `entrypoint.sh: not found`**：仓库已用 `.gitattributes` 固定 `.sh` 为 LF 换行；若仍出现，执行 `git config --global core.autocrlf input` 后重新克隆。
