@@ -1,0 +1,152 @@
+已建库 jh_e2e_acct 并迁移
+演示数据完成：项目 1，检查点 8 个
+服务就绪 后端 8101 前端 5201
+acct 造数完成 {'pid': 1, 'pid2': 2, 'wi2': 229, 'wi2Name': '一楼厨房强弱电、燃气报警与给排水', 'closedIssues': {'CK-006': 3, 'CK-007': 4, 'CK-008': 5}, 'exp': {'CK-006': 1, 'CK-007': 2}, 'rejectedCo': 4, 'pendingBaselineWi': 51}
+PASS [FLOW-01] 缺项目名称提交被拒并提示
+PASS [FLOW-01] 被拒后不产生项目
+PASS [FLOW-01] 完整提交后 toast
+PASS [FLOW-01] 新项目出现在列表且状态「筹备」
+PASS [FLOW-01] 模板复制到位：楼层 6、房间 32、工段 6、工作项 187
+PASS [FLOW-01] 375 项目管理无横向滚动
+PASS [FLOW-01] 375 新建项目弹窗无横向滚动
+PASS [FLOW-01] 多角色保存 toast
+PASS [FLOW-01] 孙工同时具有质检与预算专员
+PASS [FLOW-01] 角色只在该项目生效：孙工项目列表只含君华新城
+PASS [FLOW-01] 孙工在本项目角色含 budget
+PASS [FLOW-01] 项目经理邀请公司管理员被拒「只有公司管理员可以设置该角色」
+PASS [FLOW-01] 生成邀请链接
+PASS [FLOW-01] 邀请一次性、7 天有效（截止 = 现在 + 7 天）
+PASS [FLOW-01] 375 邀请页无横向滚动
+PASS [FLOW-01] 新号以所填姓名建号并进入首页
+PASS [FLOW-01] 邀请一次性：再次打开提示「邀请已失效…」
+PASS [FLOW-01] 已有账号显示「输入你的登录密码即可加入」
+PASS [FLOW-01] 已有账号输错原密码被拒
+PASS [FLOW-01] 已有账号关联到第二个项目
+PASS [FLOW-01] 已有账号加入后原密码不变（仍可用原密码登录）
+PASS [FLOW-01] 业主邀请只能选「业主方成员」
+PASS [FLOW-01] 修改公司模板（工段权重）保存成功
+PASS [FLOW-01] 改模板后再建项目成功
+PASS [FLOW-01] 新项目按修改后的模板（权重 +2/−2）
+PASS [FLOW-01] 模板修改不影响已建项目
+PASS [FLOW-01] 移除成员 toast
+PASS [FLOW-01] 被移除者下一次请求即无权访问
+PASS [FLOW-01] 已交房缺日期被拒「请填写实际交房日期」
+PASS [FLOW-01] 项目状态未变（仍为施工中）
+PASS [FLOW-03] 1440 登录页无横向滚动
+PASS [FLOW-03] 1440 正确密码登录进入我的待办
+PASS [FLOW-03] 1440 会话 7 天无操作失效（Cookie 有效期 ≈7 天）
+PASS [FLOW-03] 375 登录页无横向滚动
+PASS [FLOW-03] 375 正确密码登录进入我的待办
+PASS [FLOW-03] 375 会话 7 天无操作失效（Cookie 有效期 ≈7 天）
+PASS [FLOW-03] 第 5 次错误后锁定并显示剩余时间
+PASS [FLOW-03] 剩余时间约 15 分钟
+PASS [FLOW-03] 锁定期间登录按钮不可用
+PASS [FLOW-03] 重置密码接口响应不可缓存（Cache-Control: no-store）
+PASS [FLOW-03] 临时密码在重置弹窗中显示
+PASS [FLOW-03] 关闭后临时密码不再显示（只显示一次）
+PASS [FLOW-03] 刷新后页面不含临时密码
+PASS [FLOW-03] 服务端日志检索不到临时密码明文
+PASS [FLOW-03] 临时密码登录后进入改密页并提示
+PASS [FLOW-03] 375 强制改密页无横向滚动
+PASS [FLOW-03] 改密前点导航仍停留在个人设置
+PASS [FLOW-03] 设置新密码后可访问首页
+PASS [FLOW-03] 原密码错误被拒
+PASS [FLOW-03] 修改密码成功 toast
+PASS [FLOW-03] 改密后另一设备的会话失效（回到登录页）
+PASS [FLOW-03] 改密设备本身仍保持登录
+PASS [FLOW-21] owner 待办类型包含 ['待放行检查点', '待签变更单', '待签图纸', '待签基线']
+PASS [FLOW-21] owner 看不到其他角色的待办类型
+PASS [FLOW-21] owner@1440 导航总数与列表条数一致
+PASS [FLOW-21] owner@1440 首页无横向滚动
+PASS [FLOW-21] owner@375 导航总数与列表条数一致
+PASS [FLOW-21] owner@375 首页无横向滚动
+PASS [FLOW-21] member 待办类型包含 ['待放行检查点']
+PASS [FLOW-21] member 只看到其待办类型
+PASS [FLOW-21] member@1440 导航总数与列表条数一致
+PASS [FLOW-21] member@1440 首页无横向滚动
+PASS [FLOW-21] member@375 导航总数与列表条数一致
+PASS [FLOW-21] member@375 首页无横向滚动
+PASS [FLOW-21] qc 待办类型包含 ['待核对检查点']
+PASS [FLOW-21] qc 只看到其待办类型
+PASS [FLOW-21] qc@1440 导航总数与列表条数一致
+PASS [FLOW-21] qc@1440 首页无横向滚动
+PASS [FLOW-21] qc@375 导航总数与列表条数一致
+PASS [FLOW-21] qc@375 首页无横向滚动
+PASS [FLOW-21] budget 待办类型包含 ['待预算定价变更单']
+PASS [FLOW-21] budget 只看到其待办类型
+PASS [FLOW-21] budget@1440 导航总数与列表条数一致
+PASS [FLOW-21] budget@1440 首页无横向滚动
+PASS [FLOW-21] budget@375 导航总数与列表条数一致
+PASS [FLOW-21] budget@375 首页无横向滚动
+PASS [FLOW-21] dm 待办类型包含 ['待出新版图纸']
+PASS [FLOW-21] dm 只看到其待办类型
+PASS [FLOW-21] dm@1440 导航总数与列表条数一致
+PASS [FLOW-21] dm@1440 首页无横向滚动
+PASS [FLOW-21] dm@375 导航总数与列表条数一致
+PASS [FLOW-21] dm@375 首页无横向滚动
+PASS [FLOW-21] pm 待办类型包含 ['即将施工，基线未签认', '被退回基线', '被驳回变更单']
+PASS [FLOW-21] pm 看不到其他角色的待办类型
+PASS [FLOW-21] 项目经理的待放行只含超时项
+PASS [FLOW-21] pm@1440 导航总数与列表条数一致
+PASS [FLOW-21] pm@1440 首页无横向滚动
+PASS [FLOW-21] pm@375 导航总数与列表条数一致
+PASS [FLOW-21] pm@375 首页无横向滚动
+PASS [FLOW-21] 复制后提示「已复制」
+PASS [FLOW-21] 剪贴板含项目名
+PASS [FLOW-21] 剪贴板含事项
+PASS [FLOW-21] 剪贴板含负责人
+PASS [FLOW-21] 剪贴板含截止或超时信息
+PASS [FLOW-21] 剪贴板含直达链接
+PASS [FLOW-21] 业主放行成功 toast
+PASS [FLOW-21] 放行后该待办消失
+PASS [FLOW-21] 待办数量减 1 且导航数同步
+PASS [FLOW-02] 业主撤销原代理人（钱工）
+PASS [FLOW-02] 业主方成员在指定前无放行按钮（只读）
+PASS [FLOW-02] 业主指定钱工为代理人
+PASS [FLOW-02] 指定后代理人看到放行按钮
+PASS [FLOW-02] 375 检查点详情无横向滚动
+PASS [FLOW-02] 代理放行确认摘要标注代理
+PASS [FLOW-02] 代理人放行成功
+PASS [FLOW-02] 放行记录标注「代理放行」
+PASS [FLOW-02] 代理人不能签认基线（无签认按钮）
+PASS [FLOW-02] 代理人不能签认图纸
+PASS [FLOW-02] 代理人不能签认变更单
+PASS [FLOW-02] 业主改指定陈女士
+PASS [FLOW-02] 代理人变更留痕（时间线含钱工与陈女士）
+PASS [FLOW-02] 改指定后原代理人失去放行权
+PASS [FLOW-02] 撤销代理成功
+PASS [FLOW-02] 撤销后下一次请求即不能放行
+PASS [FLOW-02] 既有代理放行记录不变
+PASS [FLOW-02] 签认摘要署名刘太太
+PASS [FLOW-02] 刘太太签认即时生效
+PASS [FLOW-02] 基线状态已签认
+PASS [FLOW-02] 签认记录署名为刘太太
+PASS [FLOW-02] 刘先生的同项待办消失（待签基线项数减 1）
+PASS [FLOW-02] 公司管理员无放行 / 核对按钮
+PASS [FLOW-02] 公司管理员无基线签认按钮
+PASS [FLOW-02] 公司管理员无定价按钮
+PASS [FLOW-02] 公司管理员成员与邀请管理仍可用
+PASS [FLOW-14] 提交条目含工段、工序、问题类型、检查要点、对策
+PASS [FLOW-14] 提交条目不含业主姓名与地址
+PASS [FLOW-14] 默认不带照片
+PASS [FLOW-14] 提交经验条目 toast
+PASS [FLOW-14] 审核确认摘要含审核人孙工
+PASS [FLOW-14] 审核通过 toast
+PASS [FLOW-14] 审核后条目可见并记录审核人、时间、状态
+PASS [FLOW-14] 修改生成新版本 toast「已保存为 v2，旧版本保留可查」
+PASS [FLOW-14] 旧版本可查（版本历史含 V1 与新版本）
+PASS [FLOW-14] 1440 审核后对公司其他项目成员可见（业主可见该条目）
+PASS [FLOW-14] 1440 经验库无横向滚动
+PASS [FLOW-14] 375 审核后对公司其他项目成员可见（业主可见该条目）
+PASS [FLOW-14] 375 经验库无横向滚动
+PASS [FLOW-14] 另一项目新建水电检查点时列出水电已审核条目（3 条）
+PASS [FLOW-14] 按已验证、历史观察、未验证经验排序
+PASS [FLOW-14] 一键加入检查要点
+
+检查项 140/140 通过；未预期控制台错误 0；375 页面级横向滚动 0/13 处
+E2E 退出码 0
+端口 8101 被 22689
+22702
+22704 占用，结束旧进程
+端口 5201 被 22706 占用，结束旧进程
+已停止 8101 / 5201

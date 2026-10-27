@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F08-01">
+  <meta name="description" content="问题台账：筛选与超期排序、手工登记、不一致原因与处置建议、闭环/重开/作废、提交经验库">
+  <title>问题 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    [hidden]{display:none!important}
+    a.btn{text-decoration:none}
+    .side .navitem .badge{margin-left:auto}
+    .side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer}
+    .side .sitepick:hover{border-color:var(--accent)}
+    .side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .side .sitepick .nm{display:inline-flex}
+    .side-foot{border-top:1px solid var(--border-soft);margin-top:var(--space-4);padding-top:var(--space-2)}
+    .topbar{flex-wrap:wrap}
+    .topbar .tt{min-width:0}
+    .role-switch{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted)}
+    .role-switch select{min-height:32px;width:auto;padding:0 var(--space-2);font-size:var(--text-sm)}
+    .tabbar{z-index:30}
+    .tab{position:relative;border:0;background:none;font:inherit;font-size:var(--text-xs);cursor:pointer;min-height:44px}
+    .tab-badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;line-height:16px;text-align:center}
+    .mask{z-index:50}
+    .toast{z-index:60}
+    .dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--border-soft)}
+    .dlg-hd h2{font-size:var(--text-lg);line-height:var(--leading-tight)}
+    .dlg-bd{padding:var(--space-4) var(--space-5);display:flex;flex-direction:column;gap:var(--space-3)}
+    .dlg-ft{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-5) var(--space-4);border-top:1px solid var(--border-soft)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:var(--radius-sm);background:none;color:var(--muted);cursor:pointer}
+    .icon-btn:hover{background:var(--surface-warm);color:var(--fg)}
+    .icon-btn:active{background:var(--border-soft)}
+    .icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .confirm-summary dl{margin:0}
+    .note{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);background:var(--surface-warm);color:var(--fg-2)}
+    .note>.icon{margin-top:2px}
+    .note.warn{background:var(--warn-soft);color:var(--warn)}
+    .note.bad{background:var(--danger-soft);color:var(--danger)}
+    .note.ok{background:var(--success-soft);color:var(--success)}
+    .note.info{background:var(--info-soft);color:var(--info)}
+    .state .ic{display:flex;justify-content:center}
+    .state .ic .icon{width:32px;height:32px}
+    .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+    .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+    .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+    .demo-states{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;font-size:var(--text-xs);color:var(--muted);margin-bottom:var(--space-4)}
+    .demo-states .chip{height:26px;font-size:var(--text-xs)}
+    .mono{font-family:var(--font-mono);font-size:var(--text-xs);word-break:break-all}
+    .num{font-variant-numeric:tabular-nums}
+    .seal.void{color:var(--muted)}
+    @media (max-width:1199px){.side .sitepick{padding:0;justify-content:center}.side-foot{margin-top:var(--space-2)}.side .navitem{justify-content:center}}
+    @media (max-width:767px){
+      body.nav-open .side{display:block;position:fixed;inset:0 0 var(--tabbar-h) 0;height:auto;z-index:40}
+      body.nav-open .side .nm{display:inline}body.nav-open .side .badge.nm,body.nav-open .side .sitepick .nm{display:inline-flex}body.nav-open .side .navgroup{display:block}
+      body.nav-open .side .navitem{justify-content:flex-start}
+      body.nav-open{overflow:hidden}
+      .topbar h1{font-size:var(--text-lg)}
+      .role-switch{width:100%}
+      .role-switch select{flex:1}
+      .dlg-ft .btn{flex:1;justify-content:center;height:44px}
+    }
+
+    .filters{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+    .filters .select{width:auto;min-height:32px;height:32px;padding:0 var(--space-2);font-size:var(--text-sm)}
+    .sortnote{font-size:var(--text-xs);color:var(--muted);margin-left:auto;display:inline-flex;align-items:center;gap:var(--space-1)}
+    .t-title{font-weight:600;color:var(--fg)}
+    .t-sub{font-size:var(--text-xs);color:var(--muted)}
+    .over{color:var(--danger);font-weight:700}
+    .lv-严重{background:var(--danger-soft);color:var(--danger)}
+    .lv-重要{background:var(--warn-soft);color:var(--warn)}
+    .pending-txt{color:var(--warn);font-weight:600}
+    .is-cards{display:none}
+    .is-card{display:block;width:100%;text-align:left;padding:var(--space-3) var(--space-4);border:0;border-top:1px solid var(--border-soft);background:var(--surface);font:inherit;color:inherit;cursor:pointer}
+    .is-card:first-child{border-top:0}
+    .is-card:hover{background:var(--surface-warm)}
+    .is-card:active{background:var(--border-soft)}
+    .is-card:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+    .is-card .l1{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-start}
+    .is-card .l3{display:flex;gap:var(--space-3);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);margin-top:var(--space-2)}
+    /* 详情抽屉 */
+    .dw-wrap{position:fixed;inset:0;z-index:45;background:color-mix(in oklab,var(--fg),transparent 55%);display:none}
+    .dw-wrap.show{display:block;animation:fadeIn var(--motion-base) var(--ease-standard)}
+    .drawer{position:absolute;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--surface);box-shadow:var(--elev-float);display:flex;flex-direction:column}
+    .dw-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-soft)}
+    .dw-bd{flex:1;overflow:auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4)}
+    .dw-ft{display:flex;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft)}
+    .sec h3{font-size:var(--text-sm);color:var(--fg-2);margin-bottom:var(--space-2);font-weight:600}
+    .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2) var(--space-3)}
+    .kv dt{font-size:var(--text-xs);color:var(--muted)}
+    .kv dd{font-size:var(--text-sm)}
+    .photos{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .photo{width:96px;height:72px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--border-soft),var(--surface-warm));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;color:var(--muted);border:1px solid var(--border-soft)}
+    .causes{display:flex;flex-direction:column;gap:var(--space-2)}
+    .cause{display:flex;align-items:center;gap:var(--space-2);min-height:40px;padding:var(--space-2) var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer}
+    .cause:hover{border-color:var(--accent)}
+    .cause:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+    .cause:has(input:focus-visible){box-shadow:var(--focus-ring)}
+    .cause:has(input:disabled){cursor:default}
+    .cause input{accent-color:var(--accent)}
+    .sugg{border:1px solid var(--border-soft);border-left:3px solid var(--info);border-radius:var(--radius-sm);padding:var(--space-3);background:var(--info-soft);font-size:var(--text-sm);display:flex;flex-direction:column;gap:var(--space-2)}
+    .sugg b{color:var(--info)}
+    .tl{list-style:none;display:flex;flex-direction:column;gap:var(--space-2)}
+    .tl li{font-size:var(--text-sm);padding-left:var(--space-3);border-left:2px solid var(--border-soft)}
+    .tl .m{font-size:var(--text-xs);color:var(--muted)}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .form-grid .full{grid-column:1/-1}
+    .field.invalid .select,.field.invalid .textarea,.field.invalid .radios{border-color:var(--danger)}
+    .radios{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .radio{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer}
+    .radio:hover{border-color:var(--accent)}
+    .radio:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+    .radio input{accent-color:var(--accent)}
+    .chk{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);min-height:40px;cursor:pointer}
+    .chk input{accent-color:var(--accent);width:16px;height:16px}
+    @media (max-width:767px){
+      .is-table{display:none}
+      .is-cards{display:block}
+      .sortnote{margin-left:0;width:100%}
+      .form-grid{grid-template-columns:1fr}
+      .dw-ft .btn{flex:1;justify-content:center;height:44px}
+      .filters .select{flex:1;min-width:0}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <nav class="side" id="side" aria-label="主导航">
+      <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+      <button class="sitepick" type="button" aria-label="切换工地"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer nm"></span><span class="nm"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      <a class="navitem" href="PAGE-F16-01.html" title="我的待办"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem" href="PAGE-F10-01.html" title="项目总览"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html" title="楼层 / 房间"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" title="砌墙"><span class="phase-dot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" title="水电"><span class="phase-dot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" title="铺砖"><span class="phase-dot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" title="木工"><span class="phase-dot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" title="油灰工"><span class="phase-dot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" title="安装收尾"><span class="phase-dot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html" title="图纸"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html" title="基线签认"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html" title="检查点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html" title="变更单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem on" href="PAGE-F08-01.html" aria-current="page" title="问题"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem" href="PAGE-F12-01.html" title="档案资料"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem" href="PAGE-F13-01.html" title="补充事项"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html" title="公告栏"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem" href="PAGE-F15-01.html" title="付款节点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html" title="成员与项目"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html" title="项目结构"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html" title="数据导入导出"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13m0 0-3-3m3 3 3-3"/><path d="M17 20V7m0 0-3 3m3-3 3 3"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html" title="审计与证据包"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员">
+      <div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html" title="项目管理"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html" title="公司模板"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html" title="公司经验库"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      <div class="side-foot"><a class="navitem" href="PAGE-F02-03.html" title="个人设置"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a></div>
+    </nav>
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="tt"><h1>问题</h1><div class="sub">君华新城 · 联排别墅 · 不一致按规则定责，问题有始有终</div></div>
+        <span class="spacer"></span>
+        <label class="role-switch">演示身份<select class="select" id="demoRole" aria-label="演示身份"><option>业主</option><option>业主代理人</option><option>项目经理</option><option>设计经理</option><option selected>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+        <button class="btn primary" type="button" data-open-reg><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>登记问题</button>
+      </header>
+
+      <div class="demo-states" aria-label="原型状态演示">原型状态：
+        <button class="chip on" type="button" data-demo="ok">正常</button>
+        <button class="chip" type="button" data-demo="empty">空</button>
+        <button class="chip" type="button" data-demo="loading">加载</button>
+        <button class="chip" type="button" data-demo="error">错误</button>
+      </div>
+      <section class="card" aria-labelledby="ledTitle">
+        <div class="card-hd" style="flex-wrap:wrap"><h2 id="ledTitle">问题台账</h2><span class="tag warn" id="cntOpen"></span><span class="tag bad" id="cntOver"></span></div>
+        <div class="card-bd" style="padding-bottom:var(--space-3);display:flex;flex-direction:column;gap:var(--space-3)">
+          <div class="filters" role="group" aria-label="按状态筛选">
+            <button class="chip on" type="button" data-st="valid">全部有效</button>
+            <button class="chip" type="button" data-st="未闭环">未闭环</button>
+            <button class="chip" type="button" data-st="处理中">处理中</button>
+            <button class="chip" type="button" data-st="已闭环">已闭环</button>
+            <button class="chip" type="button" data-st="已作废">已作废</button>
+          </div>
+          <div class="filters">
+            <select class="select" id="fSrc" aria-label="来源"><option value="">全部来源</option><option>核对不一致</option><option>手工登记</option></select>
+            <select class="select" id="fLv" aria-label="等级"><option value="">全部等级</option><option>严重</option><option>重要</option><option>一般</option></select>
+            <select class="select" id="fPh" aria-label="工段"><option value="">全部工段</option><option>砌墙</option><option>水电</option><option>铺砖</option><option>木工</option><option>油灰工</option><option>安装收尾</option></select>
+            <span class="sortnote"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>按超期天数从大到小排序</span>
+          </div>
+        </div>
+        <div id="vOk">
+          <div class="is-table scroll-x">
+            <table>
+              <thead><tr><th style="width:76px">编号</th><th>问题</th><th>来源</th><th>等级</th><th>负责人</th><th>要求闭环</th><th class="num">超期（天）</th><th>状态</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <div class="is-cards" id="cards"></div>
+          <div class="state" id="vNone" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg></div><h3>没有符合条件的问题</h3><p>换个筛选条件再看看。</p></div>
+          <div class="pager"><span>第 1 页 · 每页 20 条</span><button class="btn sm" type="button" disabled><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>上一页</button><button class="btn sm" type="button" disabled>下一页<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button></div>
+        </div>
+        <div class="state" id="vEmpty" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></div><h3>还没有问题</h3><p>核对不一致时系统会自动生成问题，也可以手工登记。</p><button class="btn primary" type="button" data-open-reg><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>登记问题</button></div>
+        <div class="card-bd" id="vLoading" hidden aria-busy="true"><div class="skeleton" style="width:50%;margin-bottom:var(--space-3)"></div><div class="skeleton" style="margin-bottom:var(--space-3)"></div><div class="skeleton" style="width:75%"></div></div>
+        <div class="state" id="vError" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2l20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5-2.7M19 13a10 10 0 0 0-2.4-1.7M12 20h.01"/></svg></div><h3>问题台账加载失败（网络中断）</h3><p>请检查网络后重试。</p><button class="btn" type="button" data-demo-btn="ok"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>重新加载</button></div>
+      </section>
+
+    </main>
+  </div>
+  <nav class="tabbar" aria-label="手机底部导航">
+    <a class="tab" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span>待办</span><span class="tab-badge">7</span></a>
+    <a class="tab" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>检查点</span><span class="tab-badge">5</span></a>
+    <a class="tab" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>图纸</span></a>
+    <button class="tab on" type="button" id="moreTab" aria-expanded="false" aria-controls="side"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>更多</span></button>
+  </nav>
+  <div class="dw-wrap" id="dw" role="dialog" aria-modal="true" aria-labelledby="dwTitle">
+    <aside class="drawer">
+      <div class="dw-hd"><div style="min-width:0"><div class="mono" id="dwId"></div><h2 id="dwTitle" style="font-size:var(--text-lg);line-height:var(--leading-tight)"></h2></div><span class="spacer"></span><span class="seal" id="dwSeal"></span><button class="icon-btn" type="button" id="dwClose" aria-label="关闭详情"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dw-bd">
+        <div class="note bad" id="dwBlock" hidden role="alert"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.01"/></svg><span>请先由质检复核为一致或已变更</span></div>
+        <div class="sec"><dl class="kv" id="dwKv"></dl></div>
+        <div class="sec" id="dwSrc"><h3>不一致来源</h3><dl class="kv" id="dwSrcKv"></dl>
+          <div class="photos" id="dwPhotos" style="margin-top:var(--space-2)"></div></div>
+        <div class="sec" id="dwCause"><h3>不一致原因（质检选择）</h3>
+          <div class="causes" role="radiogroup" aria-label="不一致原因">
+            <label class="cause"><input type="radio" name="cause" value="a">设计已改但未签变更单</label>
+            <label class="cause"><input type="radio" name="cause" value="b">施工偏离签认图</label>
+            <label class="cause"><input type="radio" name="cause" value="c">图纸本身未表达清楚</label>
+          </div>
+          <div class="sugg" id="dwSugg" hidden style="margin-top:var(--space-2)"></div>
+        </div>
+        <div class="sec" id="dwEdit" data-roles="项目经理,质检"><h3>补充对策与指派</h3>
+          <div class="form-grid">
+            <div class="field full"><label for="eMeasure">对策</label><textarea class="textarea" id="eMeasure" rows="2"></textarea></div>
+            <div class="field"><label for="eOwner">负责人</label><select class="select" id="eOwner"><option value="">待指派</option><option>张工</option><option>李工</option><option>王工</option></select></div>
+            <div class="field" style="justify-content:flex-end"><button class="btn" type="button" id="eSave"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>保存</button></div>
+          </div></div>
+        <div class="sec"><h3>留痕记录</h3><ol class="tl" id="dwLog"></ol></div>
+      </div>
+      <div class="dw-ft">
+        <button class="btn primary" type="button" id="aClose" data-roles="项目经理,质检"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>标记已闭环</button>
+        <button class="btn" type="button" id="aReopen" data-roles="项目经理,质检"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>重新打开</button>
+        <button class="btn" type="button" id="aExp" data-roles="质检"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg>提交到经验库</button>
+        <button class="btn danger" type="button" id="aVoid"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>作废</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="mask" id="dlgReg" role="dialog" aria-modal="true" aria-labelledby="rgTitle">
+    <form class="dialog" id="regForm" novalidate>
+      <div class="dlg-hd"><h2 id="rgTitle">登记问题</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgReg" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <div class="form-grid">
+          <div class="field full" id="rDescF"><label for="rDesc">问题描述<span class="req">*</span></label><textarea class="textarea" id="rDesc" rows="3" placeholder="例如：夹层楼梯间墙体砂浆饱满度不足，局部可见透光缝"></textarea><span class="err" hidden>请填写问题描述</span></div>
+          <div class="field full" id="rLvF"><label>等级<span class="req">*</span></label><div class="radios"><label class="radio"><input type="radio" name="lv" value="一般">一般</label><label class="radio"><input type="radio" name="lv" value="重要">重要</label><label class="radio"><input type="radio" name="lv" value="严重">严重</label></div><span class="err" hidden>请选择等级</span></div>
+          <div class="field" id="rPhF"><label for="rPh">所属工段<span class="req">*</span></label><select class="select" id="rPh"><option value="">请选择</option><option>砌墙</option><option>水电</option><option>铺砖</option><option>木工</option><option>油灰工</option><option>安装收尾</option></select><span class="err" hidden>请选择所属工段</span></div>
+          <div class="field" id="rDueF"><label for="rDue">要求闭环日期<span class="req">*</span></label><input class="input" id="rDue" type="date"><span class="err" hidden>请选择要求闭环日期</span></div>
+          <div class="field" id="rFlF"><label for="rFl">楼层<span class="req">*</span></label><select class="select" id="rFl"><option value="">请选择</option></select><span class="err" hidden>请选择楼层</span></div>
+          <div class="field" id="rRmF"><label for="rRm">房间<span class="req">*</span></label><select class="select" id="rRm"><option value="">先选楼层</option></select><span class="err" hidden>请选择房间</span></div>
+          <div class="field full"><label for="rMs">对策 <span class="muted">（可空，空时记为「待补充对策」）</span></label><textarea class="textarea" id="rMs" rows="2"></textarea></div>
+          <div class="field"><label for="rOw">负责人 <span class="muted">（可空，空时记为「待指派」）</span></label><select class="select" id="rOw"><option value="">待指派</option><option>张工</option><option>李工</option><option>王工</option></select></div>
+        </div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgReg">取消</button><button class="btn primary" type="submit">提交</button></div>
+    </form>
+  </div>
+
+  <div class="mask" id="dlgVoid" role="dialog" aria-modal="true" aria-labelledby="vdTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="vdTitle">作废问题</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgVoid" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <p class="muted" style="font-size:var(--text-sm)">问题不能删除。作废后不可撤回，不计入问题统计，仍可在「已作废」筛选中查看。</p>
+        <div class="confirm-summary"><dl id="vdRows"></dl></div>
+        <div class="field" id="vdF"><label for="vdReason">作废理由<span class="req">*</span></label><textarea class="textarea" id="vdReason" rows="2" placeholder="例如：与 WT-017 重复登记"></textarea><span class="err" hidden>请填写作废理由</span></div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgVoid">取消</button><button class="btn danger" type="button" id="vdOk">确认作废</button></div>
+    </div>
+  </div>
+
+  <div class="mask" id="dlgExp" role="dialog" aria-modal="true" aria-labelledby="exTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="exTitle">提交到公司经验库</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgExp" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <div class="note info"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span>已自动脱敏：只提交以下字段，不含业主姓名、项目地址和照片。提交后进入待审核，审核通过才对其他项目可见。</span></div>
+        <div class="confirm-summary"><dl id="exRows"></dl></div>
+        <label class="chk"><input type="checkbox" id="exPhoto">另行附带现场照片（<span id="exPhotoN">2</span> 张）</label>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgExp">取消</button><button class="btn primary" type="button" id="exOk">提交待审核</button></div>
+    </div>
+  </div>
+  <div class="mask" id="dlgConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="cfTitle">确认提交</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgConfirm" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <p class="muted" style="font-size:var(--text-sm)">提交后不可撤回，请核对以下内容：</p>
+        <div class="confirm-summary"><dl id="cfRows"></dl></div>
+        <div class="note warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.01"/></svg><span id="cfWarnText"></span></div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgConfirm">取消</button><button class="btn primary" type="button" id="cfOk">确认提交</button></div>
+    </div>
+  </div>
+  <script>
+
+  // —— 外壳通用脚本：演示身份、手机「更多」、提示条、二次确认 ——
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+  function role(){return $('#demoRole').value}
+  function applyRole(){
+    const r = role();
+    $$('[data-roles]').forEach(el => { el.hidden = !el.dataset.roles.split(',').includes(r); });
+    if (window.onRole) window.onRole(r);
+  }
+  $('#demoRole').addEventListener('change', applyRole);
+  $('#moreTab').addEventListener('click', e => { const o = document.body.classList.toggle('nav-open'); e.currentTarget.setAttribute('aria-expanded', o); });
+  function openDlg(id){const m=document.getElementById(id);m.classList.add('show');const f=m.querySelector('textarea,input:not([type=hidden]),select');if(f)setTimeout(()=>f.focus(),50)}
+  function closeDlg(id){document.getElementById(id).classList.remove('show')}
+  $$('.mask').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.mask.show').forEach(m => m.classList.remove('show')); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-close]'); if (b) closeDlg(b.dataset.close); });
+  // 不可撤回操作的二次确认：confirmDo({title, rows:[[标签,内容]], warn, ok, danger, onOk})
+  function confirmDo(o){
+    $('#cfTitle').textContent = o.title;
+    $('#cfRows').innerHTML = o.rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#cfWarn').hidden = !o.warn; $('#cfWarnText').textContent = o.warn || '';
+    const ok = $('#cfOk'); ok.textContent = o.ok || '确认提交'; ok.className = 'btn ' + (o.danger ? 'danger' : 'primary');
+    ok.onclick = () => { closeDlg('dlgConfirm'); o.onOk && o.onOk(); };
+    openDlg('dlgConfirm'); setTimeout(() => ok.focus(), 60);
+  }
+  function stamp(el){el.classList.remove('just');void el.offsetWidth;el.classList.add('just')}
+
+
+  const TODAY = new Date('2026-10-27T00:00:00');
+  const ROOMS = {'负一楼':['影音室','设备间','卫生间','储藏室'],'夹层':['楼梯间','茶室'],'一楼':['客厅','餐厅','厨房','老人房','卫生间','玄关'],'二楼':['主卧','衣帽间','主卫','书房 A','书房 B','走廊'],'三楼':['次卧','主卫','露台','家庭厅'],'楼顶阳台':['花园','设备平台']};
+  const IS = [
+    {id:'WT-023',title:'二楼主卫门洞位置东移 150mm，与签认图不符',src:'核对不一致',ck:'CK-036',ckSt:'不一致',wi:'二楼 · 主卫 · 门洞砌筑',ph:'砌墙',fl:'二楼',rm:'主卫',lv:'重要',measure:'',owner:'张工',due:'2026-10-29',st:'未闭环',cause:'a',found:'覆盖前 · 2026-10-26 14:22',photos:2,co:'',log:[['核对不一致，自动生成问题','王工（质检）','2026-10-26 14:22'],['选择原因：设计已改但未签变更单','王工（质检）','2026-10-26 14:30']]},
+    {id:'WT-021',title:'二楼书房 B 门洞净宽 860mm，与图纸 900mm 不符',src:'核对不一致',ck:'CK-031',ckSt:'不一致',wi:'二楼 · 书房 B · 门洞砌筑',ph:'砌墙',fl:'二楼',rm:'书房 B',lv:'重要',measure:'',owner:'张工',due:'2026-10-24',st:'未闭环',cause:'',found:'覆盖前 · 2026-10-22 16:05',photos:3,co:'',log:[['核对不一致，自动生成问题','王工（质检）','2026-10-22 16:05']]},
+    {id:'WT-020',title:'三楼主卫隔墙预留管井位置与图纸标注不一致',src:'核对不一致',ck:'CK-035',ckSt:'不一致',wi:'三楼 · 主卫 · 隔墙砌筑',ph:'砌墙',fl:'三楼',rm:'主卫',lv:'一般',measure:'请设计经理书面澄清管井定位尺寸',owner:'李工',due:'2026-10-30',st:'未闭环',cause:'c',found:'覆盖前 · 2026-10-25 10:40',photos:2,co:'',log:[['核对不一致，自动生成问题','王工（质检）','2026-10-25 10:40'],['选择原因：图纸本身未表达清楚','王工（质检）','2026-10-25 10:52']]},
+    {id:'WT-019',title:'一楼厨房烟道预留位偏移 120mm',src:'核对不一致',ck:'CK-027',ckSt:'不一致',wi:'一楼 · 厨房 · 烟道包封砌筑',ph:'砌墙',fl:'一楼',rm:'厨房',lv:'严重',measure:'补签变更单 BG-003 后按深化图调整',owner:'张工',due:'2026-10-26',st:'未闭环',cause:'a',found:'覆盖前 · 2026-10-23 09:18',photos:2,co:'BG-003',log:[['核对不一致，自动生成问题','王工（质检）','2026-10-23 09:18'],['选择原因：设计已改但未签变更单','王工（质检）','2026-10-23 09:30'],['生成变更单草稿 BG-003','张工（项目经理）','2026-10-24 10:05']]},
+    {id:'WT-017',title:'负一楼设备间砌体垂直度偏差 12mm',src:'手工登记',ph:'砌墙',fl:'负一楼',rm:'设备间',lv:'重要',measure:'拆除偏差段重砌，完成后拍照复查',owner:'张工',due:'2026-10-15',st:'处理中',log:[['登记问题','王工（质检）','2026-10-12 15:20'],['标记已闭环','张工（项目经理）','2026-10-16 17:00'],['重新打开：复查仍有 8mm 偏差','王工（质检）','2026-10-18 09:12']]},
+    {id:'WT-022',title:'夹层楼梯间墙体砂浆饱满度不足，局部可见透光缝',src:'手工登记',ph:'砌墙',fl:'夹层',rm:'楼梯间',lv:'一般',measure:'',owner:'',due:'2026-11-05',st:'未闭环',log:[['登记问题','刘先生（业主）','2026-10-26 18:45']]},
+    {id:'WT-015',title:'一楼客厅门洞过梁搭接长度不足',src:'核对不一致',ck:'CK-018',ckSt:'一致',wi:'一楼 · 客厅 · 门洞过梁安装',ph:'砌墙',fl:'一楼',rm:'客厅',lv:'严重',measure:'拆除过梁按签认图重新安装后复核',owner:'张工',due:'2026-10-21',st:'已闭环',closed:'2026-10-20',cause:'b',point:'门洞过梁两端搭接长度每边不小于 250mm，覆盖前拍照对图',found:'覆盖前 · 2026-10-14 11:06',photos:2,co:'',log:[['核对不一致，自动生成问题','王工（质检）','2026-10-14 11:06'],['选择原因：施工偏离签认图','王工（质检）','2026-10-14 11:15'],['质检复核：一致','王工（质检）','2026-10-20 10:30'],['标记已闭环','张工（项目经理）','2026-10-20 11:02']]},
+    {id:'WT-014',title:'二楼走廊墙面局部空鼓',src:'手工登记',ph:'砌墙',fl:'二楼',rm:'走廊',lv:'一般',measure:'空鼓处凿开重新挂浆',owner:'张工',due:'2026-10-19',st:'已闭环',closed:'2026-10-18',log:[['登记问题','王工（质检）','2026-10-13 16:30'],['标记已闭环','张工（项目经理）','2026-10-18 15:40']]},
+    {id:'WT-016',title:'负一楼设备间墙体垂直度超差',src:'手工登记',ph:'砌墙',fl:'负一楼',rm:'设备间',lv:'重要',measure:'',owner:'张工',due:'2026-10-15',st:'已作废',voidReason:'与 WT-017 重复登记',log:[['登记问题','张工（项目经理）','2026-10-12 15:26'],['作废：与 WT-017 重复登记','王工（质检）','2026-10-12 16:02']]}
+  ];
+  const CAUSE = {a:['设计已改但未签变更单','补签变更单（可一键生成变更单草稿）'],b:['施工偏离签认图','返工后复核'],c:['图纸本身未表达清楚','设计经理出新版或书面澄清']};
+  const SEAL = {'未闭环':'pend','处理中':'pend','已闭环':'pass','已作废':'void'};
+  const NOW = () => '2026-10-27 ' + new Date().toTimeString().slice(0,5);
+  const overdue = x => (x.st === '未闭环' || x.st === '处理中') && new Date(x.due + 'T00:00:00') < TODAY ? Math.round((TODAY - new Date(x.due + 'T00:00:00')) / 864e5) : 0;
+  let st = 'valid', curI = null;
+  const ME = {'业主':'刘先生（业主）','业主代理人':'刘太太（业主代理人）','项目经理':'张工（项目经理）','设计经理':'李工（设计经理）','质检':'王工（质检）','预算专员':'赵会计（预算专员）','公司管理员':'周经理（公司管理员）'};
+
+  function list(){
+    const s = $('#fSrc').value, l = $('#fLv').value, p = $('#fPh').value;
+    const rank = x => x.st === '已闭环' ? 2 : x.st === '已作废' ? 3 : 0;
+    return IS.filter(x => (st === 'valid' ? x.st !== '已作废' : x.st === st) && (!s || x.src === s) && (!l || x.lv === l) && (!p || x.ph === p))
+      .sort((a, b) => rank(a) - rank(b) || overdue(b) - overdue(a) || a.due.localeCompare(b.due));
+  }
+  const ownerTxt = x => x.owner || '<span class="pending-txt">待指派</span>';
+  function render(){
+    const L = list();
+    $('#rows').innerHTML = L.map(x => { const o = overdue(x); return `<tr class="row-link" tabindex="0" data-id="${x.id}">
+      <td class="mono" style="font-size:var(--text-sm)">${x.id}</td>
+      <td><div class="t-title">${esc(x.title)}</div><div class="t-sub">${x.ph} · ${x.fl} · ${x.rm}${x.measure ? '' : ' · <span class="pending-txt">待补充对策</span>'}</div></td>
+      <td>${x.src === '核对不一致' ? '<span class="tag bad">不一致 ' + x.ck + '</span>' : '<span class="tag">手工登记</span>'}</td>
+      <td><span class="tag lv-${x.lv}">${x.lv}</span></td><td>${ownerTxt(x)}</td><td class="num">${x.due}</td>
+      <td class="num">${o ? '<span class="over">' + o + '</span>' : '<span class="muted">—</span>'}</td>
+      <td><span class="seal ${SEAL[x.st]}">${x.st}</span></td></tr>`; }).join('');
+    $('#cards').innerHTML = L.map(x => { const o = overdue(x); return `<button class="is-card" type="button" data-id="${x.id}">
+      <div class="l1"><div><span class="mono">${x.id}</span> <span class="tag lv-${x.lv}">${x.lv}</span><div class="t-title">${esc(x.title)}</div></div><span class="seal ${SEAL[x.st]}">${x.st}</span></div>
+      <div class="l3"><span>${x.src === '核对不一致' ? '不一致 ' + x.ck : '手工登记'}</span><span>${x.fl} · ${x.rm}</span><span>负责人 ${ownerTxt(x)}</span><span>要求 ${x.due}</span>${o ? '<span class="over">超期 ' + o + ' 天</span>' : ''}</div></button>`; }).join('');
+    $('#vNone').hidden = L.length > 0;
+    const open = IS.filter(x => x.st === '未闭环' || x.st === '处理中');
+    $('#cntOpen').textContent = '未闭环 ' + open.length; $('#cntOver').textContent = '超期 ' + open.filter(overdue).length;
+    $$('[data-id]').forEach(el => { el.onclick = () => openDw(el.dataset.id); el.onkeydown = e => { if (e.key === 'Enter' && el.tagName === 'TR') openDw(el.dataset.id); }; });
+  }
+
+  function openDw(id){ curI = IS.find(x => x.id === id); fillDw(); $('#dw').classList.add('show'); setTimeout(() => $('#dwClose').focus(), 50); }
+  function closeDw(){ $('#dw').classList.remove('show'); }
+  $('#dwClose').onclick = closeDw; $('#dw').addEventListener('click', e => { if (e.target.id === 'dw') closeDw(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('.mask.show')) closeDw(); });
+
+  function fillDw(){
+    const x = curI, o = overdue(x), inc = x.src === '核对不一致';
+    $('#dwId').textContent = x.id + ' · ' + x.src; $('#dwTitle').textContent = x.title;
+    $('#dwSeal').className = 'seal ' + SEAL[x.st]; $('#dwSeal').textContent = x.st;
+    $('#dwBlock').hidden = true;
+    const kv = [['等级', x.lv], ['所属工段', x.ph], ['楼层 · 房间', x.fl + ' · ' + x.rm], ['负责人', x.owner || '待指派'], ['要求闭环日期', x.due], ['超期天数', o ? o + ' 天' : '未超期'], ['对策', x.measure || '待补充对策'], ['闭环日期', x.closed || '—']];
+    if (x.st === '已作废') kv.push(['作废理由', x.voidReason]);
+    $('#dwKv').innerHTML = kv.map(k => '<div><dt>' + k[0] + '</dt><dd' + ((k[1] === '待指派' || k[1] === '待补充对策') ? ' class="pending-txt"' : (k[0] === '超期天数' && o ? ' class="over"' : '')) + '>' + esc(k[1]) + '</dd></div>').join('');
+    $('#dwSrc').hidden = !inc; $('#dwCause').hidden = !inc;
+    if (inc) {
+      $('#dwSrcKv').innerHTML = [['检查点', '<a href="PAGE-F06-01.html">' + x.ck + '</a> · 最新结论：' + x.ckSt], ['工作项', esc(x.wi)], ['发现时点', x.found], ['照片', x.photos + ' 张']].map(k => '<div><dt>' + k[0] + '</dt><dd>' + k[1] + '</dd></div>').join('');
+      $('#dwPhotos').innerHTML = Array.from({length: x.photos}, (_, i) => '<div class="photo"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="3.5"/></svg>' + x.ck + '-' + (i + 1) + '</div>').join('');
+      $$('input[name=cause]').forEach(r => { r.checked = r.value === x.cause; r.disabled = role() !== '质检' || x.st === '已作废'; });
+      renderSugg();
+    }
+    $('#eMeasure').value = x.measure; $('#eOwner').value = x.owner;
+    $('#dwLog').innerHTML = x.log.map(l => '<li>' + esc(l[0]) + '<div class="m">' + esc(l[1]) + ' · ' + l[2] + '</div></li>').join('');
+    dwButtons();
+  }
+  function dwButtons(){
+    const x = curI, r = role(), canPQ = r === '项目经理' || r === '质检';
+    $('#aClose').hidden = !(canPQ && (x.st === '未闭环' || x.st === '处理中'));
+    $('#aReopen').hidden = !(canPQ && x.st === '已闭环');
+    $('#aExp').hidden = !(r === '质检' && x.st === '已闭环' && x.src === '核对不一致');
+    $('#aVoid').hidden = x.st === '已作废';
+    $('#dwEdit').hidden = !(canPQ && (x.st === '未闭环' || x.st === '处理中'));
+  }
+  function renderSugg(){
+    const x = curI, c = x.cause, box = $('#dwSugg');
+    if (!c) { box.hidden = false; box.innerHTML = '<span class="muted">尚未选择原因。由质检选择后显示处置建议。</span>'; return; }
+    box.hidden = false;
+    let act = '';
+    if (c === 'a') act = x.co ? '<div>已生成变更单 <a href="PAGE-F07-02.html?id=' + x.co + '">' + x.co + '</a>（待业主签认）</div>' : (role() === '项目经理' ? '<div><a class="btn sm" href="PAGE-F07-02.html?new=1&from=' + x.id + '"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg>一键生成变更单草稿</a></div>' : '<div class="muted">由项目经理一键生成变更单草稿。</div>');
+    if (c === 'b') act = '<div>返工完成后，由质检在 <a href="PAGE-F06-01.html">检查点 ' + x.ck + '</a> 追加复核核对。</div>';
+    if (c === 'c') act = '<div>由设计经理 李工 在 <a href="PAGE-F04-01.html">图纸</a> 发布新版或出具书面澄清。</div>';
+    box.innerHTML = '<div>处置建议：<b>' + CAUSE[c][1] + '</b></div>' + act;
+  }
+  $$('input[name=cause]').forEach(r => r.addEventListener('change', () => {
+    curI.cause = r.value; curI.log.push(['选择原因：' + CAUSE[r.value][0], ME[role()], NOW()]); fillDw(); toast('已保存原因，显示对应处置建议');
+  }));
+  $('#eSave').onclick = () => {
+    const m = $('#eMeasure').value.trim(), w = $('#eOwner').value;
+    if (m !== curI.measure) curI.log.push(['补充对策：' + (m || '待补充对策'), ME[role()], NOW()]);
+    if (w !== curI.owner) curI.log.push(['指派负责人：' + (w || '待指派'), ME[role()], NOW()]);
+    curI.measure = m; curI.owner = w; fillDw(); render(); toast('已保存');
+  };
+  $('#aClose').onclick = () => {
+    const x = curI;
+    if (x.src === '核对不一致' && x.ckSt === '不一致') { $('#dwBlock').hidden = false; $('#dwBlock').scrollIntoView({block: 'nearest'}); return; }
+    x.st = '已闭环'; x.closed = '2026-10-27'; x.log.push(['标记已闭环', ME[role()], NOW()]);
+    fillDw(); stamp($('#dwSeal')); render(); toast(x.id + ' 已闭环，闭环日期 2026-10-27');
+  };
+  $('#aReopen').onclick = () => {
+    const x = curI; x.st = '处理中'; x.closed = ''; x.log.push(['重新打开，清除闭环日期', ME[role()], NOW()]);
+    fillDw(); render(); toast(x.id + ' 已重新打开，状态：处理中');
+  };
+  $('#aVoid').onclick = () => {
+    $('#vdRows').innerHTML = [['问题', curI.id + ' ' + curI.title], ['当前状态', curI.st], ['操作人', ME[role()]]].map(r => '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#vdReason').value = ''; $('#vdF').classList.remove('invalid'); $('#vdF .err').hidden = true; openDlg('dlgVoid');
+  };
+  $('#vdOk').onclick = () => {
+    const r = $('#vdReason').value.trim();
+    if (!r) { $('#vdF').classList.add('invalid'); $('#vdF .err').hidden = false; return; }
+    curI.st = '已作废'; curI.voidReason = r; curI.log.push(['作废：' + r, ME[role()], NOW()]);
+    closeDlg('dlgVoid'); fillDw(); stamp($('#dwSeal')); render(); toast(curI.id + ' 已作废，可在「已作废」筛选中查看');
+  };
+  $('#aExp').onclick = () => {
+    const x = curI;
+    $('#exRows').innerHTML = [['工段', x.ph], ['工序', x.wi.split(' · ').pop()], ['问题类型', CAUSE[x.cause][0]], ['检查要点', x.point || (x.wi.split(' · ').pop() + '覆盖前按签认图逐项对尺寸并拍照')], ['对策', x.measure]].map(r => '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#exPhotoN').textContent = x.photos; $('#exPhoto').checked = false; openDlg('dlgExp');
+  };
+  $('#exOk').onclick = () => { curI.log.push(['提交到公司经验库（待审核' + ($('#exPhoto').checked ? '，附带照片' : '') + '）', ME[role()], NOW()]); closeDlg('dlgExp'); fillDw(); toast('已提交经验库，等待质检审核'); };
+
+  // 登记问题
+  $('#rFl').innerHTML = '<option value="">请选择</option>' + Object.keys(ROOMS).map(f => '<option>' + f + '</option>').join('');
+  $('#rFl').onchange = () => { const r = ROOMS[$('#rFl').value] || []; $('#rRm').innerHTML = '<option value="">' + (r.length ? '请选择' : '先选楼层') + '</option>' + r.map(x => '<option>' + x + '</option>').join(''); };
+  $$('[data-open-reg]').forEach(b => b.onclick = () => { $('#regForm').reset(); $$('#regForm .field').forEach(f => f.classList.remove('invalid')); $$('#regForm .err').forEach(e => e.hidden = true); openDlg('dlgReg'); });
+  $('#regForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const lv = $('input[name=lv]:checked');
+    const chk = [['#rDescF', !$('#rDesc').value.trim()], ['#rLvF', !lv], ['#rPhF', !$('#rPh').value], ['#rDueF', !$('#rDue').value], ['#rFlF', !$('#rFl').value], ['#rRmF', !$('#rRm').value]];
+    chk.forEach(([id, b]) => { $(id).classList.toggle('invalid', b); $(id + ' .err').hidden = !b; });
+    if (chk.some(c => c[1])) return;
+    const n = 'WT-0' + (24 + IS.length - 9);
+    IS.unshift({id: n, title: $('#rDesc').value.trim(), src: '手工登记', ph: $('#rPh').value, fl: $('#rFl').value, rm: $('#rRm').value, lv: lv.value, measure: $('#rMs').value.trim(), owner: $('#rOw').value, due: $('#rDue').value, st: '未闭环', log: [['登记问题', ME[role()], NOW()]]});
+    closeDlg('dlgReg'); render(); toast('已登记问题 ' + n + '，状态：未闭环');
+  });
+
+  $$('.filters .chip').forEach(b => b.onclick = () => { $$('.filters .chip').forEach(x => x.classList.remove('on')); b.classList.add('on'); st = b.dataset.st; render(); });
+  ['#fSrc', '#fLv', '#fPh'].forEach(s => $(s).onchange = render);
+  window.onRole = () => { if (curI && $('#dw').classList.contains('show')) fillDw(); };
+  function demo(s){ $$('[data-demo]').forEach(x => x.classList.toggle('on', x.dataset.demo === s)); $('#vOk').hidden = s !== 'ok'; $('#vEmpty').hidden = s !== 'empty'; $('#vLoading').hidden = s !== 'loading'; $('#vError').hidden = s !== 'error'; }
+  $$('[data-demo]').forEach(b => b.onclick = () => demo(b.dataset.demo));
+  $$('[data-demo-btn]').forEach(b => b.onclick = () => demo(b.dataset.demoBtn));
+  render();
+  if (new URLSearchParams(location.search).get('id')) openDw(new URLSearchParams(location.search).get('id'));
+
+  applyRole();
+  </script>
+</body>
+</html>

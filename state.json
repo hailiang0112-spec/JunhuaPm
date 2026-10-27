@@ -1,0 +1,231 @@
+{
+  "state_schema_version": 1,
+  "project_name": "君华别墅装修项目管理平台",
+  "project_started_at_utc": "2026-10-27T00:00:00Z",
+  "last_updated_at_utc": "2026-10-27T00:00:00Z",
+  "work_type": "feature",
+  "workflow_mode": "standard",
+  "delivery_target": "tdd",
+  "upstream": {
+    "solution": "output/解题方案书.md",
+    "solution_state": "solution/state.json",
+    "confirmed": "2026-10-27 用户回复「继续，进入 PRD」"
+  },
+  "stage_confirmations": {
+    "stage1_shared_understanding": {
+      "status": "confirmed",
+      "confirmed_at_utc": "2026-10-27T00:00:00Z",
+      "source": "用户确认 scene-anchor.md（含单公司部署、CAD 仅附件两条默认值）"
+    },
+    "stage4_5_v1": {
+      "status": "confirmed",
+      "confirmed_at_utc": "2026-10-27T00:00:00Z",
+      "source": "V1 沿用已确认决定，唯一新增决策 #1 由用户拍板"
+    },
+    "stage4_6_mvp": {
+      "status": "confirmed",
+      "confirmed_at_utc": "2026-10-27T00:00:00Z",
+      "source": "阶段 1 用户选择原型全部保留+证据链；scene-anchor 确认"
+    }
+  },
+  "contract_revision": 2,
+  "source_ids_changed": [
+    "REQ-F01-02",
+    "REQ-F01-05",
+    "REQ-F02-01",
+    "REQ-F02-02",
+    "REQ-F05-01",
+    "REQ-F06-01",
+    "REQ-F06-05",
+    "REQ-F07-03",
+    "NFR-005",
+    "NFR-006",
+    "AC-F01-12",
+    "AC-F01-13",
+    "AC-F02-09",
+    "AC-F05-10",
+    "AC-F06-16",
+    "AC-F06-17",
+    "AC-F07-09"
+  ],
+  "current_stage": "tdd-complete",
+  "current_substep": "handover",
+  "completed_stages": [
+    "0",
+    "1",
+    "2",
+    "4",
+    "5"
+  ],
+  "skipped_stages": [
+    {
+      "stage": "3",
+      "reason": "解题阶段证据（solution/evidence）已足以支撑方案，无新的外部查证问题"
+    }
+  ],
+  "open_questions": [],
+  "key_decisions_made": [
+    {
+      "id": "D-1",
+      "decision": "一开始就支持多个工地（多项目）",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-1"
+    },
+    {
+      "id": "D-2",
+      "decision": "原型 v1.20 功能全部保留并迁到多人在线，再加证据链（图纸版本、检查点、变更单、签认、放行）",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-2"
+    },
+    {
+      "id": "D-3",
+      "decision": "终端：手机+电脑自适应网页",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-3"
+    },
+    {
+      "id": "D-4",
+      "decision": "签认：系统内账号签认，不可修改、只追加留痕，可导出证据包",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-4"
+    },
+    {
+      "id": "D-5",
+      "decision": "平台由装修公司开设运营：公司管理员开工地、邀请业主与员工、承担费用；业主是受邀的核心使用者",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-8"
+    },
+    {
+      "id": "D-6",
+      "decision": "付款：只提示（付款节点显示未放行检查点数），不阻止、不管钱",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-5"
+    },
+    {
+      "id": "D-7",
+      "decision": "检查经验库公司级跨项目共享，剥离业主隐私，质检审核",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-9"
+    },
+    {
+      "id": "D-8",
+      "decision": "新工地结构：从公司模板复制后修改 + Excel 导入",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-10"
+    },
+    {
+      "id": "D-9",
+      "decision": "上线运维：公司负责，公有云（服务器、域名、ICP 备案、对象存储费用），凭据以部署密钥配置；AI 负责部署脚本",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-6"
+    },
+    {
+      "id": "D-10",
+      "decision": "登录：邀请制 + 手机号密码，不依赖短信；忘记密码由管理员重置",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-7"
+    },
+    {
+      "id": "D-11",
+      "decision": "提醒：网页内待办+红点，一键复制带链接的微信消息；不接短信/机器人",
+      "stage": "1",
+      "source": "用户 2026-10-27 回答 OQ-11"
+    },
+    {
+      "id": "D-12",
+      "decision": "放行时限：业主可委托一位业主方代理人放行（留痕注明代理）；超过约定时限（默认 24 小时）只升级提醒，不自动放行；仍覆盖的记为「未放行先覆盖」",
+      "stage": "4",
+      "source": "用户 2026-10-27（debate-log #1）"
+    },
+    {
+      "id": "D-13",
+      "decision": "新增邀请角色「业主方成员」（只读，可被指定为代理人）",
+      "stage": "design-feedback",
+      "source": "用户 2026-10-27"
+    },
+    {
+      "id": "D-14",
+      "decision": "变更单驳回后项目经理可修改重新提交",
+      "stage": "design-feedback",
+      "source": "用户 2026-10-27"
+    },
+    {
+      "id": "D-15",
+      "decision": "已签认基线新增检查点直接生效（知会业主）",
+      "stage": "design-feedback",
+      "source": "用户 2026-10-27"
+    },
+    {
+      "id": "D-16",
+      "decision": "本地存储模式要异地备份",
+      "stage": "design-feedback",
+      "source": "用户 2026-10-27"
+    },
+    {
+      "id": "D-17",
+      "decision": "8 条小规则全部按推荐：临时密码一次性显示、登录进我的待办、放行时限由项目经理/公司管理员设、待签认锁定需退回、云厂商免费 HTTPS 证书、已有账号原密码加入、受邀人自填姓名、公司管理员项目只读",
+      "stage": "design-feedback",
+      "source": "用户 2026-10-27"
+    }
+  ],
+  "category": "saas",
+  "deliverables": {
+    "scene_anchor": "scene-anchor.md",
+    "proposal_v0": "proposal-v0.md",
+    "proposal_v1": "proposal-v1.md",
+    "debate_log": "debate-log.md",
+    "assumptions": "assumptions.md",
+    "conversation": null,
+    "evidence": [
+      "solution/evidence/先例.md",
+      "solution/evidence/方法.md"
+    ],
+    "drafts": [],
+    "final_prd": "output/PRD详细版.md",
+    "requirements_contract": "output/requirements.md",
+    "requirements_analysis": "output/requirements-analysis.md",
+    "bugfix_contract": null,
+    "prd_summary": null,
+    "prd_dev": null,
+    "ppt_outline": null,
+    "ppt_pages": []
+  },
+  "next_action": {
+    "type": "user_decision",
+    "description": "验收契约完成；下一步在新 Code 对话中使用 https://200w.liurun.vip/skill/goal.html 的完整 /goal 开发与验收"
+  },
+  "validation": {
+    "t": "2026-10-27",
+    "check_evidence": "pass",
+    "check_format": "pass",
+    "check_consistency": "pass",
+    "check_requirements_contract": "pass (228 objects)",
+    "P0": 0,
+    "P1": 0
+  },
+  "design": {
+    "entry_check": "passed 2026-10-27 (PRD 三份齐备、rev1、P0/P1=0、四项校验通过)",
+    "alignment": "首屏=跨工地我的待办；电脑左侧导航+手机底部4标签；沿用原型风格+印章式状态标签；不可撤回操作二次确认+现场核对草稿",
+    "blueprint": "output/设计决策蓝图.md",
+    "blueprint_status": "confirmed 2026-10-27",
+    "artifacts_done": [
+      "output/页面清单.md (28 页)",
+      "output/DESIGN.md",
+      "output/tokens.css",
+      "output/pages/app.css",
+      "output/pages/_外壳约定.md"
+    ],
+    "in_progress": "4 路页面 MD+HTML（A 全局/公司 9 页、B 总览/结构 5 页、C 证据链核心 6 页、D 变更/问题/档案 8 页）+ 技术方案，后台并行",
+    "tech_solution": "output/技术方案.md done；抽查 npm/PyPI 版本与文中一致（react 19.3.1、antd 6.6.8、vite 8.3.5、DRF 3.18.3、boto3 1.43.119；Django 选 5.2 LTS，当前最新 6.1.2）",
+    "pending_user": [],
+    "pages": "28 页 MD+HTML 完成；链接扫描 28/28 page-id 正确、0 死链、0 Hex",
+    "trace_matrix": "output/设计追溯矩阵.md：205 行（66 REQ + 130 AC + 9 NFR），全部 covered，requirements rev2",
+    "status": "complete 2026-10-27"
+  },
+  "tdd": {
+    "contract": "output/tests/TDD验收契约.md",
+    "rows": "SMOKE 2 / FLOW 23 / DESIGN 28 / RULE 7 = 60",
+    "validator": "check_delivery_contract.py PASS（202 required source / 28 pages）2026-10-27",
+    "note": "状态标签「待定价」全局改为「待预算定价」（文案变化，ID 与 revision 不变），因校验器把「待定」视为占位词"
+  }
+}

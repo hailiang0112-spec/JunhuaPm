@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F12-01">
+  <meta name="description" content="房屋档案资料：平面布局图、三维效果图、装修合同三个专区的分类文件夹，上传、预览、作废；合同专区按角色可见">
+  <title>档案资料 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    [hidden]{display:none!important}
+    a.btn{text-decoration:none}
+    .side .navitem .badge{margin-left:auto}
+    .side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer}
+    .side .sitepick:hover{border-color:var(--accent)}
+    .side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .side .sitepick .nm{display:inline-flex}
+    .side-foot{border-top:1px solid var(--border-soft);margin-top:var(--space-4);padding-top:var(--space-2)}
+    .topbar{flex-wrap:wrap}
+    .topbar .tt{min-width:0}
+    .role-switch{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted)}
+    .role-switch select{min-height:32px;width:auto;padding:0 var(--space-2);font-size:var(--text-sm)}
+    .tabbar{z-index:30}
+    .tab{position:relative;border:0;background:none;font:inherit;font-size:var(--text-xs);cursor:pointer;min-height:44px}
+    .tab-badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;line-height:16px;text-align:center}
+    .mask{z-index:50}
+    .toast{z-index:60}
+    .dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--border-soft)}
+    .dlg-hd h2{font-size:var(--text-lg);line-height:var(--leading-tight)}
+    .dlg-bd{padding:var(--space-4) var(--space-5);display:flex;flex-direction:column;gap:var(--space-3)}
+    .dlg-ft{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-5) var(--space-4);border-top:1px solid var(--border-soft)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:var(--radius-sm);background:none;color:var(--muted);cursor:pointer}
+    .icon-btn:hover{background:var(--surface-warm);color:var(--fg)}
+    .icon-btn:active{background:var(--border-soft)}
+    .icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .confirm-summary dl{margin:0}
+    .note{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);background:var(--surface-warm);color:var(--fg-2)}
+    .note>.icon{margin-top:2px}
+    .note.warn{background:var(--warn-soft);color:var(--warn)}
+    .note.bad{background:var(--danger-soft);color:var(--danger)}
+    .note.ok{background:var(--success-soft);color:var(--success)}
+    .note.info{background:var(--info-soft);color:var(--info)}
+    .state .ic{display:flex;justify-content:center}
+    .state .ic .icon{width:32px;height:32px}
+    .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+    .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+    .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+    .demo-states{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;font-size:var(--text-xs);color:var(--muted);margin-bottom:var(--space-4)}
+    .demo-states .chip{height:26px;font-size:var(--text-xs)}
+    .mono{font-family:var(--font-mono);font-size:var(--text-xs);word-break:break-all}
+    .num{font-variant-numeric:tabular-nums}
+    .seal.void{color:var(--muted)}
+    @media (max-width:1199px){.side .sitepick{padding:0;justify-content:center}.side-foot{margin-top:var(--space-2)}.side .navitem{justify-content:center}}
+    @media (max-width:767px){
+      body.nav-open .side{display:block;position:fixed;inset:0 0 var(--tabbar-h) 0;height:auto;z-index:40}
+      body.nav-open .side .nm{display:inline}body.nav-open .side .badge.nm,body.nav-open .side .sitepick .nm{display:inline-flex}body.nav-open .side .navgroup{display:block}
+      body.nav-open .side .navitem{justify-content:flex-start}
+      body.nav-open{overflow:hidden}
+      .topbar h1{font-size:var(--text-lg)}
+      .role-switch{width:100%}
+      .role-switch select{flex:1}
+      .dlg-ft .btn{flex:1;justify-content:center;height:44px}
+    }
+
+    .zones{display:flex;gap:var(--space-1);border-bottom:1px solid var(--border);margin-bottom:var(--space-4);overflow-x:auto}
+    .zone{display:inline-flex;align-items:center;gap:var(--space-2);height:44px;padding:0 var(--space-4);border:0;border-bottom:2px solid transparent;background:none;font:500 var(--text-base)/1 var(--font-body);color:var(--muted);cursor:pointer;white-space:nowrap}
+    .zone:hover{color:var(--fg)}
+    .zone:active{background:var(--surface-warm)}
+    .zone:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+    .zone[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+    .arch{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--space-4);align-items:start}
+    .cats{padding:var(--space-2)}
+    .cat{display:flex;align-items:center;gap:var(--space-2);width:100%;min-height:40px;padding:0 var(--space-3);border:0;border-radius:var(--radius-sm);background:none;font:inherit;font-size:var(--text-sm);color:var(--fg-2);cursor:pointer;text-align:left}
+    .cat:hover{background:var(--surface-warm)}
+    .cat:active{background:var(--border-soft)}
+    .cat:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .cat.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+    .cat .n{margin-left:auto;font-size:var(--text-xs);color:var(--muted);font-variant-numeric:tabular-nums}
+    .cat-tools{display:flex;gap:var(--space-1);padding:var(--space-2);border-top:1px solid var(--border-soft);flex-wrap:wrap}
+    .files{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-3)}
+    .fcard{border:1px solid var(--border-soft);border-radius:var(--radius-md);background:var(--surface);overflow:hidden;display:flex;flex-direction:column}
+    .fcard.voided{opacity:.7}
+    .thumb{height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--surface-warm),var(--border-soft));color:var(--muted);border:0;width:100%;cursor:pointer;flex-direction:column;gap:var(--space-1);font-size:var(--text-xs)}
+    .thumb:hover{color:var(--accent)}
+    .thumb:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+    .thumb .icon{width:32px;height:32px}
+    .fbody{padding:var(--space-2) var(--space-3);display:flex;flex-direction:column;gap:2px;flex:1}
+    .fname{font-size:var(--text-sm);font-weight:600;word-break:break-all}
+    .fmeta{font-size:var(--text-xs);color:var(--muted)}
+    .fbody .tag{height:auto;min-height:22px;padding:2px var(--space-2);border-radius:var(--radius-sm)}
+    .fact{display:flex;gap:var(--space-1);padding:0 var(--space-2) var(--space-2);flex-wrap:wrap;align-items:center}
+    .chk{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);min-height:36px;cursor:pointer;color:var(--fg-2)}
+    .chk input{accent-color:var(--accent);width:16px;height:16px}
+    .up-list{list-style:none;display:flex;flex-direction:column;gap:var(--space-1)}
+    .up-list li{display:flex;gap:var(--space-2);align-items:center;font-size:var(--text-sm);padding:var(--space-2);border-radius:var(--radius-sm);background:var(--surface-warm)}
+    .up-list li .r{margin-left:auto;font-size:var(--text-xs)}
+    .up-list li.bad .r{color:var(--danger)}
+    .up-list li.ok .r{color:var(--success)}
+    .pv{height:260px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--surface-warm),var(--border-soft));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--space-2);color:var(--muted)}
+    .pv .icon{width:48px;height:48px}
+    @media (max-width:1199px){.arch{grid-template-columns:200px minmax(0,1fr)}}
+    @media (max-width:767px){
+      .arch{grid-template-columns:minmax(0,1fr)}
+      .arch>*{min-width:0}
+      .zone{padding:0 var(--space-3);font-size:var(--text-sm)}
+      .cats{display:flex;gap:var(--space-1);overflow-x:auto;padding:var(--space-2)}
+      .cat{width:auto;white-space:nowrap;border:1px solid var(--border);border-radius:var(--radius-pill)}
+      .files{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}
+      .thumb{height:96px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <nav class="side" id="side" aria-label="主导航">
+      <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+      <button class="sitepick" type="button" aria-label="切换工地"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer nm"></span><span class="nm"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      <a class="navitem" href="PAGE-F16-01.html" title="我的待办"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem" href="PAGE-F10-01.html" title="项目总览"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html" title="楼层 / 房间"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" title="砌墙"><span class="phase-dot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" title="水电"><span class="phase-dot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" title="铺砖"><span class="phase-dot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" title="木工"><span class="phase-dot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" title="油灰工"><span class="phase-dot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" title="安装收尾"><span class="phase-dot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html" title="图纸"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html" title="基线签认"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html" title="检查点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html" title="变更单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem" href="PAGE-F08-01.html" title="问题"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem on" href="PAGE-F12-01.html" aria-current="page" title="档案资料"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem" href="PAGE-F13-01.html" title="补充事项"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html" title="公告栏"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem" href="PAGE-F15-01.html" title="付款节点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html" title="成员与项目"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html" title="项目结构"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html" title="数据导入导出"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13m0 0-3-3m3 3 3-3"/><path d="M17 20V7m0 0-3 3m3-3 3 3"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html" title="审计与证据包"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员">
+      <div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html" title="项目管理"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html" title="公司模板"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html" title="公司经验库"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      <div class="side-foot"><a class="navitem" href="PAGE-F02-03.html" title="个人设置"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a></div>
+    </nav>
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="tt"><h1>档案资料</h1><div class="sub">君华新城 · 联排别墅 · 布局图、效果图和合同集中存放</div></div>
+        <span class="spacer"></span>
+        <label class="role-switch">演示身份<select class="select" id="demoRole" aria-label="演示身份"><option>业主</option><option>业主代理人</option><option selected>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+        
+      </header>
+
+      <div class="zones" role="tablist" aria-label="档案专区">
+        <button class="zone" role="tab" type="button" data-z="layout" aria-selected="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>平面布局图</button>
+        <button class="zone" role="tab" type="button" data-z="render" aria-selected="false"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-9 8"/></svg>三维效果图</button>
+        <button class="zone" role="tab" type="button" data-z="contract" aria-selected="false" data-roles="业主,项目经理,预算专员,公司管理员"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>装修合同</button>
+      </div>
+
+      <div class="arch" id="vOk">
+        <section class="card" aria-label="分类">
+          <div class="cats" id="cats" role="list"></div>
+          <div class="cat-tools" data-roles="公司管理员,项目经理">
+            <button class="btn sm" type="button" id="cNew"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新建分类</button>
+            <button class="btn sm" type="button" id="cRen"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg>改名</button>
+            <button class="btn sm danger" type="button" id="cDel"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>删除</button>
+          </div>
+        </section>
+        <section class="card" aria-labelledby="catTitle">
+          <div class="card-hd" style="flex-wrap:wrap"><h2 id="catTitle"></h2><span class="tag" id="catCount"></span><span class="spacer"></span>
+            <label class="chk"><input type="checkbox" id="showVoid">显示已作废</label>
+            <button class="btn" type="button" id="btnUp" data-roles="业主,项目经理,设计经理,质检,预算专员,公司管理员"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0-4 4m4-4 4 4"/><path d="M4 17v3h16v-3"/></svg>上传文件</button>
+          </div>
+          <div class="card-bd">
+            <div class="files" id="files"></div>
+            <div class="state" id="catEmpty" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></div><h3>这个分类还没有文件</h3><p>上传布局图、效果图或合同扫描件后，业主可随时在这里查看。</p></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" id="vDenied" hidden>
+        <div class="state"><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>无权查看合同资料</h3><p>装修合同专区仅业主、项目经理、预算专员和公司管理员可以查看。</p><button class="btn" type="button" id="backLayout">查看平面布局图</button></div>
+      </section>
+      <section class="card" id="vLoading" hidden><div class="card-bd" aria-busy="true"><div class="skeleton" style="width:40%;margin-bottom:var(--space-3)"></div><div class="skeleton" style="margin-bottom:var(--space-3)"></div><div class="skeleton" style="width:70%"></div></div></section>
+      <section class="card" id="vError" hidden><div class="state"><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2l20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5-2.7M19 13a10 10 0 0 0-2.4-1.7M12 20h.01"/></svg></div><h3>资料加载失败（网络中断）</h3><p>请检查网络后重试。</p><button class="btn" type="button" data-demo-btn="ok"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>重新加载</button></div></section>
+
+      <div class="demo-states" aria-label="原型状态演示" style="margin-top:var(--space-2)">原型状态：
+        <button class="chip on" type="button" data-demo="ok">正常</button>
+        <button class="chip" type="button" data-demo="loading">加载</button>
+        <button class="chip" type="button" data-demo="error">错误</button>
+      </div>
+
+    </main>
+  </div>
+  <nav class="tabbar" aria-label="手机底部导航">
+    <a class="tab" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span>待办</span><span class="tab-badge">7</span></a>
+    <a class="tab" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>检查点</span><span class="tab-badge">5</span></a>
+    <a class="tab" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>图纸</span></a>
+    <button class="tab on" type="button" id="moreTab" aria-expanded="false" aria-controls="side"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>更多</span></button>
+  </nav>
+  <div class="mask" id="dlgUp" role="dialog" aria-modal="true" aria-labelledby="upTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="upTitle">上传文件</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgUp" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <div class="note"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg><span>上传到「<b id="upTo"></b>」。可一次选择多个图片、PDF、Word 或 Excel 文件，单个不超过 50MB；不合格的文件会被拒绝，同批其他文件照常上传。</span></div>
+        <div><button class="btn" type="button" id="upPick"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5 12 19.5a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.7 17.2a1.7 1.7 0 0 1-2.4-2.4L15 7"/></svg>选择文件</button></div>
+        <ul class="up-list" id="upList"></ul>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgUp">取消</button><button class="btn primary" type="button" id="upOk" disabled>上传合格文件</button></div>
+    </div>
+  </div>
+  <div class="mask" id="dlgCat" role="dialog" aria-modal="true" aria-labelledby="ctTitle">
+    <form class="dialog" id="catForm" novalidate>
+      <div class="dlg-hd"><h2 id="ctTitle">新建分类</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgCat" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd"><div class="field" id="ctF"><label for="ctName">分类名称<span class="req">*</span></label><input class="input" id="ctName" maxlength="20" placeholder="例如：地下室车库"><span class="err" hidden>请填写分类名称</span></div></div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgCat">取消</button><button class="btn primary" type="submit">保存</button></div>
+    </form>
+  </div>
+  <div class="mask" id="dlgPv" role="dialog" aria-modal="true" aria-labelledby="pvTitle">
+    <div class="dialog" style="width:min(720px,100%)">
+      <div class="dlg-hd"><h2 id="pvTitle" style="word-break:break-all"></h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgPv" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd"><div class="pv" id="pvBox"></div><div class="fmeta" id="pvMeta"></div></div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgPv">关闭</button><button class="btn primary" type="button" id="pvDl"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v3h16v-3"/></svg>下载原件</button></div>
+    </div>
+  </div>
+  <div class="mask" id="dlgMove" role="dialog" aria-modal="true" aria-labelledby="mvTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="mvTitle">移动到分类</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgMove" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd"><div class="field"><label for="mvTo">目标分类</label><select class="select" id="mvTo"></select></div></div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgMove">取消</button><button class="btn primary" type="button" id="mvOk">移动</button></div>
+    </div>
+  </div>
+  <div class="mask" id="dlgConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="cfTitle">确认提交</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgConfirm" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <p class="muted" style="font-size:var(--text-sm)">提交后不可撤回，请核对以下内容：</p>
+        <div class="confirm-summary"><dl id="cfRows"></dl></div>
+        <div class="note warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.01"/></svg><span id="cfWarnText"></span></div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgConfirm">取消</button><button class="btn primary" type="button" id="cfOk">确认提交</button></div>
+    </div>
+  </div>
+  <script>
+
+  // —— 外壳通用脚本：演示身份、手机「更多」、提示条、二次确认 ——
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+  function role(){return $('#demoRole').value}
+  function applyRole(){
+    const r = role();
+    $$('[data-roles]').forEach(el => { el.hidden = !el.dataset.roles.split(',').includes(r); });
+    if (window.onRole) window.onRole(r);
+  }
+  $('#demoRole').addEventListener('change', applyRole);
+  $('#moreTab').addEventListener('click', e => { const o = document.body.classList.toggle('nav-open'); e.currentTarget.setAttribute('aria-expanded', o); });
+  function openDlg(id){const m=document.getElementById(id);m.classList.add('show');const f=m.querySelector('textarea,input:not([type=hidden]),select');if(f)setTimeout(()=>f.focus(),50)}
+  function closeDlg(id){document.getElementById(id).classList.remove('show')}
+  $$('.mask').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.mask.show').forEach(m => m.classList.remove('show')); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-close]'); if (b) closeDlg(b.dataset.close); });
+  // 不可撤回操作的二次确认：confirmDo({title, rows:[[标签,内容]], warn, ok, danger, onOk})
+  function confirmDo(o){
+    $('#cfTitle').textContent = o.title;
+    $('#cfRows').innerHTML = o.rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#cfWarn').hidden = !o.warn; $('#cfWarnText').textContent = o.warn || '';
+    const ok = $('#cfOk'); ok.textContent = o.ok || '确认提交'; ok.className = 'btn ' + (o.danger ? 'danger' : 'primary');
+    ok.onclick = () => { closeDlg('dlgConfirm'); o.onOk && o.onOk(); };
+    openDlg('dlgConfirm'); setTimeout(() => ok.focus(), 60);
+  }
+  function stamp(el){el.classList.remove('just');void el.offsetWidth;el.classList.add('just')}
+
+
+  const ME = {'业主':'刘先生','业主代理人':'刘太太','项目经理':'张工','设计经理':'李工','质检':'王工','预算专员':'赵会计','公司管理员':'周经理'};
+  const F = (name, size, by, at, extra = {}) => Object.assign({name, size, by, at, ref: '', voidBy: ''}, extra);
+  const Z = {
+    layout: {name: '平面布局图', cats: {
+      '负一楼': [F('负一楼平面布局图-V2.pdf', '3.1MB', '李工', '2026-09-28'), F('负一楼影音室布置图.pdf', '1.6MB', '李工', '2026-09-28')],
+      '夹层': [],
+      '一楼': [F('一楼平面布局图-V3.pdf', '2.4MB', '李工', '2026-10-15'), F('一楼厨房深化节点图.pdf', '1.2MB', '张工', '2026-10-24', {ref: '变更单 BG-003'}), F('一楼现场复尺记录.pdf', '0.8MB', '张工', '2026-10-05')],
+      '二楼': [F('二楼平面布局图-V4.pdf', '2.7MB', '李工', '2026-10-15', {ref: '变更单 BG-001'}), F('二楼家具布置图.pdf', '1.9MB', '李工', '2026-10-02'), F('二楼平面布局图-V3 草稿.pdf', '2.6MB', '李工', '2026-10-01', {voidBy: '李工 · 2026-10-15 17:05'})],
+      '三楼': [F('三楼平面布局图-V2.pdf', '2.2MB', '李工', '2026-09-30')],
+      '楼顶阳台': []
+    }},
+    render: {name: '三维效果图', cats: {
+      '负一楼': [F('负一楼影音室效果图.jpg', '6.4MB', '李工', '2026-09-26')],
+      '夹层': [],
+      '一楼': [F('一楼客餐厅效果图-日景.jpg', '7.8MB', '李工', '2026-09-26'), F('一楼厨房效果图.jpg', '5.1MB', '李工', '2026-09-26')],
+      '二楼': [F('二楼主卧效果图.jpg', '6.9MB', '李工', '2026-09-27'), F('二楼书房 B 效果图.jpg', '5.5MB', '李工', '2026-09-27')],
+      '三楼': [F('三楼露台效果图.jpg', '8.2MB', '李工', '2026-09-27')],
+      '楼顶阳台': []
+    }},
+    contract: {name: '装修合同', cats: {
+      '主合同': [F('君华新城联排别墅装修工程施工合同.pdf', '8.6MB', '周经理', '2026-09-12')],
+      '补充协议': [F('补充协议一-主材品牌约定.pdf', '1.1MB', '张工', '2026-10-09')],
+      '报价与变更': [F('装修工程报价单-总价.xlsx', '0.4MB', '赵会计', '2026-09-10'), F('BG-001 变更报价单.pdf', '0.3MB', '赵会计', '2026-10-08', {ref: '变更单 BG-001'})],
+      '付款凭证': [F('开工预付款转账回单.jpg', '0.9MB', '赵会计', '2026-09-19')]
+    }}
+  };
+  let zone = 'layout', cat = '一楼', mvFile = null, catMode = 'new', batch = [];
+  const isImg = n => /\.(jpg|jpeg|png)$/i.test(n);
+  const ICO = {img: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-9 8"/></svg>', file: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5"/></svg>'};
+  const canManage = () => ['公司管理员', '项目经理'].includes(role());
+  const contractOk = () => !['设计经理', '质检', '业主代理人'].includes(role());
+
+  function renderCats(){
+    const cs = Z[zone].cats;
+    if (!(cat in cs)) cat = Object.keys(cs)[0];
+    $('#cats').innerHTML = Object.keys(cs).map(c => '<button class="cat' + (c === cat ? ' on' : '') + '" type="button" role="listitem" data-c="' + esc(c) + '"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>' + esc(c) + '<span class="n">' + cs[c].filter(f => !f.voidBy).length + '</span></button>').join('');
+    $$('#cats .cat').forEach(b => b.onclick = () => { cat = b.dataset.c; render(); });
+  }
+  function renderFiles(){
+    const all = Z[zone].cats[cat] || [], sv = $('#showVoid').checked;
+    const fs = all.filter(f => sv || !f.voidBy);
+    $('#catTitle').textContent = Z[zone].name + ' · ' + cat;
+    $('#catCount').textContent = all.filter(f => !f.voidBy).length + ' 个文件';
+    $('#catEmpty').hidden = fs.length > 0;
+    $('#files').innerHTML = fs.map((f, i) => {
+      const mine = f.by === ME[role()] && !f.voidBy;
+      return '<div class="fcard' + (f.voidBy ? ' voided' : '') + '">' +
+        '<button class="thumb" type="button" data-pv="' + all.indexOf(f) + '" aria-label="预览 ' + esc(f.name) + '">' + (isImg(f.name) ? ICO.img + '图片 · 点击放大' : ICO.file + f.name.split('.').pop().toUpperCase()) + '</button>' +
+        '<div class="fbody"><div class="fname">' + esc(f.name) + '</div><div class="fmeta">' + f.size + ' · ' + f.by + ' · ' + f.at + '</div>' +
+        (f.ref ? '<div><span class="tag brand">被' + esc(f.ref) + '引用</span></div>' : '') +
+        (f.voidBy ? '<div><span class="seal void">已作废</span> <span class="fmeta">' + esc(f.voidBy) + '</span></div>' : '') + '</div>' +
+        (f.voidBy ? '' : '<div class="fact"><button class="btn sm" type="button" data-dl="' + all.indexOf(f) + '">下载</button>' +
+          (canManage() ? '<button class="btn sm" type="button" data-mv="' + all.indexOf(f) + '">移动</button>' : '') +
+          (mine ? '<button class="btn sm danger" type="button" data-void="' + all.indexOf(f) + '">作废</button>' : '') + '</div>') +
+        '</div>';
+    }).join('');
+    $$('[data-pv]').forEach(b => b.onclick = () => preview(all[+b.dataset.pv]));
+    $$('[data-dl]').forEach(b => b.onclick = () => toast('开始下载：' + all[+b.dataset.dl].name));
+    $$('[data-mv]').forEach(b => b.onclick = () => { mvFile = all[+b.dataset.mv]; $('#mvTo').innerHTML = Object.keys(Z[zone].cats).filter(c => c !== cat).map(c => '<option>' + esc(c) + '</option>').join(''); openDlg('dlgMove'); });
+    $$('[data-void]').forEach(b => b.onclick = () => voidFile(all[+b.dataset.void]));
+  }
+  function render(){
+    const denied = zone === 'contract' && !contractOk();
+    $('#vOk').hidden = denied; $('#vDenied').hidden = !denied;
+    $$('.zone').forEach(z => z.setAttribute('aria-selected', z.dataset.z === zone));
+    if (denied) return;
+    renderCats(); renderFiles();
+  }
+  function preview(f){
+    $('#pvTitle').textContent = f.name;
+    $('#pvBox').innerHTML = isImg(f.name) ? ICO.img + '<span>' + esc(f.name) + '（可双指缩放）</span>' : ICO.file + '<span>PDF / 文档预览</span>';
+    $('#pvMeta').textContent = Z[zone].name + ' · ' + cat + ' · ' + f.size + ' · 上传：' + f.by + ' ' + f.at + (f.ref ? ' · 被' + f.ref + '引用' : '');
+    $('#pvDl').onclick = () => toast('开始下载：' + f.name);
+    openDlg('dlgPv');
+  }
+  function voidFile(f){
+    if (f.ref) { toast('该文件被' + f.ref + '引用，不能作废'); return; }
+    confirmDo({title: '作废文件', rows: [['文件', f.name], ['位置', Z[zone].name + ' · ' + cat], ['作废人', ME[role()]], ['作废后', '从默认列表隐藏，勾选「显示已作废」仍可查看，作废记录保留']], ok: '确认作废', danger: true,
+      onOk: () => { f.voidBy = ME[role()] + ' · 2026-10-27 ' + new Date().toTimeString().slice(0, 5); render(); toast('已作废：' + f.name); }});
+  }
+  $$('.zone').forEach(z => z.onclick = () => { zone = z.dataset.z; render(); });
+  $('#backLayout').onclick = () => { zone = 'layout'; render(); };
+  $('#showVoid').onchange = renderFiles;
+  // 分类管理
+  $('#cNew').onclick = () => { catMode = 'new'; $('#ctTitle').textContent = '新建分类'; $('#ctName').value = ''; openDlg('dlgCat'); };
+  $('#cRen').onclick = () => { catMode = 'ren'; $('#ctTitle').textContent = '分类改名'; $('#ctName').value = cat; openDlg('dlgCat'); };
+  $('#catForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const n = $('#ctName').value.trim(), cs = Z[zone].cats;
+    const err = !n ? '请填写分类名称' : (n in cs && n !== cat) ? '已有同名分类' : '';
+    $('#ctF').classList.toggle('invalid', !!err); $('#ctF .err').hidden = !err; $('#ctF .err').textContent = err;
+    if (err) return;
+    if (catMode === 'new') { cs[n] = []; cat = n; toast('已新建分类「' + n + '」'); }
+    else if (n !== cat) { const nc = {}; Object.keys(cs).forEach(k => nc[k === cat ? n : k] = cs[k]); Z[zone].cats = nc; toast('已改名为「' + n + '」'); cat = n; }
+    closeDlg('dlgCat'); render();
+  });
+  $('#cDel').onclick = () => {
+    const fs = Z[zone].cats[cat];
+    if (fs.length) { toast('分类「' + cat + '」下还有 ' + fs.length + ' 个文件，请先移出文件'); return; }
+    confirmDo({title: '删除分类', rows: [['专区', Z[zone].name], ['分类', cat], ['文件数', '0（空分类）']], ok: '确认删除', danger: true,
+      onOk: () => { delete Z[zone].cats[cat]; toast('已删除空分类「' + cat + '」'); cat = ''; render(); }});
+  };
+  $('#mvOk').onclick = () => { const to = $('#mvTo').value; const cs = Z[zone].cats; cs[cat].splice(cs[cat].indexOf(mvFile), 1); cs[to].push(mvFile); closeDlg('dlgMove'); render(); toast('已移动到「' + to + '」'); };
+  // 上传
+  $('#btnUp').onclick = () => { batch = []; $('#upList').innerHTML = ''; $('#upOk').disabled = true; $('#upTo').textContent = Z[zone].name + ' · ' + cat; openDlg('dlgUp'); };
+  $('#upPick').onclick = () => {
+    batch = [{n: cat + '平面布局图-V' + (zone === 'layout' ? '4' : '1') + (zone === 'render' ? '.jpg' : '.pdf'), s: '2.8MB', ok: true}, {n: cat + '现场全景视频.mp4', s: '68.0MB', ok: false, why: '超过 50MB，且格式不在允许范围内'}, {n: cat + '尺寸复核表.xlsx', s: '0.2MB', ok: true}];
+    $('#upList').innerHTML = batch.map(b => '<li class="' + (b.ok ? 'ok' : 'bad') + '">' + esc(b.n) + '<span class="fmeta">' + b.s + '</span><span class="r">' + (b.ok ? '可上传' : '已拒绝：' + b.why) + '</span></li>').join('');
+    $('#upOk').disabled = false;
+  };
+  $('#upOk').onclick = () => { const ok = batch.filter(b => b.ok); ok.forEach(b => Z[zone].cats[cat].push(F(b.n, b.s, ME[role()], '2026-10-27'))); closeDlg('dlgUp'); render(); toast('已上传 ' + ok.length + ' 个文件，1 个被拒绝'); };
+
+  window.onRole = () => render();
+  function demo(s){ $$('[data-demo]').forEach(x => x.classList.toggle('on', x.dataset.demo === s)); $('#vLoading').hidden = s !== 'loading'; $('#vError').hidden = s !== 'error'; if (s === 'ok') render(); else { $('#vOk').hidden = true; $('#vDenied').hidden = true; } }
+  $$('[data-demo]').forEach(b => b.onclick = () => demo(b.dataset.demo));
+  $$('[data-demo-btn]').forEach(b => b.onclick = () => demo(b.dataset.demoBtn));
+  const qz = new URLSearchParams(location.search).get('zone'); if (qz && Z[qz]) zone = qz;
+
+  applyRole();
+  </script>
+</body>
+</html>

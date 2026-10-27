@@ -1,0 +1,13 @@
+/* 图纸画布与钉点（PAGE-F04-02、PAGE-F05-01 共用；原型 .pinmark 状态色改为 HTML 钉点） */
+.dstage{position:relative;margin:0 auto;user-select:none;-webkit-user-select:none}
+.dstage>img{display:block;width:100%;height:auto;background:var(--surface);pointer-events:none}
+.dpin{position:absolute;transform:translate(-50%,-50%);min-width:30px;height:30px;padding:0 3px;border-radius:var(--radius-pill);border:3px solid var(--surface);color:var(--accent-on);font:700 11px/1 var(--font-body);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;box-shadow:var(--elev-raised)}
+.dpin.s-none{background:var(--muted)}
+.dpin.s-pend{background:var(--warn)}
+.dpin.s-pass{background:var(--success)}
+.dpin.s-stop{background:var(--danger)}
+.dpin.s-proxy{background:var(--info)}
+.dpin.s-new{background:var(--accent)}
+.dpin:hover{border-color:var(--fg)}
+.dpin:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.dpin.cur{box-shadow:0 0 0 3px var(--accent)}

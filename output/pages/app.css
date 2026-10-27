@@ -1,0 +1,152 @@
+/* 君华装修项目管理平台 · 共用组件样式（由 DESIGN.md 中的 CSS 提取，页面需先加载 ../tokens.css） */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font:var(--text-base)/var(--leading-body) var(--font-body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+a:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--radius-sm)}
+.icon{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.topbar{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
+.topbar h1{font-size:var(--text-xl);letter-spacing:-.01em;line-height:var(--leading-tight)}
+.topbar .sub{font-size:var(--text-sm);color:var(--muted)}
+.spacer{flex:1}
+.row{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:767px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.muted{color:var(--muted)}
+.brand{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3) var(--space-4);font-weight:700}
+.brand .logo{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--accent);color:var(--accent-on);display:flex;align-items:center;justify-content:center}
+.sitepick{display:flex;align-items:center;gap:var(--space-2);height:36px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:var(--text-sm);color:var(--fg)}
+.phase-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.app{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:100vh;background:var(--bg);color:var(--fg);font:var(--text-base)/var(--leading-body) var(--font-body)}
+.side{background:var(--surface);box-shadow:var(--elev-ring);position:sticky;top:0;height:100vh;overflow-y:auto;padding:var(--space-3)}
+.main{min-width:0;padding:var(--section-y-desktop) var(--container-gutter-desktop);max-width:var(--container-max)}
+.tabbar{display:none}
+.grid-kpi{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:1199px){.app{grid-template-columns:64px minmax(0,1fr)}.side .nm,.side .navgroup{display:none}.grid-kpi{grid-template-columns:repeat(3,minmax(0,1fr))}.main{padding:var(--section-y-tablet) var(--container-gutter-tablet)}}
+@media (max-width:767px){.app{grid-template-columns:1fr}.side{display:none}.main{padding:var(--section-y-phone) var(--container-gutter-phone) calc(var(--tabbar-h) + var(--space-4))}.grid-kpi{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;height:var(--tabbar-h);background:var(--surface);box-shadow:var(--elev-float)}}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* 按钮：主按钮每屏 1 个 */
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);height:36px;padding:0 var(--space-4);border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--fg);font:500 var(--text-sm)/1 var(--font-body);letter-spacing:.02em;cursor:pointer;transition:background var(--motion-fast) var(--ease-standard),border-color var(--motion-fast) var(--ease-standard)}
+.btn:hover{border-color:var(--accent);background:var(--surface-warm)}
+.btn:active{background:var(--border-soft)}
+.btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-on)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.primary:active{background:var(--accent-active)}
+.btn.danger{color:var(--danger);border-color:color-mix(in oklab,var(--danger),transparent 60%)}
+.btn.danger:hover{background:var(--danger-soft);border-color:var(--danger)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{height:30px;padding:0 var(--space-3);font-size:var(--text-xs)}
+.btn.block{width:100%;justify-content:center;height:44px} /* 手机现场主操作，触控高度 44px */
+
+/* 卡片 */
+.card{background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--elev-raised);border:1px solid var(--border-soft);margin-bottom:var(--space-4);transition:border-color var(--motion-fast) var(--ease-standard)}
+.card.link:hover{border-color:var(--accent)}
+.card.link:active{background:var(--surface-warm)}
+.card.link:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.card-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-soft)}
+.card-hd h2{font-size:var(--text-lg);font-weight:600;line-height:var(--leading-tight)}
+.card-bd{padding:var(--space-4)}
+
+/* KPI */
+.kpi{background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--elev-raised);padding:var(--space-4)}
+.kpi .lb{font-size:var(--text-sm);color:var(--muted)}
+.kpi .vl{font-size:var(--text-3xl);font-weight:700;letter-spacing:-.01em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .target{font-size:var(--text-xs);color:var(--muted)}
+
+/* 输入框 */
+.input,.select,.textarea{width:100%;min-height:40px;padding:var(--space-2) var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font:var(--text-base)/1.4 var(--font-body);transition:border-color var(--motion-fast) var(--ease-standard)}
+.input:hover,.select:hover,.textarea:hover{border-color:var(--muted)}
+.input:focus-visible,.select:focus-visible,.textarea:focus-visible{outline:none;border-color:var(--accent);box-shadow:var(--focus-ring)}
+.input:active{border-color:var(--accent)}
+.field{display:flex;flex-direction:column;gap:var(--space-1)}
+.field label{font-size:var(--text-sm);color:var(--fg-2)}
+.field label .req{color:var(--danger)}
+.field .err{font-size:var(--text-xs);color:var(--danger)}
+.field.invalid .input{border-color:var(--danger)}
+
+/* 普通标签 */
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 var(--space-2);border-radius:var(--radius-pill);font-size:var(--text-xs);font-weight:600;letter-spacing:.02em;background:var(--surface-warm);color:var(--muted)}
+.tag.ok{background:var(--success-soft);color:var(--success)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.bad{background:var(--danger-soft);color:var(--danger)}
+.tag.brand{background:var(--accent-soft);color:var(--accent)}
+
+/* ★ 设计签名：印章式状态标签 */
+.seal{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border:2px solid currentColor;border-radius:var(--radius-sm);font:700 var(--text-xs)/1.3 var(--font-display);letter-spacing:.08em;transform:rotate(-3deg);background:color-mix(in oklab,currentColor,transparent 92%);white-space:nowrap}
+.seal.pass{color:var(--success)}      /* 已签认 / 已放行 / 已闭环 */
+.seal.stop{color:var(--danger)}       /* 不得覆盖 / 不一致 / 超时 / 未放行先覆盖 */
+.seal.pend{color:var(--warn)}         /* 待签认 / 待放行 / 待重签 / 待预算定价 */
+.seal.proxy{color:var(--info)}        /* 代理放行 */
+.seal:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
+th{background:var(--surface-warm);color:var(--muted);font-weight:600;text-align:left;padding:var(--space-2) var(--space-3);letter-spacing:.01em}
+td{padding:var(--space-2) var(--space-3);border-top:1px solid var(--border-soft);vertical-align:top}
+tr.row-link{cursor:pointer;transition:background var(--motion-fast) var(--ease-standard)}
+tr.row-link:hover{background:var(--surface-warm)}
+tr.row-link:active{background:var(--border-soft)}
+tr.row-link:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+/* 导航项 */
+.navitem{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-sm);color:var(--fg-2);text-decoration:none;font-size:var(--text-base);transition:background var(--motion-fast) var(--ease-standard)}
+.navitem:hover{background:var(--surface-warm)}
+.navitem:active{background:var(--border-soft)}
+.navitem:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.navitem.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.navgroup{font-size:var(--text-xs);color:var(--muted);letter-spacing:.06em;padding:var(--space-4) var(--space-3) var(--space-1)}
+.badge{min-width:18px;height:18px;padding:0 5px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+
+/* chips 筛选 */
+.chip{display:inline-flex;align-items:center;height:30px;padding:0 var(--space-3);border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);font-size:var(--text-sm);cursor:pointer;transition:border-color var(--motion-fast) var(--ease-standard)}
+.chip:hover{border-color:var(--accent)}
+.chip:active{background:var(--surface-warm)}
+.chip:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* 进度条 */
+.pbar{height:6px;border-radius:var(--radius-pill);background:var(--border-soft);overflow:hidden}
+.pbar>i{display:block;height:100%;background:var(--accent);border-radius:inherit}
+
+/* 弹窗与二次确认摘要 */
+.mask{position:fixed;inset:0;background:color-mix(in oklab,var(--fg),transparent 55%);display:none;align-items:center;justify-content:center;padding:var(--space-4)}
+.mask.show{display:flex;animation:fadeIn var(--motion-base) var(--ease-standard)}
+.dialog{background:var(--surface-overlay);border-radius:var(--radius-lg);box-shadow:var(--elev-float);width:min(560px,100%);max-height:90vh;overflow:auto;animation:dialogIn var(--motion-base) var(--ease-standard)}
+.confirm-summary{background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-3);font-size:var(--text-sm)}
+.confirm-summary dt{color:var(--muted)}
+.confirm-summary dd{color:var(--fg);margin-bottom:var(--space-2)}
+
+/* 提示条 */
+.toast{position:fixed;top:var(--space-4);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--surface);padding:var(--space-2) var(--space-4);border-radius:var(--radius-sm);font-size:var(--text-sm);box-shadow:var(--elev-float);animation:toastIn var(--motion-base) var(--ease-standard)}
+
+/* 状态页：空 / 加载 / 错误 / 无权限 */
+.state{text-align:center;padding:var(--space-12) var(--space-4);color:var(--muted)}
+.state .ic{font-size:32px;margin-bottom:var(--space-2)}
+.skeleton{background:linear-gradient(90deg,var(--border-soft),var(--surface-warm),var(--border-soft));background-size:200% 100%;border-radius:var(--radius-sm);animation:shimmer 1.2s linear infinite;height:14px}
+
+/* 手机底部标签 */
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);text-decoration:none;font-size:var(--text-xs)}
+.tab:hover{color:var(--fg)}
+.tab:active{background:var(--surface-warm)}
+.tab:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+.tab.on{color:var(--accent);font-weight:600}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes dialogIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-6px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes sealStamp{0%{opacity:0;transform:rotate(-3deg) scale(1.4)}60%{opacity:1;transform:rotate(-3deg) scale(.96)}100%{transform:rotate(-3deg) scale(1)}}
+.seal.just{animation:sealStamp var(--motion-base) var(--ease-standard)} /* 签认 / 放行成功的那一刻盖章 */
+.card.enter{animation:fadeIn var(--motion-base) var(--ease-standard) both}
+.card.enter:nth-child(2){animation-delay:40ms}.card.enter:nth-child(3){animation-delay:80ms}.card.enter:nth-child(4){animation-delay:120ms}
+.tabpanel{transition:opacity var(--motion-fast) var(--ease-standard)}
+.drawer{transition:transform var(--motion-base) var(--ease-standard)}
+@media (prefers-reduced-motion:reduce){
+  .seal.just,.card.enter,.mask.show,.dialog,.toast,.skeleton{animation:none}
+  .drawer,.tabpanel,.btn,.card,.chip,.navitem,.input{transition:none}
+}

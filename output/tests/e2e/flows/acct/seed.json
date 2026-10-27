@@ -1,0 +1,17 @@
+{
+ "pid": 1,
+ "pid2": 2,
+ "wi2": 229,
+ "wi2Name": "一楼厨房强弱电、燃气报警与给排水",
+ "closedIssues": {
+  "CK-006": 3,
+  "CK-007": 4,
+  "CK-008": 5
+ },
+ "exp": {
+  "CK-006": 1,
+  "CK-007": 2
+ },
+ "rejectedCo": 4,
+ "pendingBaselineWi": 51
+}

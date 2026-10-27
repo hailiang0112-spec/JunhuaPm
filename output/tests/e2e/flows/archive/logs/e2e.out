@@ -1,0 +1,73 @@
+PASS [FLOW-17] 1440 档案资料页无横向滚动
+PASS [FLOW-17] 一楼分类 3 个文件，引用标注可见
+PASS [FLOW-17] 新建分类名称必填
+PASS [FLOW-17] 新建空分类成功
+PASS [FLOW-17] 空分类可删
+PASS [FLOW-17] 被变更单引用的文件作废被拒
+PASS [FLOW-17] 普通资料作废成功
+PASS [FLOW-17] 作废后从默认列表隐藏
+PASS [FLOW-17] 显示已作废后可见并留痕
+PASS [FLOW-17] 非空分类删除提示先移出文件
+PASS [FLOW-17] 1440 项目经理可见合同专区
+PASS [FLOW-17] 375 档案资料页无横向滚动
+PASS [FLOW-17] 375 项目经理可见合同专区
+PASS [FLOW-17] dm 打开合同专区被拒「无权查看合同资料」
+PASS [FLOW-17] qc 打开合同专区被拒「无权查看合同资料」
+PASS [FLOW-17] owner 可见合同资料
+PASS [FLOW-17] budget 可见合同资料
+PASS [FLOW-17] admin 可见合同资料
+PASS [FLOW-18] 登记必填校验（标题、约定完成日期、责任人）
+PASS [FLOW-18] 登记补充事项成功（状态：待处理）
+PASS [FLOW-18] 新事项状态「待处理」
+PASS [FLOW-18] 状态切换为处理中
+PASS [FLOW-18] 转为变更单生成预填内容的草稿
+PASS [FLOW-18] 草稿带上补充事项附件
+PASS [FLOW-18] 补充事项上显示变更单编号
+PASS [FLOW-18] 状态切换为已完成
+PASS [FLOW-18] 未完成排前（已完成在后）
+PASS [FLOW-18] 375 补充事项页无横向滚动
+PASS [FLOW-18] owner 发帖以账号姓名并按角色进入「业主」板块
+PASS [FLOW-18] owner 发布成功
+PASS [FLOW-18] owner 新留言倒序排在板块首位
+PASS [FLOW-18] pm 发帖以账号姓名并按角色进入「工地经理」板块
+PASS [FLOW-18] pm 发布成功
+PASS [FLOW-18] pm 新留言倒序排在板块首位
+PASS [FLOW-18] qc 发帖以账号姓名并按角色进入「工地经理」板块
+PASS [FLOW-18] qc 发布成功
+PASS [FLOW-18] qc 新留言倒序排在板块首位
+PASS [FLOW-18] 设计经理回复业主留言
+PASS [FLOW-18] 回复挂在原留言下且正序（李工在前、张工在后）
+PASS [FLOW-18] 业主删除自己的留言
+PASS [FLOW-18] 显示「该留言已删除」并留记录
+PASS [FLOW-18] 他人留言无删除入口
+PASS [FLOW-18] 删除他人留言被拒（403）
+PASS [FLOW-18] 项目经理与质检留言在工地经理板块
+PASS [FLOW-18] 375 公告栏无横向滚动
+PASS [FLOW-20] 录入必填校验
+PASS [FLOW-20] 录入付款节点成功（状态：未付）
+PASS [FLOW-20] 节点状态「未付」
+PASS [FLOW-20] 节点显示未放行 5、未闭环不一致 2
+PASS [FLOW-20] 标记已付弹出「还有 5 个检查点未放行，确认标记已付？」
+PASS [FLOW-20] 提示不拦截并留痕
+PASS [FLOW-20] 取消后状态不变（未付）
+PASS [FLOW-20] 确认后标记已付
+PASS [FLOW-20] 状态「已付」并留痕（确认时未放行 5 个）
+PASS [FLOW-20] 375 付款节点页无横向滚动
+PASS [FLOW-22] 证据包生成提示
+PASS [FLOW-22] 下载文件名含范围（水电）
+PASS [FLOW-22] ZIP 含记录清单 .xlsx
+PASS [FLOW-22] 含范围内照片原件（水电 5 次核对共 5 张）
+PASS [FLOW-22] 照片为原件（JPEG 文件头）
+PASS [FLOW-22] 含相关图纸版本文件
+PASS [FLOW-22] 含签认内容快照（图纸签认 1 + 基线签认 4）
+PASS [FLOW-22] 摘要清单含导出时链尾摘要
+PASS [FLOW-22] 清单条数与范围内记录数一致
+PASS [FLOW-22] 链尾摘要与导出任务结果一致
+PASS [FLOW-22] 按对象（付款节点）筛选操作日志（条数与该类对象日志一致）
+PASS [FLOW-22] 日志显示操作人、时间与前后值
+PASS [FLOW-22] 按时间筛选（之后日期无记录）
+PASS [FLOW-22] 项目经理导出被拒「仅业主和公司管理员可导出证据包」
+PASS [FLOW-22] 项目经理导出接口被拒（403 + 原文提示）
+PASS [FLOW-22] 375 审计与证据包页无横向滚动
+
+检查项 71/71 通过；未预期控制台错误 0；375 页面级横向滚动 0/5 处

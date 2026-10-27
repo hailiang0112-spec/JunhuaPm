@@ -1,0 +1,47 @@
+/* 结构与计划各页共用（总览、楼层 / 房间、工段详情、项目结构、导入导出）：只用 Token 变量 */
+.plan-pg .card-hd{flex-wrap:wrap;row-gap:var(--space-2)}
+.plan-pg .card-hd .desc{font-size:var(--text-sm);color:var(--muted)}
+.plan-pg .card-bd.tight{padding:var(--space-2) 0 0}
+.plan-pg .card-bd.tight>.scroll-x>table th:first-child,.plan-pg .card-bd.tight>.scroll-x>table td:first-child{padding-left:var(--space-4)}
+.plan-pg .card-bd.tight>.scroll-x>table th:last-child,.plan-pg .card-bd.tight>.scroll-x>table td:last-child{padding-right:var(--space-4)}
+.plan-pg .legend{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);font-size:var(--text-xs);color:var(--muted);padding:var(--space-2) var(--space-4) var(--space-3)}
+.plan-pg .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:var(--space-1);vertical-align:-2px;border:1px solid var(--border-soft)}
+.plan-pg .num-b{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
+.plan-pg .down{color:var(--danger)}
+.plan-pg .up{color:var(--success)}
+.plan-pg .nowrap{white-space:nowrap}
+.plan-pg .cellbar{display:flex;align-items:center;gap:var(--space-2)}
+.plan-pg .cellbar .pbar{flex:1;min-width:60px}
+.plan-pg .cellbar span{font-size:var(--text-xs);font-variant-numeric:tabular-nums;color:var(--fg-2);min-width:40px;text-align:right}
+.plan-pg .chiprow{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.plan-pg .chiprow .lb{font-size:var(--text-xs);color:var(--muted)}
+.plan-pg .chartbox svg{display:block;width:100%;height:auto}
+.plan-pg .chartbox text{font-family:var(--font-body)}
+.plan-pg .grid-2>*,.plan-pg .grid-3>*{min-width:0}
+.plan-pg .kpi .vl small{font-size:var(--text-base);font-weight:600;margin-left:2px;color:var(--muted)}
+.plan-pg .kpi .vl.sm{font-size:var(--text-2xl)}
+.plan-pg .kpi .sb{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-2)}
+.plan-pg .fl-tag{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:var(--radius-sm);background:var(--surface-warm);border:1px solid var(--border-soft);font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+.plan-pg .logcol{display:flex;flex-direction:column;gap:var(--space-1)}
+.plan-pg .logcol .from{color:var(--muted)}
+.plan-pg .seal.mute{color:var(--muted)}
+.plan-pg .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.plan-pg .mt-4{margin-bottom:var(--space-4)}
+
+/* 完成度矩阵色阶 */
+.plan-pg .lv-none{fill:var(--surface-warm)} .plan-pg .lv0{fill:var(--border-soft)}
+.plan-pg .lv1{fill:color-mix(in oklab,var(--accent) 14%,var(--surface))} .plan-pg .lv2{fill:color-mix(in oklab,var(--accent) 30%,var(--surface))}
+.plan-pg .lv3{fill:color-mix(in oklab,var(--accent) 50%,var(--surface))} .plan-pg .lv4{fill:color-mix(in oklab,var(--accent) 72%,var(--surface))} .plan-pg .lv5{fill:var(--accent)}
+.plan-pg i.lv-none{background:var(--surface-warm)} .plan-pg i.lv0{background:var(--border-soft)} .plan-pg i.lv1{background:color-mix(in oklab,var(--accent) 14%,var(--surface))}
+.plan-pg i.lv2{background:color-mix(in oklab,var(--accent) 30%,var(--surface))} .plan-pg i.lv3{background:color-mix(in oklab,var(--accent) 50%,var(--surface))}
+.plan-pg i.lv4{background:color-mix(in oklab,var(--accent) 72%,var(--surface))} .plan-pg i.lv5{background:var(--accent)}
+.plan-pg .mx a rect{stroke:var(--surface);stroke-width:2;transition:stroke var(--motion-fast) var(--ease-standard)}
+.plan-pg .mx a:hover rect,.plan-pg .mx a:focus-visible rect{stroke:var(--fg)}
+.plan-pg .mx a:hover text.rl,.plan-pg .mx a:focus-visible text.rl{text-decoration:underline}
+.plan-pg .mx a:focus{outline:none}
+
+@media (max-width:767px){
+.plan-pg .chip{min-height:40px}
+.plan-pg .card-hd .spacer{display:none}
+.plan-pg .card-hd .desc{flex-basis:100%}
+}

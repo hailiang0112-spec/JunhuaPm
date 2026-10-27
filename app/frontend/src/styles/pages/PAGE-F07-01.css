@@ -1,0 +1,26 @@
+/* PAGE-F07-01 变更单列表（样式取自原型 <style>，只用 var(--xxx)） */
+.pg-f0701 .co-filters{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.pg-f0701 .co-filters .search{position:relative;margin-left:auto;min-width:220px}
+.pg-f0701 .co-filters .search .icon{position:absolute;left:10px;top:11px;color:var(--muted)}
+.pg-f0701 .co-filters .search .input{padding-left:34px;min-height:36px}
+.pg-f0701 .co-title{font-weight:600;color:var(--fg)}
+.pg-f0701 .co-meta{font-size:var(--text-xs);color:var(--muted)}
+.pg-f0701 .flags{display:flex;gap:var(--space-1);flex-wrap:wrap;margin-top:var(--space-1)}
+.pg-f0701 .amt-plus{color:var(--danger)}
+.pg-f0701 .amt-minus{color:var(--success)}
+.pg-f0701 .co-cards{display:none}
+.pg-f0701 .co-card{display:block;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);text-decoration:none;color:inherit}
+.pg-f0701 .co-card:first-child{border-top:0}
+.pg-f0701 .co-card:hover{background:var(--surface-warm)}
+.pg-f0701 .co-card:active{background:var(--border-soft)}
+.pg-f0701 .co-card:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+.pg-f0701 .co-card .l1{display:flex;align-items:flex-start;gap:var(--space-2);justify-content:space-between}
+.pg-f0701 .co-card .l3{display:flex;gap:var(--space-3);flex-wrap:wrap;font-size:var(--text-sm);margin-top:var(--space-2)}
+.pg-f0701 .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+.pg-f0701 .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+.pg-f0701 .co-pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+@media (max-width:767px){
+  .pg-f0701 .co-table{display:none}
+  .pg-f0701 .co-cards{display:block}
+  .pg-f0701 .co-filters .search{margin-left:0;width:100%;min-width:0}
+}

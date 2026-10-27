@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F13-01">
+  <meta name="description" content="补充事项台账：登记、三态流转（待处理/处理中/已完成）、附件、转为变更单">
+  <title>补充事项 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    [hidden]{display:none!important}
+    a.btn{text-decoration:none}
+    .side .navitem .badge{margin-left:auto}
+    .side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer}
+    .side .sitepick:hover{border-color:var(--accent)}
+    .side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .side .sitepick .nm{display:inline-flex}
+    .side-foot{border-top:1px solid var(--border-soft);margin-top:var(--space-4);padding-top:var(--space-2)}
+    .topbar{flex-wrap:wrap}
+    .topbar .tt{min-width:0}
+    .role-switch{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted)}
+    .role-switch select{min-height:32px;width:auto;padding:0 var(--space-2);font-size:var(--text-sm)}
+    .tabbar{z-index:30}
+    .tab{position:relative;border:0;background:none;font:inherit;font-size:var(--text-xs);cursor:pointer;min-height:44px}
+    .tab-badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;line-height:16px;text-align:center}
+    .mask{z-index:50}
+    .toast{z-index:60}
+    .dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--border-soft)}
+    .dlg-hd h2{font-size:var(--text-lg);line-height:var(--leading-tight)}
+    .dlg-bd{padding:var(--space-4) var(--space-5);display:flex;flex-direction:column;gap:var(--space-3)}
+    .dlg-ft{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-5) var(--space-4);border-top:1px solid var(--border-soft)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:var(--radius-sm);background:none;color:var(--muted);cursor:pointer}
+    .icon-btn:hover{background:var(--surface-warm);color:var(--fg)}
+    .icon-btn:active{background:var(--border-soft)}
+    .icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .confirm-summary dl{margin:0}
+    .note{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);background:var(--surface-warm);color:var(--fg-2)}
+    .note>.icon{margin-top:2px}
+    .note.warn{background:var(--warn-soft);color:var(--warn)}
+    .note.bad{background:var(--danger-soft);color:var(--danger)}
+    .note.ok{background:var(--success-soft);color:var(--success)}
+    .note.info{background:var(--info-soft);color:var(--info)}
+    .state .ic{display:flex;justify-content:center}
+    .state .ic .icon{width:32px;height:32px}
+    .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+    .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+    .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+    .demo-states{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;font-size:var(--text-xs);color:var(--muted);margin-bottom:var(--space-4)}
+    .demo-states .chip{height:26px;font-size:var(--text-xs)}
+    .mono{font-family:var(--font-mono);font-size:var(--text-xs);word-break:break-all}
+    .num{font-variant-numeric:tabular-nums}
+    .seal.void{color:var(--muted)}
+    @media (max-width:1199px){.side .sitepick{padding:0;justify-content:center}.side-foot{margin-top:var(--space-2)}.side .navitem{justify-content:center}}
+    @media (max-width:767px){
+      body.nav-open .side{display:block;position:fixed;inset:0 0 var(--tabbar-h) 0;height:auto;z-index:40}
+      body.nav-open .side .nm{display:inline}body.nav-open .side .badge.nm,body.nav-open .side .sitepick .nm{display:inline-flex}body.nav-open .side .navgroup{display:block}
+      body.nav-open .side .navitem{justify-content:flex-start}
+      body.nav-open{overflow:hidden}
+      .topbar h1{font-size:var(--text-lg)}
+      .role-switch{width:100%}
+      .role-switch select{flex:1}
+      .dlg-ft .btn{flex:1;justify-content:center;height:44px}
+    }
+
+    .items{display:flex;flex-direction:column}
+    .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-2) var(--space-4);padding:var(--space-4);border-top:1px solid var(--border-soft)}
+    .it:first-child{border-top:0}
+    .it.done .it-title{color:var(--muted)}
+    .it-hd{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+    .it-title{font-weight:600;font-size:var(--text-base)}
+    .it-desc{font-size:var(--text-sm);color:var(--fg-2);margin-top:var(--space-1)}
+    .it-meta{display:flex;gap:var(--space-4);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);margin-top:var(--space-2)}
+    .it-meta b{color:var(--fg-2);font-weight:500}
+    .it-side{display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-2)}
+    .seg{display:inline-flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+    .seg button{min-height:32px;padding:0 var(--space-3);border:0;border-left:1px solid var(--border);background:var(--surface);font:inherit;font-size:var(--text-xs);color:var(--fg-2);cursor:pointer}
+    .seg button:first-child{border-left:0}
+    .seg button:hover{background:var(--surface-warm)}
+    .seg button:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+    .seg button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+    .att{display:flex;gap:var(--space-1);flex-wrap:wrap;margin-top:var(--space-2)}
+    .att .tag{gap:var(--space-1)}
+    .att .tag .icon{width:12px;height:12px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .form-grid .full{grid-column:1/-1}
+    .field.invalid .select,.field.invalid .textarea{border-color:var(--danger)}
+    @media (max-width:767px){
+      .it{grid-template-columns:minmax(0,1fr)}
+      .it-side{align-items:stretch}
+      .seg{display:grid;grid-template-columns:repeat(3,1fr)}
+      .seg button{min-height:40px}
+      .it-side .btn{justify-content:center;height:40px}
+      .form-grid{grid-template-columns:1fr}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <nav class="side" id="side" aria-label="主导航">
+      <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+      <button class="sitepick" type="button" aria-label="切换工地"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer nm"></span><span class="nm"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      <a class="navitem" href="PAGE-F16-01.html" title="我的待办"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem" href="PAGE-F10-01.html" title="项目总览"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html" title="楼层 / 房间"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" title="砌墙"><span class="phase-dot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" title="水电"><span class="phase-dot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" title="铺砖"><span class="phase-dot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" title="木工"><span class="phase-dot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" title="油灰工"><span class="phase-dot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" title="安装收尾"><span class="phase-dot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html" title="图纸"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html" title="基线签认"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html" title="检查点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html" title="变更单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem" href="PAGE-F08-01.html" title="问题"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem" href="PAGE-F12-01.html" title="档案资料"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem on" href="PAGE-F13-01.html" aria-current="page" title="补充事项"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html" title="公告栏"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem" href="PAGE-F15-01.html" title="付款节点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html" title="成员与项目"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html" title="项目结构"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html" title="数据导入导出"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13m0 0-3-3m3 3 3-3"/><path d="M17 20V7m0 0-3 3m3-3 3 3"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html" title="审计与证据包"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员">
+      <div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html" title="项目管理"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html" title="公司模板"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html" title="公司经验库"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      <div class="side-foot"><a class="navitem" href="PAGE-F02-03.html" title="个人设置"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a></div>
+    </nav>
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="tt"><h1>补充事项</h1><div class="sub">君华新城 · 联排别墅 · 口头约定、增项和待办登记成台账</div></div>
+        <span class="spacer"></span>
+        <label class="role-switch">演示身份<select class="select" id="demoRole" aria-label="演示身份"><option>业主</option><option>业主代理人</option><option selected>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+        <button class="btn primary" type="button" data-open-add><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>登记补充事项</button>
+      </header>
+
+      <div class="demo-states" aria-label="原型状态演示">原型状态：
+        <button class="chip on" type="button" data-demo="ok">正常</button>
+        <button class="chip" type="button" data-demo="empty">空</button>
+        <button class="chip" type="button" data-demo="loading">加载</button>
+        <button class="chip" type="button" data-demo="error">错误</button>
+      </div>
+      <section class="card" aria-labelledby="lTitle">
+        <div class="card-hd" style="flex-wrap:wrap"><h2 id="lTitle">补充事项台账</h2><span class="tag warn" id="cUndone"></span><span class="tag ok" id="cDone"></span><span class="spacer"></span><span class="muted" style="font-size:var(--text-xs)">未完成的排在前面</span></div>
+        <div class="items" id="vOk"></div>
+        <div class="state" id="vEmpty" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></div><h3>还没有补充事项</h3><p>把口头约定、增项和待办登记下来，约定有据可查。</p><button class="btn primary" type="button" data-open-add><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>登记补充事项</button></div>
+        <div class="card-bd" id="vLoading" hidden aria-busy="true"><div class="skeleton" style="width:40%;margin-bottom:var(--space-3)"></div><div class="skeleton" style="margin-bottom:var(--space-3)"></div><div class="skeleton" style="width:65%"></div></div>
+        <div class="state" id="vError" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2l20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5-2.7M19 13a10 10 0 0 0-2.4-1.7M12 20h.01"/></svg></div><h3>补充事项加载失败（网络中断）</h3><p>请检查网络后重试。</p><button class="btn" type="button" data-demo-btn="ok"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>重新加载</button></div>
+      </section>
+
+    </main>
+  </div>
+  <nav class="tabbar" aria-label="手机底部导航">
+    <a class="tab" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span>待办</span><span class="tab-badge">7</span></a>
+    <a class="tab" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>检查点</span><span class="tab-badge">5</span></a>
+    <a class="tab" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>图纸</span></a>
+    <button class="tab on" type="button" id="moreTab" aria-expanded="false" aria-controls="side"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>更多</span></button>
+  </nav>
+  <div class="mask" id="dlgAdd" role="dialog" aria-modal="true" aria-labelledby="adTitle">
+    <form class="dialog" id="addForm" novalidate>
+      <div class="dlg-hd"><h2 id="adTitle">登记补充事项</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgAdd" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd"><div class="form-grid">
+        <div class="field full" id="aTiF"><label for="aTi">标题<span class="req">*</span></label><input class="input" id="aTi" maxlength="40" placeholder="例如：二楼次卧加装窗帘盒"><span class="err" hidden>请填写标题</span></div>
+        <div class="field full"><label for="aDesc">说明</label><textarea class="textarea" id="aDesc" rows="3" placeholder="写清谁提出、在哪里、约定了什么"></textarea></div>
+        <div class="field" id="aStF"><label for="aSt">提出日期<span class="req">*</span></label><input class="input" id="aSt" type="date" value="2026-10-27"><span class="err" hidden>请选择提出日期</span></div>
+        <div class="field" id="aDuF"><label for="aDu">约定完成日期<span class="req">*</span></label><input class="input" id="aDu" type="date"><span class="err" hidden>请选择约定完成日期</span></div>
+        <div class="field" id="aOwF"><label for="aOw">责任人<span class="req">*</span></label><select class="select" id="aOw"><option value="">请选择</option><option>张工</option><option>李工</option><option>王工</option><option>赵会计</option><option>刘先生</option></select><span class="err" hidden>请选择责任人</span></div>
+        <div class="field"><label>附件</label><div><button class="btn sm" type="button" id="aAtt"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5 12 19.5a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.7 17.2a1.7 1.7 0 0 1-2.4-2.4L15 7"/></svg>添加附件</button> <span class="muted" style="font-size:var(--text-xs)" id="aAttN">未添加</span></div></div>
+      </div></div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgAdd">取消</button><button class="btn primary" type="submit">保存</button></div>
+    </form>
+  </div>
+  <div class="mask" id="dlgConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="cfTitle">确认提交</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgConfirm" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <p class="muted" style="font-size:var(--text-sm)">提交后不可撤回，请核对以下内容：</p>
+        <div class="confirm-summary"><dl id="cfRows"></dl></div>
+        <div class="note warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.01"/></svg><span id="cfWarnText"></span></div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgConfirm">取消</button><button class="btn primary" type="button" id="cfOk">确认提交</button></div>
+    </div>
+  </div>
+  <script>
+
+  // —— 外壳通用脚本：演示身份、手机「更多」、提示条、二次确认 ——
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+  function role(){return $('#demoRole').value}
+  function applyRole(){
+    const r = role();
+    $$('[data-roles]').forEach(el => { el.hidden = !el.dataset.roles.split(',').includes(r); });
+    if (window.onRole) window.onRole(r);
+  }
+  $('#demoRole').addEventListener('change', applyRole);
+  $('#moreTab').addEventListener('click', e => { const o = document.body.classList.toggle('nav-open'); e.currentTarget.setAttribute('aria-expanded', o); });
+  function openDlg(id){const m=document.getElementById(id);m.classList.add('show');const f=m.querySelector('textarea,input:not([type=hidden]),select');if(f)setTimeout(()=>f.focus(),50)}
+  function closeDlg(id){document.getElementById(id).classList.remove('show')}
+  $$('.mask').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.mask.show').forEach(m => m.classList.remove('show')); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-close]'); if (b) closeDlg(b.dataset.close); });
+  // 不可撤回操作的二次确认：confirmDo({title, rows:[[标签,内容]], warn, ok, danger, onOk})
+  function confirmDo(o){
+    $('#cfTitle').textContent = o.title;
+    $('#cfRows').innerHTML = o.rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#cfWarn').hidden = !o.warn; $('#cfWarnText').textContent = o.warn || '';
+    const ok = $('#cfOk'); ok.textContent = o.ok || '确认提交'; ok.className = 'btn ' + (o.danger ? 'danger' : 'primary');
+    ok.onclick = () => { closeDlg('dlgConfirm'); o.onOk && o.onOk(); };
+    openDlg('dlgConfirm'); setTimeout(() => ok.focus(), 60);
+  }
+  function stamp(el){el.classList.remove('just');void el.offsetWidth;el.classList.add('just')}
+
+
+  const ST = ['待处理', '处理中', '已完成'];
+  const SEAL = {'待处理': 'pend', '处理中': 'pend', '已完成': 'pass'};
+  const BC = [
+    {id: 'BC-010', title: '一楼入户门槛石改用与客厅同款大理石', desc: '业主 10 月 26 日现场提出，门槛石由原定黑金沙改为客厅同款鱼肚白大理石，材料差价待核。', start: '2026-10-26', due: '2026-11-02', owner: '张工', st: '待处理', att: ['门槛石样板照片.jpg'], co: ''},
+    {id: 'BC-008', title: '三楼露台加装户外洗手池', desc: '业主要求在三楼露台东北角加装户外洗手池 1 个，需增加给排水预留点位。', start: '2026-10-25', due: '2026-11-10', owner: '张工', st: '待处理', att: ['露台洗手池位置示意.jpg'], co: ''},
+    {id: 'BC-009', title: '负一楼影音室墙面预埋投影幕布电源', desc: '设计经理与业主确认在影音室前墙顶部预埋一路幕布电源，水电开槽前定位。', start: '2026-10-24', due: '2026-10-31', owner: '李工', st: '处理中', att: [], co: ''},
+    {id: 'BC-005', title: '一楼厨房烟道调整口头约定', desc: '10 月 23 日现场三方口头约定按深化图调整烟道位置，已转变更单补签。', start: '2026-10-23', due: '2026-10-28', owner: '张工', st: '处理中', att: ['现场沟通记录.jpg', '厨房烟道深化图节选.pdf'], co: 'BG-003'},
+    {id: 'BC-007', title: '二楼主卧衣帽间隔墙后移 300mm', desc: '业主要求扩大衣帽间进深，已转变更单并签认生效。', start: '2026-10-07', due: '2026-10-12', owner: '张工', st: '已完成', att: ['衣帽间隔墙后移示意.jpg'], co: 'BG-001'},
+    {id: 'BC-006', title: '业主自购卫浴到货时间确认', desc: '业主自购的马桶、浴室柜确认 11 月 20 日前到货，安装收尾前入场。', start: '2026-10-05', due: '2026-10-15', owner: '刘先生', st: '已完成', att: [], co: ''}
+  ];
+  const CLIP = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5 12 19.5a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.7 17.2a1.7 1.7 0 0 1-2.4-2.4L15 7"/></svg>';
+  let addAtt = 0;
+  function render(){
+    const L = BC.slice().sort((a, b) => (a.st === '已完成') - (b.st === '已完成') || a.due.localeCompare(b.due));
+    $('#vOk').innerHTML = L.map(x => `<article class="it${x.st === '已完成' ? ' done' : ''}">
+      <div>
+        <div class="it-hd"><span class="mono">${x.id}</span><span class="it-title">${esc(x.title)}</span><span class="seal ${SEAL[x.st]}" id="s-${x.id}">${x.st}</span></div>
+        <p class="it-desc">${esc(x.desc)}</p>
+        <div class="it-meta"><span>提出 <b>${x.start}</b></span><span>约定完成 <b>${x.due}</b></span><span>责任人 <b>${x.owner}</b></span>${x.co ? '<span>已转变更单 <a href="PAGE-F07-02.html?id=' + x.co + '">' + x.co + '</a></span>' : ''}</div>
+        ${x.att.length ? '<div class="att">' + x.att.map(a => '<button class="tag" type="button" data-att="' + esc(a) + '" style="border:0;cursor:pointer">' + CLIP + esc(a) + '</button>').join('') + '</div>' : ''}
+      </div>
+      <div class="it-side">
+        <div class="seg" role="group" aria-label="${x.id} 状态">${ST.map(s => '<button type="button" data-id="' + x.id + '" data-s="' + s + '" aria-pressed="' + (s === x.st) + '">' + s + '</button>').join('')}</div>
+        ${!x.co && x.st !== '已完成' && role() === '项目经理' ? '<a class="btn sm" href="PAGE-F07-02.html?new=1&from=' + x.id + '"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg>转为变更单</a>' : ''}
+      </div></article>`).join('');
+    const u = BC.filter(x => x.st !== '已完成').length;
+    $('#cUndone').textContent = '未完成 ' + u; $('#cDone').textContent = '已完成 ' + (BC.length - u);
+    $$('.seg button').forEach(b => b.onclick = () => {
+      const x = BC.find(i => i.id === b.dataset.id); if (x.st === b.dataset.s) return;
+      x.st = b.dataset.s; render(); stamp($('#s-' + x.id)); toast(x.id + ' 状态改为「' + x.st + '」');
+    });
+    $$('[data-att]').forEach(b => b.onclick = () => toast('打开附件：' + b.dataset.att));
+  }
+  $$('[data-open-add]').forEach(b => b.onclick = () => { $('#addForm').reset(); $('#aSt').value = '2026-10-27'; addAtt = 0; $('#aAttN').textContent = '未添加'; $$('#addForm .field').forEach(f => f.classList.remove('invalid')); $$('#addForm .err').forEach(e => e.hidden = true); openDlg('dlgAdd'); });
+  $('#aAtt').onclick = () => { addAtt++; $('#aAttN').textContent = '已添加 ' + addAtt + ' 个'; };
+  $('#addForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const due = $('#aDu').value, start = $('#aSt').value;
+    const chk = [['#aTiF', !$('#aTi').value.trim(), '请填写标题'], ['#aStF', !start, '请选择提出日期'], ['#aDuF', !due || due < start, !due ? '请选择约定完成日期' : '约定完成日期不能早于提出日期'], ['#aOwF', !$('#aOw').value, '请选择责任人']];
+    chk.forEach(([id, b, m]) => { $(id).classList.toggle('invalid', b); $(id + ' .err').hidden = !b; $(id + ' .err').textContent = m; });
+    if (chk.some(c => c[1])) return;
+    const n = 'BC-0' + (BC.length + 5);
+    BC.push({id: n, title: $('#aTi').value.trim(), desc: $('#aDesc').value.trim() || '（无说明）', start, due, owner: $('#aOw').value, st: '待处理', att: Array.from({length: addAtt}, (_, i) => '附件' + (i + 1) + '.jpg'), co: ''});
+    closeDlg('dlgAdd'); render(); toast('已登记 ' + n + '，状态：待处理');
+  });
+  window.onRole = () => render();
+  function demo(s){ $$('[data-demo]').forEach(x => x.classList.toggle('on', x.dataset.demo === s)); $('#vOk').hidden = s !== 'ok'; $('#vEmpty').hidden = s !== 'empty'; $('#vLoading').hidden = s !== 'loading'; $('#vError').hidden = s !== 'error'; }
+  $$('[data-demo]').forEach(b => b.onclick = () => demo(b.dataset.demo));
+  $$('[data-demo-btn]').forEach(b => b.onclick = () => demo(b.dataset.demoBtn));
+
+  applyRole();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.17, pytest-9.1.1, pluggy-1.7.0
+django: version: 5.2.18, settings: jh.settings (from ini)
+rootdir: /home/user/君华别墅装修项目管理平台/app/backend
+configfile: pytest.ini
+plugins: django-4.14.0
+collected 53 items
+
+core/tests/test_acct.py ............                                     [ 22%]
+core/tests/test_archive.py .......                                       [ 35%]
+core/tests/test_auth_projects.py ...                                     [ 41%]
+core/tests/test_change.py ..                                             [ 45%]
+core/tests/test_check.py .......                                         [ 58%]
+core/tests/test_draw.py .....                                            [ 67%]
+core/tests/test_integration.py ..                                        [ 71%]
+core/tests/test_plan.py ............                                     [ 94%]
+core/tests/test_rules.py ...                                             [100%]
+
+======================== 53 passed in 79.17s (0:01:19) =========================

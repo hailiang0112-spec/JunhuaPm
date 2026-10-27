@@ -1,0 +1,425 @@
+{
+ "passed": 63,
+ "total": 63,
+ "failed": [],
+ "byFlow": {
+  "FLOW-09": {
+   "passed": 21,
+   "total": 21
+  },
+  "FLOW-10": {
+   "passed": 17,
+   "total": 17
+  },
+  "FLOW-11": {
+   "passed": 25,
+   "total": 25
+  }
+ },
+ "consoleErrors": [],
+ "expectedBusiness4xx": [
+  "[qc@375] http://127.0.0.1:5204/api/projects/1/files Failed to load resource: net::ERR_FAILED",
+  "[pm@1440] http://127.0.0.1:5204/api/projects/1/checkpoints/2/release Failed to load resource: the server responded with a status of 403 (Forbidden)",
+  "[member@375] http://127.0.0.1:5204/api/projects/1/checkpoints/2/release Failed to load resource: the server responded with a status of 409 (Conflict)",
+  "[owner@375] http://127.0.0.1:5204/api/projects/1/checkpoints/1/release Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+  "[budget@1440] http://127.0.0.1:5204/api/projects/1/settings Failed to load resource: the server responded with a status of 403 (Forbidden)"
+ ],
+ "hscroll375": [
+  {
+   "label": "PAGE-F06-02 检查点核对",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F06-01 检查点列表",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  }
+ ],
+ "hscrollOverflow": [],
+ "seconds": 70.1,
+ "checks": [
+  {
+   "flow": "FLOW-09",
+   "name": "确认摘要：立即生效、基线保持「已签认」",
+   "ok": true,
+   "detail": "工作项\n夹层设备间隔墙及防潮处理\n检查要点\n隔墙与原结构墙拉结钢筋 2Φ6@500，伸入墙内 ≥700mm（隐蔽）\n是否隐蔽\n是（未放行不得覆盖）\n底图与坐标\n墙体定位图 V1 · 第 1 页 · (0.620, 0.439)\n生效方式\n立即生效，基线保持「已签认」\n知会对象\n业主 刘先生、刘太太"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "新建检查点立即生效并知会业主",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "检查点出现在检查点列表（非草稿）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "基线签认状态不变（已签认）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "留痕：修订与签认历史追加新增检查点",
+   "ok": true,
+   "detail": "['checkpoint_added', 'submit', 'signoff']"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "给业主生成「新增检查点」知会待办",
+   "ok": true,
+   "detail": "['CK-009 夹层 · 设备间 隔墙与原结构墙拉结钢筋 2Φ6@500，伸入墙内 ≥700mm（隐蔽）（隐蔽）']"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "检查点记录分册、版本与坐标",
+   "ok": true,
+   "detail": "检查点\n不得覆盖\n\n隔墙与原结构墙拉结钢筋 2Φ6@500，伸入墙内 ≥700mm（隐蔽）\n\n是否隐蔽\n是（未放行不得覆盖）\n钉点图纸\n墙体定位图 V1 · 夹层 · 设备间\n当前结论\n未核对\n覆盖状态\n未覆盖\n所属工作项\n夹层设备间隔墙及防潮处理\n图上钉点\n在查看器中打开\n009\n底图：墙体定位图 V1（本工作项基线引用的签认版）· 第 1 页 · 坐标 (1860, 922)\n核对与放行历史\n只追加，不可修改\n\n还没有核对记录\n\n业主放行\n未核对\n当前结论为「未核对」，不能放行。质检复核为「一致」或「已变更」后才能放行。\n\n只有业主或业主代理人可以放行。\n\n对图核对 · 将追加为 #1\n现"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "图上显示钉点",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "无照片提交被拒「至少上传 1 张现场照片」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "拍照入口 accept=image/* 且可多选",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "1 张失败可单张重传",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "全部成功前不能提交",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "核对确认摘要含核对人、服务器时间、图纸、照片与钉点、结论、覆盖状态",
+   "ok": true,
+   "detail": "提交核对 #1 / 核对人 / 王工（质检） / 核对时间 / 以服务器时间为准 / 所用图纸 / 墙体定位图 V1 / 照片与钉点 / 2 张 · 夹层 · 设备间 / 结论 / 一致 / 覆盖状态 / 未覆盖 /  / 核对记录提交后不可修改；如需更正，请再次核对追加新记录。 /  / 返回修改 / 确认提交"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "提交成功「核对 #1 已保存」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "记录含核对人、服务器时间、所用版本、照片钉点、结论与覆盖状态",
+   "ok": true,
+   "detail": "核对 #1 一致 王工 · 2026-10-27 16:22（服务器时间） 所用图纸 墙体定位图 V1 覆盖状态 未覆盖 照片 2 张 · 钉在夹层 · 设备间"
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "记录不可修改（只追加，无编辑 / 删除入口）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "375 核对页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "复核追加新记录「核对 #2 已保存」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "当前结论取最新（核对 #2）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "旧记录 #1 仍可查",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-09",
+   "name": "「已变更」无生效变更单被拒「请关联已生效的变更单」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "项目经理无放行按钮，提示「只有业主或业主代理人可以放行」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "项目经理放行请求被拒「只有业主或业主代理人可以放行」",
+   "ok": true,
+   "detail": "[403, '只有业主或业主代理人可以放行']"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "放行按钮 44px 通栏",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "放行确认摘要（依据核对、放行人、服务器时间）",
+   "ok": true,
+   "detail": "确认放行 CK-002 / 检查点 / CK-002 拉结筋间距与伸入长度（负一楼 · 保姆间） / 依据核对 / #1 · 王工 · 结论「一致」 / 放行人 / 刘先生（业主） / 放行时间 / 以服务器时间为准 /  / 放行后记录不可撤回，下一道工序可以覆盖此处。 /  / 返回修改 / 确认放行"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "业主放行成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "显示「已放行」印章",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "放行记录含放行人、时间与所依据核对",
+   "ok": true,
+   "detail": "刘先生 · 2026-10-27 16:23 · 依据核对 #1"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "再次放行提示由谁何时已放行「已由刘先生于 … 放行，未生成新的放行记录」",
+   "ok": true,
+   "detail": "已由刘先生于 2026-10-27 16:23 放行，未生成新的放行记录 检查点\n负一楼保姆间隔墙砌筑\nCK-002\nCK-002 拉结筋间距与伸入长度\n砌墙 · 负一楼 · 保姆间 · 隐蔽工序 · 质检人 王工\n检查点\n已放行\n\n拉结筋间距与伸入长度\n\n是否隐蔽\n是（未放行不得覆盖）\n钉点图纸\n墙体定位图 V1 · 负一楼 · 保姆间\n当前结论\n一致（核对 #1 · 2026-10-27 16"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "再次放行不新增记录（仍 1 条）",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "「不一致」检查点无放行按钮并说明原因",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "「未核对」检查点无放行按钮并说明原因",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "不一致检查点放行请求被拒并说明原因",
+   "ok": true,
+   "detail": "[422, '当前结论为「不一致」，不能放行。质检复核为「一致」或「已变更」后才能放行。']"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "确认摘要警示「放行后发现不一致」且原放行记录保留",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "追加不一致核对成功",
+   "ok": true,
+   "detail": "['核对已保存，已生成问题 WT-002']"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "状态为「放行后发现不一致」",
+   "ok": true,
+   "detail": "放行后发现不一致"
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "原放行记录保留",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-10",
+   "name": "自动生成问题",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "工作项页未放行隐蔽检查点显示红色「不得覆盖」",
+   "ok": true,
+   "detail": "CK-004\n隔墙底部防潮层\n隐蔽 · 结论一致 · 待放行已等 25 小时\n超时"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "工段页显示「不得覆盖」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "手机列表「不得覆盖」筛选含防潮层，印章为红色",
+   "ok": true,
+   "detail": "['负一楼 负一层大厅 · 隔墙底部防潮层\\n超时\\nCK-004 · 砌墙 · 隐蔽\\n结论一致 · 待放行已等 25 小时（时限 24 小时）', '负一楼 负一楼卫生间 · 构造柱钢筋绑扎\\n不得覆盖\\nCK-003 · 砌墙 · 隐蔽\\n待质检核对', '夹层 储藏室 1 · 管道井封堵与闭水\\n不得覆盖\\nCK-006 · 砌墙 · 隐蔽\\n待质检核对']"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "「不得覆盖」印章为红色",
+   "ok": true,
+   "detail": "('seal stop', 'rgb(198, 40, 40)')"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "375 检查点列表无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "owner 待办中超时项置顶并标「超时」",
+   "ok": true,
+   "detail": "超时\n君华新城 · 联排别墅 · 待放行检查点\nCK-004 负一楼 · 负一层大厅 隔墙底部防潮层（隐蔽）\n刘先生（业主）、刘太太（业主）、钱工（代理人）\n2026-10-27 15:22 到期 · 已超时 1 小时（放行时限 24 小时"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "owner 超时项仍未放行（超时只提醒）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "member 待办中超时项置顶并标「超时」",
+   "ok": true,
+   "detail": "超时\n君华新城 · 联排别墅 · 待放行检查点\nCK-004 负一楼 · 负一层大厅 隔墙底部防潮层（隐蔽）\n刘先生（业主）、刘太太（业主）、钱工（代理人）\n2026-10-27 15:22 到期 · 已超时 1 小时（放行时限 24 小时"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "member 超时项仍未放行（超时只提醒）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "pm 待办中超时项置顶并标「超时」",
+   "ok": true,
+   "detail": "超时\n君华新城 · 联排别墅 · 待放行检查点\nCK-004 负一楼 · 负一层大厅 隔墙底部防潮层（隐蔽）\n刘先生（业主）、刘太太（业主）、钱工（代理人）\n2026-10-27 15:22 到期 · 已超时 1 小时（放行时限 24 小时"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "pm 超时项仍未放行（超时只提醒）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "标记覆盖确认摘要",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "标记已覆盖成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "生成「未放行先覆盖」事件",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "「未放行先覆盖」进入业主待办",
+   "ok": true,
+   "detail": "['CK-005 负一楼 · 衣帽间 圈梁钢筋（隐蔽）']"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "未覆盖检查点不一致 → 发现时点「覆盖前」",
+   "ok": true,
+   "detail": "核对 #1\n不一致\n王工 · 2026-10-27 16:23（服务器时间）\n所用图纸\n墙体定位图 V1\n覆盖状态\n未覆盖\n照片\n1 张 · 钉在夹层 · 储藏室 1\n发现时点\n覆盖前\n生成问题\nWT-003 管道井封堵与闭水 · 未闭环\n修正发现时点"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "已覆盖检查点不一致 → 发现时点「覆盖后」",
+   "ok": true,
+   "detail": "核对 #2\n不一致\n王工 · 2026-10-27 16:23（服务器时间）\n所用图纸\n墙体定位图 V1\n覆盖状态\n已被覆盖\n照片\n1 张 · 钉在负一楼 · 衣帽间\n发现时点\n覆盖后\n生成问题\nWT-004 圈梁钢筋 · 未闭环\n修正发现时点"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "交房日后核对不一致 → 发现时点「交房后」",
+   "ok": true,
+   "detail": "核对 #1\n不一致\n王工 · 2026-10-27 16:23（服务器时间）\n所用图纸\n墙体定位图 V1\n覆盖状态\n未覆盖\n照片\n1 张 · 钉在负一楼 · 车库\n发现时点\n交房后\n生成问题\nWT-001 交房后返修：门洞净宽 900mm · 未闭环\n修正发现时点"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "修正需填写理由",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "修正成功并留痕",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "修正记录含前后值、修正人、时间与理由",
+   "ok": true,
+   "detail": "修正：覆盖前 → 覆盖后 · 王工 · 2026-10-27 16:23 · 现场复看发现管道井外侧已先行抹灰，核对时实际已被覆盖"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "预算专员无放行时限修改入口",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "预算专员修改时限被拒（403）",
+   "ok": true,
+   "detail": "403"
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "项目经理把放行时限改为 12 小时",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-11",
+   "name": "之后进入待放行的检查点按 12 小时时限",
+   "ok": true,
+   "detail": "待放行 · 已等 0 小时（项目时限 12 小时；超时只提醒，不会自动放行）"
+  }
+ ]
+}

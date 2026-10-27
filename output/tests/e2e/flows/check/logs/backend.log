@@ -1,0 +1,14 @@
+[2026-10-27 08:22:44 +0000] [3915] [INFO] Starting gunicorn 26.2.0
+[2026-10-27 08:22:44 +0000] [3915] [INFO] Listening at: http://127.0.0.1:8104 (3915)
+[2026-10-27 08:22:44 +0000] [3915] [INFO] Using worker: gthread
+[2026-10-27 08:22:44 +0000] [3928] [INFO] Booting worker with pid: 3928
+[2026-10-27 08:22:44 +0000] [3929] [INFO] Booting worker with pid: 3929
+[2026-10-27 08:22:44 +0000] [3915] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+Forbidden: /api/projects/1/checkpoints/2/release
+Conflict: /api/projects/1/checkpoints/2/release
+Unprocessable Content: /api/projects/1/checkpoints/1/release
+Forbidden: /api/projects/1/settings
+[2026-10-27 08:24:01 +0000] [3915] [INFO] Handling signal: term
+[2026-10-27 16:24:01 +0800] [3928] [INFO] Worker exiting (pid: 3928)
+[2026-10-27 16:24:01 +0800] [3929] [INFO] Worker exiting (pid: 3929)
+[2026-10-27 08:24:01 +0000] [3915] [INFO] Shutting down: Master

@@ -1,0 +1,46 @@
+/* PAGE-F10-01 项目总览：页面特有样式（取自原型，只用 Token 变量） */
+.pg-f1001 .evi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:1199px){.pg-f1001 .evi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){.pg-f1001 .evi{grid-template-columns:1fr}}
+.pg-f1001 .metric{border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);margin:0;text-decoration:none;color:var(--fg)}
+.pg-f1001 .metric .lb{font-size:var(--text-sm);color:var(--fg-2);font-weight:600}
+.pg-f1001 .metric .vl{font-size:var(--text-3xl);font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.pg-f1001 .metric .vl small{font-size:var(--text-base);color:var(--muted)}
+.pg-f1001 .metric .vl.na{font-size:var(--text-xl);color:var(--muted);font-weight:600}
+.pg-f1001 .metric .frac{font-size:var(--text-xs);color:var(--muted)}
+.pg-f1001 .metric .tag{align-self:flex-start}
+.pg-f1001 .meter{position:relative;height:8px;border-radius:var(--radius-pill);background:var(--border-soft);margin-top:var(--space-4)}
+.pg-f1001 .meter>i{position:absolute;left:0;top:0;bottom:0;border-radius:inherit}
+.pg-f1001 .meter>i.ok{background:var(--success)} .pg-f1001 .meter>i.low{background:var(--warn)}
+.pg-f1001 .meter>b{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--fg);transform:translateX(-1px)}
+.pg-f1001 .meter>em{position:absolute;top:-22px;transform:translateX(-50%);font-style:normal;font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+.pg-f1001 .meter>em.end{transform:translateX(-100%)}
+/* 出勤日历 */
+.pg-f1001 .calbar{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4)}
+.pg-f1001 .calbar .month{font-weight:600;min-width:104px;text-align:center}
+.pg-f1001 table.cal{table-layout:fixed;min-width:560px;border-collapse:separate;border-spacing:2px}
+.pg-f1001 table.cal th{text-align:center}
+.pg-f1001 table.cal td{height:58px;padding:var(--space-1) var(--space-2);border:0;border-radius:var(--radius-sm);vertical-align:top}
+.pg-f1001 table.cal td .cd{display:block;font-size:var(--text-xs);color:var(--muted)}
+.pg-f1001 table.cal td .cn{display:block;font-weight:700;font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+.pg-f1001 td.c0{background:var(--border-soft)} .pg-f1001 td.c1{background:color-mix(in oklab,var(--info) 14%,var(--surface))}
+.pg-f1001 td.c2{background:color-mix(in oklab,var(--info) 32%,var(--surface))} .pg-f1001 td.c3{background:color-mix(in oklab,var(--info) 55%,var(--surface))}
+.pg-f1001 td.c4{background:var(--info)} .pg-f1001 td.c4 .cn,.pg-f1001 td.c4 .cd{color:var(--accent-on)}
+.pg-f1001 td.cu{background:var(--surface);outline:1px dashed var(--border);outline-offset:-3px} .pg-f1001 td.cu .cn{color:var(--muted);font-weight:500;font-size:var(--text-xs)}
+.pg-f1001 td.cf{background:var(--surface)} .pg-f1001 td.ce{background:transparent}
+.pg-f1001 td.today{box-shadow:inset 0 0 0 2px var(--fg)}
+.pg-f1001 i.c0{background:var(--border-soft)} .pg-f1001 i.c1{background:color-mix(in oklab,var(--info) 14%,var(--surface))} .pg-f1001 i.c2{background:color-mix(in oklab,var(--info) 32%,var(--surface))}
+.pg-f1001 i.c3{background:color-mix(in oklab,var(--info) 55%,var(--surface))} .pg-f1001 i.c4{background:var(--info)} .pg-f1001 i.cu{background:var(--surface);border:1px dashed var(--border)}
+/* 工段速览 */
+.pg-f1001 .phcard{display:block;border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:var(--space-3);text-decoration:none;color:var(--fg);transition:border-color var(--motion-fast) var(--ease-standard)}
+.pg-f1001 .phcard:hover{border-color:var(--accent)} .pg-f1001 .phcard:active{background:var(--surface-warm)} .pg-f1001 .phcard:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.pg-f1001 .phcard .h{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)}
+.pg-f1001 .phcard .h b{font-size:var(--text-lg)}
+.pg-f1001 .phcard .h .tag{margin-left:auto}
+.pg-f1001 .phcard .m{display:grid;grid-template-columns:1fr 1fr;gap:2px var(--space-3);font-size:var(--text-sm);color:var(--muted);margin-top:var(--space-2)}
+.pg-f1001 tr.row-link td a.rl{color:var(--fg);text-decoration:none}
+.pg-f1001 .sumrow{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.pg-f1001 .gantt a text:hover{text-decoration:underline}
+/* 问题遗留清单：除「问题」列外单行显示，问题列吸收剩余宽度 */
+.legacy-tb td:not(:nth-child(4)){white-space:nowrap}
+.legacy-tb td:nth-child(4){width:100%;min-width:200px}

@@ -1,0 +1,41 @@
+/* PAGE-F16-01 我的待办：样式取自原型 <style>，只用 token 变量 */
+.pg-todo .home{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:var(--space-6);align-items:start}
+@media (max-width:1199px){.pg-todo .home{grid-template-columns:1fr}}
+.pg-todo .filters{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-3);flex-direction:row;padding:0}
+.pg-todo .grp-title{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);font-weight:600;color:var(--fg-2);margin:var(--space-2) 0 var(--space-2)}
+.pg-todo .grp-title .cnt{color:var(--muted);font-weight:400}
+.pg-todo .grp-title.urgent{color:var(--danger)}
+.pg-todo .card.urgent{border-color:color-mix(in oklab,var(--danger),transparent 65%)}
+.pg-todo .todo{display:grid;grid-template-columns:116px minmax(0,1fr) auto;gap:var(--space-3);align-items:start;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft)}
+.pg-todo .todo:first-child{border-top:0}
+.pg-todo .todo .t{font-weight:600;line-height:1.45}
+.pg-todo .todo .p{font-size:var(--text-xs);color:var(--muted);margin-bottom:2px}
+.pg-todo .todo .m{font-size:var(--text-sm);color:var(--fg-2);margin-top:var(--space-1)}
+.pg-todo .todo .m .who{color:var(--muted)}
+.pg-todo .todo .due{font-size:var(--text-sm);color:var(--muted);margin-top:2px}
+.pg-todo .todo .due.bad{color:var(--danger);font-weight:600}
+.pg-todo .todo .acts{display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:flex-end}
+.pg-todo .todo .sealcol{padding-top:2px}
+.pg-todo .seal.plain{color:var(--fg-2)}
+.pg-todo .site{display:block;padding:var(--space-4);text-decoration:none;color:inherit}
+.pg-todo .site .hd{display:flex;gap:var(--space-2);align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-3)}
+.pg-todo .site .nm2{font-weight:600;line-height:1.4}
+.pg-todo .site .ph{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--fg-2);margin-bottom:var(--space-2)}
+.pg-todo .site .ph b{margin-left:auto;font-variant-numeric:tabular-nums}
+.pg-todo .site .stats{display:flex;gap:var(--space-4);font-size:var(--text-sm);color:var(--muted);margin-top:var(--space-3);flex-wrap:wrap}
+.pg-todo .site .stats b{color:var(--fg);font-variant-numeric:tabular-nums}
+.pg-todo .site .stats b.bad{color:var(--danger)}
+.pg-todo .side-title{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-lg);font-weight:600;margin-bottom:var(--space-3)}
+.pg-todo .side-title .hint{font-weight:400;margin-left:auto}
+.pg-todo .updated{font-size:var(--text-xs);color:var(--muted);display:flex;align-items:center;gap:var(--space-1)}
+.pg-todo .state h3{font-size:var(--text-lg);color:var(--fg);margin-bottom:var(--space-1)}
+.pg-todo .state p{margin-bottom:var(--space-4)}
+.pg-todo .state .ic{display:flex;justify-content:center}
+.pg-todo .state .ic .icon{width:32px;height:32px}
+.pg-todo .btn{white-space:nowrap}
+.copy-fallback{width:100%;min-height:140px}
+@media (max-width:767px){
+  .pg-todo .todo{grid-template-columns:minmax(0,1fr)}
+  .pg-todo .todo .acts{justify-content:flex-start}
+  .pg-todo .btn.sm,.pg-todo .chip{height:40px}
+}

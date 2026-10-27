@@ -1,0 +1,9 @@
+/* PAGE-F01-03 无权限页（原型 .deny） */
+.deny{text-align:center}
+.deny .deny-ic{width:64px;height:64px;margin:0 auto var(--space-4);border-radius:50%;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center}
+.deny .deny-ic .icon{width:30px;height:30px}
+.auth .deny h1{margin-bottom:var(--space-2)}
+.deny p{color:var(--muted);margin-bottom:var(--space-6)}
+.deny .auth-brand{justify-content:center;text-align:left}
+.deny a.btn.primary{color:var(--accent-on)}
+@media (max-width:767px){.auth.deny-wrap{justify-content:flex-start;padding-top:var(--space-6)}.deny.auth-card{padding:var(--space-6) var(--space-4)}}

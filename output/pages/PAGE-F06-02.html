@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F06-02">
+  <meta name="description" content="质检对图拍照核对，业主或代理人放行隐蔽检查点。">
+  <title>检查点详情·核对与放行 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+[hidden]{display:none!important}
+a.btn{text-decoration:none;color:var(--fg)}
+a.btn.primary{color:var(--accent-on)}
+.tabbar{z-index:40}.mask{z-index:50}.toast{z-index:60}
+.topbar{flex-wrap:wrap}
+.topbar .ttl{min-width:0}
+.demo{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted);white-space:nowrap}
+.demo .select{min-height:32px;width:auto;font-size:var(--text-sm);padding:0 var(--space-2)}
+.side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer;overflow:hidden}
+.side .sitepick:hover{border-color:var(--accent)}
+.side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.navitem .badge{margin-left:auto}
+.tab{border:0;background:none;font-family:inherit;cursor:pointer;min-height:44px}
+.tab-ic{position:relative;display:inline-flex}
+.tab-badge{position:absolute;top:-6px;right:-12px;min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.crumb{font-size:var(--text-sm);color:var(--muted);display:flex;gap:var(--space-1);flex-wrap:wrap;align-items:center;margin-bottom:var(--space-2)}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.crumb .icon{width:14px;height:14px}
+.banner{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--warn-soft);color:var(--fg);border:1px solid color-mix(in oklab,var(--warn),transparent 70%);margin-bottom:var(--space-4);font-size:var(--text-sm)}
+.banner>.icon{color:var(--warn);margin-top:1px}
+.banner b{font-weight:600}
+.banner.bad{background:var(--danger-soft);border-color:color-mix(in oklab,var(--danger),transparent 70%)}
+.banner.bad>.icon{color:var(--danger)}
+.banner.note{background:var(--info-soft);border-color:color-mix(in oklab,var(--info),transparent 70%)}
+.banner.note>.icon{color:var(--info)}
+.banner .act{margin-left:auto;flex:none}
+.dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border-bottom:1px solid var(--border-soft)}
+.dlg-hd h2{font-size:var(--text-lg);font-weight:600;line-height:var(--leading-tight)}
+.dlg-bd{padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)}
+.dlg-ft{display:flex;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);position:sticky;bottom:0;background:var(--surface-overlay)}
+.icon-btn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg-2);cursor:pointer;transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard)}
+.icon-btn:hover{border-color:var(--accent);background:var(--surface-warm)}
+.icon-btn:active{background:var(--border-soft)}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.icon-btn.ghost{border-color:transparent;background:none}
+.confirm-summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-1) var(--space-3)}
+.confirm-summary dd{margin-bottom:0}
+.cf-warn{font-size:var(--text-sm);color:var(--danger);display:flex;gap:var(--space-2)}
+.kv{display:grid;grid-template-columns:128px minmax(0,1fr);gap:var(--space-2) var(--space-4);font-size:var(--text-sm)}
+.kv dt{color:var(--muted)}
+.kv dd{color:var(--fg)}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--font-mono);font-size:var(--text-xs)}
+.sheet-nav{padding:var(--space-2)}
+.more-dialog{align-self:flex-end;width:100%;max-height:80vh}
+.err-list{margin:var(--space-1) 0 0 var(--space-4);font-size:var(--text-sm)}
+@media (max-width:767px){
+  .kv{grid-template-columns:1fr;gap:0}
+  .kv dd{margin-bottom:var(--space-2)}
+  .topbar{gap:var(--space-2)}
+  .topbar .demo{order:-1;width:100%;justify-content:flex-end}
+  .mask{padding:0;align-items:flex-end}
+  .dialog{border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh}
+}
+
+.plan .wall{fill:none;stroke:var(--fg-2);stroke-width:6;stroke-linejoin:miter}
+.plan .iwall{fill:none;stroke:var(--fg-2);stroke-width:3}
+.plan .room{font:600 22px var(--font-body);fill:var(--muted);text-anchor:middle}
+.plan .dim{font:15px var(--font-mono);fill:var(--muted);text-anchor:middle}
+.plan .pipe{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:6 4}
+.plan .wire{fill:none;stroke:var(--muted);stroke-width:1.2}
+.plan .sock{fill:var(--surface);stroke:var(--fg-2);stroke-width:1.4}
+.plan .door{fill:none;stroke:var(--muted);stroke-width:1.2}
+.plan .gap{stroke:var(--surface);stroke-width:8}
+.plan .bg{fill:var(--surface)}
+.plan .chg{fill:color-mix(in oklab,var(--warn),transparent 82%);stroke:var(--warn);stroke-width:1.5;stroke-dasharray:4 3}
+.pinmark{cursor:pointer}
+.pinmark circle.o{stroke:var(--surface);stroke-width:3}
+.pinmark text{font:700 12px var(--font-body);fill:var(--accent-on);text-anchor:middle;pointer-events:none}
+.pinmark.s-none circle.o{fill:var(--muted)}
+.pinmark.s-pend circle.o{fill:var(--warn)}
+.pinmark.s-pass circle.o{fill:var(--success)}
+.pinmark.s-stop circle.o{fill:var(--danger)}
+.pinmark.s-proxy circle.o{fill:var(--info)}
+.pinmark .halo{fill:none;stroke:var(--accent);stroke-width:3;opacity:0}
+.pinmark.cur .halo{opacity:1}
+.pinmark:hover circle.o{stroke:var(--fg)}
+.pinmark:focus-visible{outline:none}
+.pinmark:focus-visible .halo{opacity:1}
+
+.ck-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--space-4);align-items:start}
+.col{display:flex;flex-direction:column;min-width:0}
+.ck-head .card-bd{display:flex;flex-direction:column;gap:var(--space-3)}
+.ck-head .lead{display:flex;align-items:flex-start;gap:var(--space-3)}
+.ck-head .lead p{font-size:var(--text-base);color:var(--fg)}
+.mapbox{border:1px solid var(--border-soft);border-radius:var(--radius-sm);overflow:hidden;background:var(--surface)}
+.mapbox svg{display:block;width:100%;height:auto}
+.maphint{display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);margin-top:var(--space-2)}
+.wait{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--fg-2)}
+.wait .icon{color:var(--danger)}
+.basis{background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-3);font-size:var(--text-sm);margin:var(--space-3) 0}
+.basis b{font-weight:600}
+.blocked{display:flex;gap:var(--space-2);align-items:flex-start;color:var(--danger);font-size:var(--text-sm);background:var(--danger-soft);border-radius:var(--radius-sm);padding:var(--space-3)}
+.rel-rec{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3) 0;border-top:1px solid var(--border-soft);font-size:var(--text-sm)}
+.rel-rec:first-child{border-top:0}
+.form{display:flex;flex-direction:column;gap:var(--space-4)}
+.draft{display:flex;gap:var(--space-2);align-items:center;font-size:var(--text-xs);color:var(--info);background:var(--info-soft);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3)}
+.draft .btn{margin-left:auto}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:var(--space-2)}
+.ptile{position:relative;border:1px solid var(--border-soft);border-radius:var(--radius-sm);overflow:hidden;background:var(--surface);display:flex;flex-direction:column}
+.ptile .ph{display:block;width:100%;height:auto}
+.ph-bg{fill:var(--surface-warm)}
+.ph-brick{fill:none;stroke:var(--border);stroke-width:1.2}
+.ph-pipe{fill:none;stroke:var(--fg-2);stroke-width:3.5;stroke-linecap:round}
+.ph-box{fill:var(--surface);stroke:var(--fg-2);stroke-width:1.5}
+.ptile .pst{display:flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-2);font-size:var(--text-xs);min-height:32px}
+.ptile .pst.ok{color:var(--success)}
+.ptile .pst.fail{color:var(--danger)}
+.ptile .pst.up{color:var(--muted)}
+.ptile .pst .icon{width:14px;height:14px}
+.ptile .rm{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:var(--radius-pill);border:0;background:color-mix(in oklab,var(--fg),transparent 40%);color:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ptile .rm:hover{background:var(--fg)}
+.ptile .rm:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.ptile .rm .icon{width:14px;height:14px}
+.ptile .retry{margin-left:auto;height:28px;padding:0 var(--space-2);font-size:var(--text-xs)}
+.addtile{border:1px dashed var(--border);border-radius:var(--radius-sm);min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-1);font-size:var(--text-sm);color:var(--fg-2);cursor:pointer;background:var(--surface);transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard)}
+.addtile:hover{border-color:var(--accent);background:var(--surface-warm)}
+.addtile:active{background:var(--border-soft)}
+.addtile:focus-within{box-shadow:var(--focus-ring)}
+.addtile input{position:absolute;width:1px;height:1px;opacity:0}
+.seg{border:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.seg legend{font-size:var(--text-sm);color:var(--fg-2);margin-bottom:var(--space-2)}
+.seg legend .req{color:var(--danger)}
+.seg .opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2)}
+.seg .opts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label span{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-base);cursor:pointer;background:var(--surface);transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard)}
+.seg label span:hover{border-color:var(--accent)}
+.seg label span:active{background:var(--surface-warm)}
+.seg input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+.seg input:focus-visible+span{box-shadow:var(--focus-ring)}
+.seg.invalid label span{border-color:var(--danger)}
+.seg .err{font-size:var(--text-xs);color:var(--danger)}
+.fhint{font-size:var(--text-xs);color:var(--muted)}
+.fwarn{font-size:var(--text-sm);color:var(--danger);display:flex;gap:var(--space-2);align-items:flex-start}
+.formerr{background:var(--danger-soft);color:var(--danger);border-radius:var(--radius-sm);padding:var(--space-3);font-size:var(--text-sm)}
+.recs{display:flex;flex-direction:column}
+.rec{padding:var(--space-4) 0;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:var(--space-2)}
+.rec:first-child{border-top:0;padding-top:0}
+.rec .rh{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+.rec .rh b{font-weight:600}
+.rec .meta{font-size:var(--text-xs);color:var(--muted)}
+.rec .thumbs{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.rec .thumbs .ph{width:84px;height:63px;border-radius:var(--radius-sm);border:1px solid var(--border-soft)}
+.rec .kv{grid-template-columns:96px minmax(0,1fr)}
+.rec .fix{font-size:var(--text-xs);color:var(--fg-2);background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3)}
+.rec.event{flex-direction:row;align-items:flex-start;gap:var(--space-2);font-size:var(--text-sm)}
+.rec.event .icon{color:var(--danger);margin-top:2px}
+.newrec{animation:fadeIn var(--motion-base) var(--ease-standard)}
+@media (prefers-reduced-motion:reduce){.newrec{animation:none}}
+.cover-row{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;font-size:var(--text-sm)}
+@media (max-width:767px){
+  .ck-grid{display:flex;flex-direction:column;gap:0}
+  .col{display:contents}
+  .o1{order:1}.o2{order:2}.o3{order:3}.o4{order:4}.o5{order:5}.o6{order:6}
+  .rec .kv{grid-template-columns:1fr}
+}
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+    <button type="button" class="sitepick" aria-label="切换工地，当前君华新城 · 联排别墅"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer"></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <nav aria-label="工地导航">
+<a class="navitem" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="nm">我的待办</span><span class="badge" aria-label="7 项">7</span></a>
+<div class="navgroup">总览</div>
+<a class="navitem" href="PAGE-F10-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+<a class="navitem" href="PAGE-F10-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="m2 16 10 5 10-5"/></svg><span class="nm">楼层 / 房间</span></a>
+<div class="navgroup">施工阶段</div>
+<a class="navitem" href="PAGE-F10-03.html?phase=p1"><span class="phase-dot" style="background:var(--phase-1)" aria-hidden="true"></span><span class="nm">砌墙</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p2"><span class="phase-dot" style="background:var(--phase-2)" aria-hidden="true"></span><span class="nm">水电</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p3"><span class="phase-dot" style="background:var(--phase-3)" aria-hidden="true"></span><span class="nm">铺砖</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p4"><span class="phase-dot" style="background:var(--phase-4)" aria-hidden="true"></span><span class="nm">木工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p5"><span class="phase-dot" style="background:var(--phase-5)" aria-hidden="true"></span><span class="nm">油灰工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p6"><span class="phase-dot" style="background:var(--phase-6)" aria-hidden="true"></span><span class="nm">安装收尾</span></a>
+<div class="navgroup">证据链</div>
+<a class="navitem" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg><span class="nm">图纸</span></a>
+<a class="navitem" href="PAGE-F05-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 7h-4L9 3Z"/><path d="M5 14h14v4H5z"/><path d="M4 21h16"/></svg><span class="nm">基线签认</span></a>
+<a class="navitem on" href="PAGE-F06-01.html" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="nm">检查点</span><span class="badge" aria-label="5 项">5</span></a>
+<a class="navitem" href="PAGE-F07-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M9 15h6M12 12v6"/></svg><span class="nm">变更单</span></a>
+<a class="navitem" href="PAGE-F08-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg><span class="nm">问题</span></a>
+<div class="navgroup">房屋档案</div>
+<a class="navitem" href="PAGE-F12-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg><span class="nm">档案资料</span></a>
+<a class="navitem" href="PAGE-F13-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+<a class="navitem" href="PAGE-F13-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg><span class="nm">公告栏</span></a>
+<a class="navitem" href="PAGE-F15-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span class="nm">付款节点</span></a>
+<div class="navgroup">项目设置</div>
+<a class="navitem" href="PAGE-F01-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+<a class="navitem" href="PAGE-F03-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">项目结构</span></a>
+<a class="navitem" href="PAGE-F03-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span class="nm">数据导入导出</span></a>
+<a class="navitem" href="PAGE-F17-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+<div data-roles="公司管理员"><div class="navgroup">公司</div>
+<a class="navitem" href="PAGE-F01-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span class="nm">项目管理</span></a>
+<a class="navitem" href="PAGE-F03-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="nm">公司模板</span></a>
+<a class="navitem" href="PAGE-F09-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4V4Z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7V4Z"/></svg><span class="nm">公司经验库</span></a></div>
+<div class="navgroup"></div>
+<a class="navitem" href="PAGE-F02-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a>
+    </nav>
+  </aside>
+  <main class="main" id="main">
+
+<nav class="crumb" aria-label="位置"><a href="PAGE-F06-01.html">检查点</a><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg><a href="PAGE-F05-01.html">二楼书房 B 墙内线管预埋</a><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg><span>CK-033</span></nav>
+<header class="topbar">
+  <div class="ttl"><h1>CK-033 墙内线管预埋走向</h1><div class="sub">砌墙 · 二楼 · 书房 B · 隐蔽工序 · 质检人 王工</div></div>
+  <span class="spacer"></span>
+  <label class="demo">演示身份<select class="select" id="demoRole"><option selected>业主</option><option>业主代理人</option><option>业主方成员</option><option>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+</header>
+
+<div class="banner" role="note"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><div><b>该工作项有新版图纸待重签。</b>水电点位图 V2 已于 2026-10-16 签认，本工作项基线尚未重签，核对仍以原签认版 <b>V1</b> 为底图。</div><a class="btn sm act" href="PAGE-F04-02.html">对比 V1 / V2</a></div>
+
+<div class="ck-grid">
+  <div class="col">
+    <section class="card ck-head o1" aria-labelledby="hHead">
+      <div class="card-hd"><h2 id="hHead">检查点</h2><span class="spacer"></span><span class="seal stop" id="ckSeal">不得覆盖</span></div>
+      <div class="card-bd">
+        <div class="lead"><p>线管沿东墙竖向预埋，管中距门洞边不小于 150mm，插座底盒中心距地 300mm，走向与水电点位图一致；砌筑抹灰后不可见。</p></div>
+        <dl class="kv">
+          <dt>是否隐蔽</dt><dd>是（未放行不得覆盖）</dd>
+          <dt>钉点图纸</dt><dd>水电点位图 V1 · 二楼 · 书房 B 东墙</dd>
+          <dt>当前结论</dt><dd id="curConc">一致（核对 #2 · 2026-10-26 09:10）</dd>
+          <dt>覆盖状态</dt><dd id="curCover">未覆盖</dd>
+          <dt>所属工作项</dt><dd><a href="PAGE-F05-01.html">二楼书房 B 墙内线管预埋</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="card o3" aria-labelledby="hMap">
+      <div class="card-hd"><h2 id="hMap">图上钉点</h2><span class="spacer"></span><a class="btn sm" href="PAGE-F04-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg>在查看器中打开</a></div>
+      <div class="card-bd">
+        <div class="mapbox"><svg class="plan" viewBox="0 0 800 520" role="img" aria-label="二楼水电点位图 V1，CK-033 钉点位于书房 B 东墙" >
+  <rect class="bg" x="0" y="0" width="800" height="520"/>
+  <rect class="wall" x="40" y="40" width="720" height="440"/>
+  <path class="iwall" d="M150 40 V240 M380 40 V240 M460 40 V240 M640 40 V240 M40 240 H760 M40 300 H760 M160 300 V480 M400 300 V480 M580 300 V480"/>
+  <path class="gap" d="M620 300 H690 M440 300 H500 M240 300 H310 M230 240 H290 M520 240 H580 M80 300 H130"/>
+  <path class="door" d="M620 300 A70 70 0 0 1 690 370 M620 300 V370"/>
+  <text class="dim" x="655" y="292">门洞 900</text>
+  <text class="room" x="95" y="150">主卫</text>
+  <text class="room" x="265" y="150">主卧</text>
+  <text class="room" x="420" y="150">衣帽间</text>
+  <text class="room" x="550" y="150">次卧</text>
+  <text class="room" x="700" y="150">次卫</text>
+  <text class="room" x="400" y="276">走廊</text>
+  <text class="room" x="100" y="400">楼梯间</text>
+  <text class="room" x="280" y="400">家庭厅</text>
+  <text class="room" x="490" y="400">书房 A</text>
+  <text class="room" x="670" y="420">书房 B</text>
+  <path class="pipe" d="M100 150 V228 H690 V150"/>
+  <path class="wire" d="M752 330 V460 H700"/>
+  <rect class="sock" x="196" y="44" width="14" height="8"/><rect class="sock" x="300" y="44" width="14" height="8"/>
+  <rect class="sock" x="590" y="44" width="14" height="8"/><rect class="sock" x="744" y="390" width="8" height="14"/>
+  <rect class="sock" x="300" y="472" width="14" height="8"/><rect class="sock" x="470" y="472" width="14" height="8"/>
+  
+  <circle class="sock" cx="600" cy="62" r="7"/>
+  <g class="pinmark s-pend cur" tabindex="0" role="button" data-ck="CK-033" aria-label="CK-033 墙内线管预埋走向，待放行，当前检查点" transform="translate(740 390)"><circle class="halo" r="24"/><circle class="o" r="17"/><text y="4">033</text></g>
+</svg></div>
+        <div class="maphint"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5V8"/></svg><span>底图：水电点位图 V1（本工作项基线引用的签认版）· 坐标 (740, 390)</span></div>
+      </div>
+    </section>
+
+    <section class="card o6" aria-labelledby="hHist">
+      <div class="card-hd"><h2 id="hHist">核对与放行历史</h2><span class="spacer"></span><span class="muted" style="font-size:var(--text-xs)">只追加，不可修改</span></div>
+      <div class="card-bd recs" id="recs">
+        <article class="rec">
+          <div class="rh"><b>核对 #2</b><span class="tag ok">一致</span><span class="meta">王工 · 2026-10-26 09:10（服务器时间）</span></div>
+          <dl class="kv"><dt>所用图纸</dt><dd>水电点位图 V1</dd><dt>覆盖状态</dt><dd>未覆盖</dd><dt>照片</dt><dd>3 张 · 钉在书房 B 东墙</dd></dl>
+          <div class="thumbs"><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M30 12 V60 Q30 70 40 70 H96"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M24 10 V78"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M70 8 V50 H104"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg></div>
+        </article>
+        <article class="rec" id="rec1">
+          <div class="rh"><b>核对 #1</b><span class="tag bad">不一致</span><span class="meta">王工 · 2026-10-25 16:30（服务器时间）</span></div>
+          <dl class="kv"><dt>所用图纸</dt><dd>水电点位图 V1</dd><dt>覆盖状态</dt><dd>未覆盖</dd><dt>发现时点</dt><dd id="r1Point">覆盖前</dd><dt>生成问题</dt><dd><a href="PAGE-F08-01.html">WT-021 线管距门洞边仅 80mm</a> · 已闭环</dd></dl>
+          <div class="thumbs"><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M24 10 V78"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M70 8 V50 H104"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg></div>
+          <div id="r1Fixes"></div>
+          <div><button type="button" class="btn sm" data-roles="质检 项目经理" data-open="fixMask"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/></svg>修正发现时点</button></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="card o2" aria-labelledby="hRel" id="relCard">
+      <div class="card-hd"><h2 id="hRel">业主放行</h2><span class="spacer"></span><span class="seal stop" id="relSeal">超时</span></div>
+      <div class="card-bd">
+        <div class="wait" id="waitLine"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>待放行 · 已等 <b class="num">30</b> 小时（项目时限 24 小时；超时只提醒，不会自动放行）</span></div>
+        <div class="basis" id="basis">依据 <b>核对 #2</b> · 王工 · 2026-10-26 09:10 · 结论「一致」· 3 张照片</div>
+        <div class="blocked" id="relBlocked" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span id="relBlockedTxt"></span></div>
+        <div data-roles="业主 业主代理人" id="relAct">
+          <button type="button" class="btn primary block" id="relBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 7h-4L9 3Z"/><path d="M5 14h14v4H5z"/><path d="M4 21h16"/></svg>放行</button>
+          <p class="fhint" id="proxyHint" style="margin-top:var(--space-2)">以业主代理人身份放行时，记录标注「代理放行」。</p>
+        </div>
+        <p class="fhint" data-roles="项目经理 设计经理 质检 预算专员 公司管理员">只有业主或业主代理人可以放行。</p>
+        <p class="fhint" data-roles="业主方成员">业主方成员只能查看；被业主指定为业主代理人后才能放行。</p>
+        <div id="relRecs" style="margin-top:var(--space-3)"></div>
+      </div>
+    </section>
+
+    <section class="card o4" aria-labelledby="hForm" data-roles="质检">
+      <div class="card-hd"><h2 id="hForm">对图核对 <span class="muted" id="nextNo" style="font-size:var(--text-sm);font-weight:400">· 将追加为 #3</span></h2></div>
+      <div class="card-bd form" id="ckForm">
+        <div class="draft" id="draftBar"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6"/></svg><span id="draftTxt">已自动保存为本机草稿 · 2026-10-27 14:52</span><button type="button" class="btn sm" id="dropDraft">放弃草稿</button></div>
+        <div class="formerr" id="formErr" role="alert" hidden></div>
+        <fieldset class="seg" id="fPhotos">
+          <legend>现场照片 <span class="req">*</span> <span class="fhint">至少 1 张，全部上传成功后才能提交</span></legend>
+          <div class="photos" id="photos"></div>
+        </fieldset>
+        <p class="fhint"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg> 照片钉点：书房 B 东墙（沿用检查点钉点，所用图纸 水电点位图 V1）</p>
+        <fieldset class="seg" id="fConc">
+          <legend>结论 <span class="req">*</span></legend>
+          <div class="opts">
+            <label><input type="radio" name="conc" value="一致"><span>一致</span></label>
+            <label><input type="radio" name="conc" value="不一致"><span>不一致</span></label>
+            <label><input type="radio" name="conc" value="已变更"><span>已变更</span></label>
+          </div>
+        </fieldset>
+        <div class="field" id="fBg" hidden>
+          <label for="bgSel">关联已生效的变更单 <span class="req">*</span></label>
+          <select class="select" id="bgSel">
+            <option value="">请选择</option>
+            <option value="BG-001">BG-001 二楼书房 B 新增 2 个五孔插座（已生效 2026-10-14）</option>
+          </select>
+          <span class="fhint">只列出已由业主签认生效的变更单；BG-003 尚待签认，不可关联。</span>
+          <span class="err" id="bgErr" hidden>请关联已生效的变更单</span>
+        </div>
+        <fieldset class="seg" id="fCover">
+          <legend>核对时是否已被覆盖 <span class="req">*</span></legend>
+          <div class="opts two">
+            <label><input type="radio" name="cover" value="未覆盖"><span>未覆盖</span></label>
+            <label><input type="radio" name="cover" value="已被覆盖"><span>已被覆盖</span></label>
+          </div>
+          <p class="fwarn" id="coverWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span>该检查点尚未放行，提交后将记录一条「未放行先覆盖」事件。</span></p>
+        </fieldset>
+        <button type="button" class="btn primary block" id="submitCk"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>提交核对记录</button>
+      </div>
+    </section>
+
+    <section class="card o5" aria-labelledby="hCover" data-roles="项目经理">
+      <div class="card-hd"><h2 id="hCover">覆盖登记</h2></div>
+      <div class="card-bd">
+        <div class="cover-row"><span id="coverTxt">当前未覆盖。隐蔽工序被下一道工序盖住时，请标记已覆盖。</span></div>
+        <button type="button" class="btn danger block" id="coverBtn" style="margin-top:var(--space-3)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17h18M5 17V9h14v8"/><path d="M8 9V6h8v3"/></svg>标记已覆盖</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="mask" id="fixMask" role="dialog" aria-modal="true" aria-labelledby="fixTitle">
+  <div class="dialog">
+    <div class="dlg-hd"><h2 id="fixTitle">修正发现时点 · 核对 #1</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <p class="fhint">系统推断：核对日期 2026-10-25 早于计划交房日期 2027-08-30，核对时未覆盖，记为「覆盖前」。修正后原值保留在历史中。</p>
+      <div class="field"><label for="fixVal">修正为 <span class="req">*</span></label>
+        <select class="select" id="fixVal"><option value="覆盖后">覆盖后</option><option value="交房后">交房后</option></select></div>
+      <div class="field" id="fixReasonF"><label for="fixReason">修正理由 <span class="req">*</span></label>
+        <textarea class="textarea" id="fixReason" rows="3" placeholder="例如：现场复看发现东墙已先行抹灰，核对时实际已被覆盖"></textarea>
+        <span class="err" hidden>请填写修正理由</span></div>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>取消</button><button type="button" class="btn primary" id="fixNext">下一步</button></div>
+  </div>
+</div>
+
+  </main>
+</div>
+<nav class="tabbar" aria-label="手机底部导航"><a class="tab" href="PAGE-F16-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="tab-badge" aria-label="7 项">7</span></span>待办</a><a class="tab on" href="PAGE-F06-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="tab-badge" aria-label="5 项">5</span></span>检查点</a><a class="tab" href="PAGE-F04-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg></span>图纸</a><button type="button" class="tab" id="moreBtn" aria-haspopup="dialog"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>更多</button></nav>
+
+<div class="mask" id="confirmMask" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="dialog">
+    <div class="dlg-hd"><h2 id="cfTitle">确认</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <p id="cfLead" class="muted"></p>
+      <dl class="confirm-summary" id="cfList"></dl>
+      <p class="cf-warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span></span></p>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>返回修改</button><button type="button" class="btn primary" id="cfOk">确认</button></div>
+  </div>
+</div>
+<div class="mask" id="moreMask" role="dialog" aria-modal="true" aria-label="全部导航">
+  <div class="dialog more-dialog">
+    <div class="dlg-hd"><h2>全部导航</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <nav class="sheet-nav" id="moreNav" aria-label="全部导航"></nav>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sel=document.getElementById('demoRole');
+  var NAMES={'业主':'刘先生','业主代理人':'刘太太','业主方成员':'钱工','项目经理':'张工','设计经理':'李工','质检':'王工','预算专员':'赵会计','公司管理员':'周经理'};
+  window.demoRole=function(){return sel.value};
+  window.demoName=function(){return NAMES[sel.value]};
+  window.applyRoles=function(root){
+    var r=sel.value;
+    (root||document).querySelectorAll('[data-roles]').forEach(function(el){el.hidden=el.dataset.roles.split(' ').indexOf(r)<0});
+  };
+  sel.addEventListener('change',function(){applyRoles();document.dispatchEvent(new CustomEvent('rolechange',{detail:sel.value}))});
+  window.toast=function(msg){
+    document.querySelectorAll('.toast').forEach(function(t){t.remove()});
+    var t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;
+    document.body.appendChild(t);setTimeout(function(){t.remove()},3200);
+  };
+  var lastFocus=null;
+  window.openMask=function(id){var m=document.getElementById(id);lastFocus=document.activeElement;m.classList.add('show');var f=m.querySelector('[autofocus],button,input,select,textarea');if(f)f.focus();};
+  window.closeMask=function(id){document.getElementById(id).classList.remove('show');if(lastFocus&&lastFocus.focus)lastFocus.focus();};
+  document.addEventListener('click',function(e){
+    var c=e.target.closest('[data-close]');if(c){closeMask(c.closest('.mask').id);return}
+    var o=e.target.closest('[data-open]');if(o){openMask(o.dataset.open)}
+    if(e.target.classList&&e.target.classList.contains('mask'))closeMask(e.target.id);
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.querySelector('.mask.show');if(m)closeMask(m.id)}});
+  var cfOk=document.getElementById('cfOk'),cfCb=null;
+  window.confirmAct=function(o){
+    document.getElementById('cfTitle').textContent=o.title;
+    document.getElementById('cfLead').textContent=o.lead||'';
+    var dl=document.getElementById('cfList');dl.innerHTML='';
+    (o.items||[]).forEach(function(kv){var dt=document.createElement('dt');dt.textContent=kv[0];var dd=document.createElement('dd');dd.textContent=kv[1];dl.appendChild(dt);dl.appendChild(dd)});
+    var w=document.getElementById('cfWarn');w.hidden=!o.warn;w.lastChild.textContent=o.warn||'';
+    cfOk.textContent=o.ok||'确认';cfOk.className='btn '+(o.danger?'danger':'primary');
+    cfCb=o.onOk;openMask('confirmMask');
+  };
+  cfOk.addEventListener('click',function(){closeMask('confirmMask');if(cfCb)cfCb()});
+  window.stamp=function(el,cls,text){el.className='seal '+cls;el.textContent=text;void el.offsetWidth;el.classList.add('just')};
+  var mb=document.getElementById('moreBtn');
+  mb.addEventListener('click',function(){
+    var box=document.getElementById('moreNav');
+    if(!box.childElementCount){box.innerHTML=document.querySelector('.side nav').innerHTML;applyRoles(box)}
+    openMask('moreMask');
+  });
+  applyRoles();
+})();
+</script>
+<script>var IC={check:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>',alert:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg>',retry:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>',x:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',camera:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.5" r="3.5"/></svg>',image:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>',stamp:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 7h-4L9 3Z"/><path d="M5 14h14v4H5z"/><path d="M4 21h16"/></svg>'};
+var S={conc:'一致',basis:2,waitH:30,limit:24,released:null,covered:false,coverEvent:false,next:3,problem:null,hidden:true};
+var photos=[{n:'IMG_20261027_1450.jpg',st:'ok',v:0},{n:'IMG_20261027_1451.jpg',st:'fail',v:2}];
+function phSvg(v){return document.querySelectorAll('#recs .thumbs .ph')[v%3].outerHTML}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function now(){return '2026-10-27 15:12'}
+function touchDraft(){document.getElementById('draftBar').hidden=false;document.getElementById('draftTxt').textContent='已自动保存为本机草稿 · 2026-10-27 15:0'+(Math.floor(Math.random()*9))}
+function renderPhotos(){
+  var box=document.getElementById('photos');var h='';
+  photos.forEach(function(p,i){
+    var st=p.st==='ok'?'<div class="pst ok">'+IC.check+'已上传</div>':p.st==='up'?'<div class="pst up"><span class="skeleton" style="flex:1"></span>上传中</div>':'<div class="pst fail">'+IC.alert+'上传失败<button type="button" class="btn sm retry" data-retry="'+i+'">'+IC.retry+'重传</button></div>';
+    h+='<div class="ptile">'+phSvg(p.v)+'<button type="button" class="rm" data-rm="'+i+'" aria-label="移除 '+esc(p.n)+'">'+IC.x+'</button>'+st+'</div>';
+  });
+  h+='<label class="addtile">'+IC.camera+'拍照<input type="file" accept="image/*" capture="environment" multiple data-add></label>';
+  h+='<label class="addtile">'+IC.image+'相册<input type="file" accept="image/*" multiple data-add></label>';
+  box.innerHTML=h;
+}
+function upload(i){photos[i].st='up';renderPhotos();setTimeout(function(){photos[i].st='ok';renderPhotos();touchDraft()},1200)}
+document.getElementById('photos').addEventListener('click',function(e){
+  var r=e.target.closest('[data-retry]');if(r){upload(+r.dataset.retry);return}
+  var m=e.target.closest('[data-rm]');if(m){photos.splice(+m.dataset.rm,1);renderPhotos();touchDraft()}
+});
+document.getElementById('photos').addEventListener('change',function(e){
+  if(!e.target.dataset.hasOwnProperty('add'))return;
+  var fs=e.target.files;if(!fs.length)return;
+  for(var k=0;k<fs.length;k++){photos.push({n:fs[k].name,st:'up',v:photos.length});(function(idx){setTimeout(function(){photos[idx].st='ok';renderPhotos();touchDraft()},1200)})(photos.length-1)}
+  renderPhotos();
+});
+document.getElementById('dropDraft').addEventListener('click',function(){photos=[];renderPhotos();document.querySelectorAll('#ckForm input[type=radio]').forEach(function(r){r.checked=false});onConc();onCover();document.getElementById('draftBar').hidden=true;toast('已放弃本机草稿')});
+function val(n){var r=document.querySelector('input[name='+n+']:checked');return r?r.value:''}
+function onConc(){document.getElementById('fBg').hidden=val('conc')!=='已变更';touchDraft()}
+function onCover(){document.getElementById('coverWarn').hidden=!(val('cover')==='已被覆盖'&&!S.released)}
+document.querySelectorAll('input[name=conc]').forEach(function(r){r.addEventListener('change',onConc)});
+document.querySelectorAll('input[name=cover]').forEach(function(r){r.addEventListener('change',function(){onCover();touchDraft()})});
+
+function headSeal(){
+  var el=document.getElementById('ckSeal');var c,t;
+  if(S.conc==='不一致'&&S.released){c='stop';t='放行后发现不一致'}
+  else if(S.conc==='不一致'){c='stop';t='不一致'}
+  else if(S.coverEvent){c='stop';t='未放行先覆盖'}
+  else if(!S.released&&S.hidden&&!S.covered){c='stop';t='不得覆盖'}
+  else if(S.released){c=S.released.proxy?'proxy':'pass';t=S.released.proxy?'代理放行':'已放行'}
+  else {c='pend';t='待放行'}
+  if(el.textContent!==t)stamp(el,c,t);
+}
+function renderRel(){
+  var seal=document.getElementById('relSeal'),blk=document.getElementById('relBlocked'),act=document.getElementById('relAct');
+  var wait=document.getElementById('waitLine'),basis=document.getElementById('basis');
+  if(S.released){
+    wait.hidden=true;blk.hidden=true;
+    basis.innerHTML='依据 <b>核对 #'+S.released.basis+'</b> 放行';
+  }else if(S.conc!=='一致'&&S.conc!=='已变更'){
+    wait.hidden=true;basis.hidden=true;blk.hidden=false;
+    document.getElementById('relBlockedTxt').textContent='当前结论为「'+(S.conc||'未核对')+'」，不能放行。质检复核为「一致」或「已变更」后才能放行。';
+    seal.className='seal stop';seal.textContent=S.conc||'未核对';
+  }else{
+    blk.hidden=true;basis.hidden=false;wait.hidden=false;
+    wait.querySelector('b').textContent=S.waitH;
+    if(S.waitH>S.limit){seal.className='seal stop';seal.textContent='超时'}else{seal.className='seal pend';seal.textContent='待放行'}
+  }
+  var canRel=(S.conc==='一致'||S.conc==='已变更');
+  document.getElementById('relBtn').hidden=!canRel||(S.released&&S.released.by===demoName());
+  document.getElementById('proxyHint').hidden=demoRole()!=='业主代理人';
+}
+document.getElementById('relBtn').addEventListener('click',function(){
+  if(S.released){toast('已由'+S.released.by+'于 '+S.released.at+' 放行，未生成新的放行记录');return}
+  var proxy=demoRole()==='业主代理人';
+  confirmAct({title:'确认放行 CK-033',lead:'放行后记录不可撤回，下一道工序可以覆盖此处。',ok:'确认放行',
+    items:[['检查点','CK-033 墙内线管预埋走向（二楼书房 B）'],['依据核对','#'+S.basis+' · 王工 · 结论「'+S.conc+'」'],['放行人',demoName()+(proxy?'（业主代理人，标注代理放行）':'（业主）')],['放行时间','以服务器时间为准']],
+    onOk:function(){
+      S.released={by:demoName(),proxy:proxy,at:now(),basis:S.basis};
+      var rs=document.getElementById('relSeal');stamp(rs,proxy?'proxy':'pass',proxy?'代理放行':'已放行');
+      document.getElementById('relRecs').innerHTML='<div class="rel-rec">'+IC.stamp+'<span><b>'+S.released.by+'</b>'+(proxy?' · 代理放行':'')+' · '+S.released.at+' · 依据核对 #'+S.basis+'</span></div>';
+      addRec('<article class="rec newrec"><div class="rh"><b>放行</b><span class="tag ok">'+(proxy?'代理放行':'已放行')+'</span><span class="meta">'+S.released.by+' · '+S.released.at+'（服务器时间）</span></div><div class="meta">依据核对 #'+S.basis+'</div></article>');
+      renderRel();headSeal();onCover();toast('已放行，记录已生成');
+    }});
+});
+function addRec(h){document.getElementById('recs').insertAdjacentHTML('afterbegin',h)}
+function inferPoint(cover){return cover==='已被覆盖'?'覆盖后':'覆盖前'}
+
+document.getElementById('submitCk').addEventListener('click',function(){
+  var errs=[];var c=val('conc'),cv=val('cover'),bg=document.getElementById('bgSel').value;
+  var ok=photos.filter(function(p){return p.st==='ok'}).length,bad=photos.length-ok;
+  ['fPhotos','fConc','fCover'].forEach(function(id){document.getElementById(id).classList.remove('invalid')});
+  document.getElementById('fBg').classList.remove('invalid');document.getElementById('bgErr').hidden=true;
+  if(!photos.length){errs.push('至少上传 1 张现场照片');document.getElementById('fPhotos').classList.add('invalid')}
+  else if(bad){errs.push('还有 '+bad+' 张照片未上传成功，请重传后再提交（已保存在本机草稿）');document.getElementById('fPhotos').classList.add('invalid')}
+  if(!c){errs.push('请选择结论');document.getElementById('fConc').classList.add('invalid')}
+  if(c==='已变更'&&!bg){errs.push('请关联已生效的变更单');document.getElementById('fBg').classList.add('invalid');document.getElementById('bgErr').hidden=false}
+  if(!cv){errs.push('请选择核对时是否已被覆盖');document.getElementById('fCover').classList.add('invalid')}
+  var fe=document.getElementById('formErr');
+  if(errs.length){fe.hidden=false;fe.innerHTML='无法提交：<ul class="err-list">'+errs.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';fe.scrollIntoView({block:'center'});return}
+  fe.hidden=true;
+  var items=[['核对人','王工（质检）'],['核对时间','以服务器时间为准'],['所用图纸','水电点位图 V1（原签认版）'],['照片与钉点',ok+' 张 · 书房 B 东墙'],['结论',c+(c==='已变更'?' · 关联 '+bg:'')],['覆盖状态',cv]];
+  var warn='';
+  if(c==='不一致'){items.push(['发现时点','系统推断为「'+inferPoint(cv)+'」（核对日期早于计划交房日期 2027-08-30）']);items.push(['自动生成','一条未闭环问题，带检查点、工作项、楼层、房间、照片和发现时点'])}
+  if(cv==='已被覆盖'&&!S.released)warn='该检查点尚未放行，将同时记录「未放行先覆盖」事件，计入指标并显示在业主待办中。';
+  if(c==='不一致'&&S.released)warn='该检查点已放行，提交后状态变为「放行后发现不一致」，原放行记录保留。';
+  confirmAct({title:'提交核对 #'+S.next,lead:'核对记录提交后不可修改；如需更正，请再次核对追加新记录。',items:items,warn:warn,ok:'确认提交',onOk:function(){
+    var no=S.next++;S.conc=c;S.basis=no;
+    var tag=c==='一致'?'ok':c==='不一致'?'bad':'warn';
+    var extra='';
+    if(c==='不一致'){S.problem='WT-027';extra='<dt>发现时点</dt><dd>'+inferPoint(cv)+'</dd><dt>生成问题</dt><dd><a href="PAGE-F08-01.html">WT-027 墙内线管预埋走向不一致</a> · 未闭环</dd>'}
+    if(c==='已变更')extra='<dt>关联变更单</dt><dd><a href="PAGE-F07-02.html">'+bg+'</a> · 已生效</dd>';
+    var th='';photos.forEach(function(p){th+=phSvg(p.v)});
+    addRec('<article class="rec newrec"><div class="rh"><b>核对 #'+no+'</b><span class="tag '+tag+'">'+c+'</span><span class="meta">王工 · '+now()+'（服务器时间）</span></div><dl class="kv"><dt>所用图纸</dt><dd>水电点位图 V1</dd><dt>覆盖状态</dt><dd>'+cv+'</dd><dt>照片</dt><dd>'+ok+' 张 · 钉在书房 B 东墙</dd>'+extra+'</dl><div class="thumbs">'+th+'</div></article>');
+    if(cv==='已被覆盖'){if(!S.released&&!S.covered){S.coverEvent=true;addRec('<article class="rec event newrec">'+IC.alert+'<span><b>未放行先覆盖</b> · 王工核对时记录已被覆盖 · '+now()+'</span></article>')}S.covered=true;document.getElementById('curCover').textContent='已覆盖（'+now()+'）'}
+    document.getElementById('curConc').textContent=c+'（核对 #'+no+' · '+now()+'）';
+    if(c!=='不一致'&&!S.released)S.waitH=0;
+    photos=[];renderPhotos();document.querySelectorAll('#ckForm input[type=radio]').forEach(function(r){r.checked=false});onConc();onCover();
+    document.getElementById('draftBar').hidden=true;document.getElementById('nextNo').textContent='· 将追加为 #'+S.next;
+    renderRel();headSeal();renderCover();
+    toast(c==='不一致'?'核对已保存，已生成问题 WT-027':'核对 #'+no+' 已保存');
+  }});
+});
+
+function renderCover(){
+  document.getElementById('coverTxt').textContent=S.covered?'已覆盖（覆盖时间取最早一次标记）。':'当前未覆盖。隐蔽工序被下一道工序盖住时，请标记已覆盖。';
+  document.getElementById('coverBtn').hidden=S.covered;
+}
+document.getElementById('coverBtn').addEventListener('click',function(){
+  confirmAct({title:'标记 CK-033 已覆盖',lead:'覆盖登记提交后不可撤回。',danger:true,ok:'确认已覆盖',
+    items:[['检查点','CK-033 墙内线管预埋走向'],['放行状态',S.released?'已放行（'+S.released.by+'）':'未放行'],['记录人','张工（项目经理）'],['覆盖时间','以服务器时间为准']],
+    warn:S.released?'':'该检查点尚未放行。确认后将记录一条「未放行先覆盖」事件，计入指标并显示在业主待办中。',
+    onOk:function(){
+      if(!S.released){S.coverEvent=true;addRec('<article class="rec event newrec">'+IC.alert+'<span><b>未放行先覆盖</b> · 张工标记已覆盖 · '+now()+'</span></article>')}
+      else addRec('<article class="rec newrec"><div class="rh"><b>标记已覆盖</b><span class="meta">张工 · '+now()+'</span></div></article>');
+      S.covered=true;document.getElementById('curCover').textContent='已覆盖（'+now()+'）';renderCover();headSeal();onCover();
+      toast(S.coverEvent?'已记录覆盖，并生成「未放行先覆盖」事件':'已标记覆盖');
+    }});
+});
+
+document.getElementById('fixNext').addEventListener('click',function(){
+  var r=document.getElementById('fixReason'),f=document.getElementById('fixReasonF');
+  if(!r.value.trim()){f.classList.add('invalid');f.querySelector('.err').hidden=false;r.focus();return}
+  f.classList.remove('invalid');f.querySelector('.err').hidden=true;
+  var from=document.getElementById('r1Point').textContent,to=document.getElementById('fixVal').value;
+  closeMask('fixMask');
+  confirmAct({title:'确认修正发现时点',lead:'修正记录只追加，修正前的值保留可查。',ok:'确认修正',
+    items:[['核对记录','#1 · 2026-10-25 16:30'],['修正前','「'+from+'」'],['修正后','「'+to+'」'],['修正人',demoName()],['理由',r.value.trim()]],
+    onOk:function(){
+      document.getElementById('r1Point').textContent=to+'（已修正）';
+      document.getElementById('r1Fixes').insertAdjacentHTML('beforeend','<p class="fix newrec">修正：'+esc(from)+' → '+esc(to)+' · '+demoName()+' · '+now()+' · 理由：'+esc(r.value.trim())+'</p>');
+      r.value='';toast('发现时点已修正并留痕');
+    }});
+});
+document.addEventListener('rolechange',function(){renderRel()});
+renderPhotos();renderRel();renderCover();
+</script>
+</body>
+</html>

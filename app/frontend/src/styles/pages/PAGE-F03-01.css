@@ -1,0 +1,27 @@
+/* PAGE-F03-01 公司模板与工序说明库 */
+.pg-tpl .summary{display:flex;gap:var(--space-6);flex-wrap:wrap;padding:var(--space-4);font-size:var(--text-sm);color:var(--muted)}
+.pg-tpl .summary b{display:block;font-size:var(--text-2xl);color:var(--fg);font-variant-numeric:tabular-nums;line-height:1.1}
+.pg-tpl .tabs{display:flex;gap:var(--space-2);margin-bottom:var(--space-3);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pg-tpl .tabs .chip{flex:none}
+.pg-tpl .ttable td{vertical-align:top}
+.pg-tpl .ttable td.nw,.pg-tpl .ttable th{white-space:nowrap}
+.pg-tpl .ttable .desc{min-width:220px;max-width:340px}
+.pg-tpl .floor{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft)}
+.pg-tpl .floor:first-child{border-top:0}
+.pg-tpl .floor .fn{font-weight:600}
+.pg-tpl .floor .rooms{display:flex;flex-wrap:wrap;gap:var(--space-1)}
+.pg-tpl .floor .rooms .tag{border:0;cursor:pointer;font-family:inherit}
+.pg-tpl .floor .rooms .tag:hover{background:var(--accent-soft);color:var(--accent)}
+.pg-tpl .ord{font-variant-numeric:tabular-nums;font-weight:600;color:var(--fg-2)}
+.pg-tpl .kw{display:flex;flex-wrap:wrap;gap:var(--space-1)}
+.pg-tpl .card-hd .hint{font-weight:400}
+.pg-tpl .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.pg-tpl .state h3{font-size:var(--text-lg);color:var(--fg);margin-bottom:var(--space-1)}
+.tpl-top .dirty{font-size:var(--text-xs);color:var(--warn);font-weight:600;display:flex;align-items:center;gap:var(--space-1)}
+.tpl-top .tpl-pick{width:auto;min-width:180px;max-width:100%}
+.tpl-dlg .cp-edit{display:grid;gap:var(--space-2)}
+.tpl-dlg .cp-edit .line{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--space-2);align-items:center}
+.tpl-dlg .cpchk{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-sm);min-height:40px;cursor:pointer;white-space:nowrap}
+.tpl-dlg .cpchk input{accent-color:var(--accent);width:16px;height:16px}
+.tpl-dlg .row2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+@media (max-width:767px){.pg-tpl .floor{grid-template-columns:minmax(0,1fr)}.tpl-dlg .row2{grid-template-columns:1fr}.pg-tpl .btn.sm,.pg-tpl .chip{height:40px}.tpl-top{width:100%}}

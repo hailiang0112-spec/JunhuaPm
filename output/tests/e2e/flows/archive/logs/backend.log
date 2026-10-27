@@ -1,0 +1,12 @@
+[2026-10-27 08:25:19 +0000] [10356] [INFO] Starting gunicorn 26.2.0
+[2026-10-27 08:25:19 +0000] [10356] [INFO] Listening at: http://127.0.0.1:8106 (10356)
+[2026-10-27 08:25:19 +0000] [10356] [INFO] Using worker: gthread
+[2026-10-27 08:25:19 +0000] [10369] [INFO] Booting worker with pid: 10369
+[2026-10-27 08:25:19 +0000] [10370] [INFO] Booting worker with pid: 10370
+[2026-10-27 08:25:20 +0000] [10356] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+Forbidden: /api/projects/1/notices/2
+Forbidden: /api/projects/1/evidence-exports
+[2026-10-27 08:26:34 +0000] [10356] [INFO] Handling signal: term
+[2026-10-27 16:26:34 +0800] [10369] [INFO] Worker exiting (pid: 10369)
+[2026-10-27 16:26:34 +0800] [10370] [INFO] Worker exiting (pid: 10370)
+[2026-10-27 08:26:34 +0000] [10356] [INFO] Shutting down: Master

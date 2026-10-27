@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F15-01">
+  <meta name="description" content="付款节点：节点列表与录入，关联工段未放行检查点数与未闭环不一致数，标记已付二次确认">
+  <title>付款节点 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    [hidden]{display:none!important}
+    a.btn{text-decoration:none}
+    .side .navitem .badge{margin-left:auto}
+    .side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer}
+    .side .sitepick:hover{border-color:var(--accent)}
+    .side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .side .sitepick .nm{display:inline-flex}
+    .side-foot{border-top:1px solid var(--border-soft);margin-top:var(--space-4);padding-top:var(--space-2)}
+    .topbar{flex-wrap:wrap}
+    .topbar .tt{min-width:0}
+    .role-switch{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted)}
+    .role-switch select{min-height:32px;width:auto;padding:0 var(--space-2);font-size:var(--text-sm)}
+    .tabbar{z-index:30}
+    .tab{position:relative;border:0;background:none;font:inherit;font-size:var(--text-xs);cursor:pointer;min-height:44px}
+    .tab-badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;line-height:16px;text-align:center}
+    .mask{z-index:50}
+    .toast{z-index:60}
+    .dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--border-soft)}
+    .dlg-hd h2{font-size:var(--text-lg);line-height:var(--leading-tight)}
+    .dlg-bd{padding:var(--space-4) var(--space-5);display:flex;flex-direction:column;gap:var(--space-3)}
+    .dlg-ft{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-5) var(--space-4);border-top:1px solid var(--border-soft)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:var(--radius-sm);background:none;color:var(--muted);cursor:pointer}
+    .icon-btn:hover{background:var(--surface-warm);color:var(--fg)}
+    .icon-btn:active{background:var(--border-soft)}
+    .icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .confirm-summary dl{margin:0}
+    .note{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);background:var(--surface-warm);color:var(--fg-2)}
+    .note>.icon{margin-top:2px}
+    .note.warn{background:var(--warn-soft);color:var(--warn)}
+    .note.bad{background:var(--danger-soft);color:var(--danger)}
+    .note.ok{background:var(--success-soft);color:var(--success)}
+    .note.info{background:var(--info-soft);color:var(--info)}
+    .state .ic{display:flex;justify-content:center}
+    .state .ic .icon{width:32px;height:32px}
+    .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+    .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+    .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+    .demo-states{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;font-size:var(--text-xs);color:var(--muted);margin-bottom:var(--space-4)}
+    .demo-states .chip{height:26px;font-size:var(--text-xs)}
+    .mono{font-family:var(--font-mono);font-size:var(--text-xs);word-break:break-all}
+    .num{font-variant-numeric:tabular-nums}
+    .seal.void{color:var(--muted)}
+    @media (max-width:1199px){.side .sitepick{padding:0;justify-content:center}.side-foot{margin-top:var(--space-2)}.side .navitem{justify-content:center}}
+    @media (max-width:767px){
+      body.nav-open .side{display:block;position:fixed;inset:0 0 var(--tabbar-h) 0;height:auto;z-index:40}
+      body.nav-open .side .nm{display:inline}body.nav-open .side .badge.nm,body.nav-open .side .sitepick .nm{display:inline-flex}body.nav-open .side .navgroup{display:block}
+      body.nav-open .side .navitem{justify-content:flex-start}
+      body.nav-open{overflow:hidden}
+      .topbar h1{font-size:var(--text-lg)}
+      .role-switch{width:100%}
+      .role-switch select{flex:1}
+      .dlg-ft .btn{flex:1;justify-content:center;height:44px}
+    }
+
+    .nd-name{font-weight:600}
+    .nd-sub{font-size:var(--text-xs);color:var(--muted)}
+    .ph{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-sm);margin-right:var(--space-2);white-space:nowrap}
+    .cnt{font-weight:700;font-variant-numeric:tabular-nums;text-decoration:none}
+    .cnt.hot{color:var(--danger)}
+    .cnt.zero{color:var(--muted);font-weight:500}
+    .cnt:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--radius-sm)}
+    .nd-cards{display:none}
+    .nd-card{padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:var(--space-2)}
+    .nd-card:first-child{border-top:0}
+    .nd-card .l1{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-2)}
+    .nd-card .amt{font-size:var(--text-lg);font-weight:700;font-variant-numeric:tabular-nums}
+    .nd-card .stats{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2)}
+    .nd-card .stat{background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3);font-size:var(--text-xs);color:var(--muted)}
+    .nd-card .stat .cnt{font-size:var(--text-lg);display:block}
+    .phs{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .phchk{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer}
+    .phchk:hover{border-color:var(--accent)}
+    .phchk:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+    .phchk input{accent-color:var(--accent)}
+    .field.invalid .phs .phchk{border-color:var(--danger)}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .form-grid .full{grid-column:1/-1}
+    .paid-meta{font-size:var(--text-xs);color:var(--muted);margin-top:var(--space-1)}
+    @media (max-width:767px){.nd-table{display:none}.nd-cards{display:block}.form-grid{grid-template-columns:1fr}.nd-card .btn{justify-content:center;height:44px}}
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <nav class="side" id="side" aria-label="主导航">
+      <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+      <button class="sitepick" type="button" aria-label="切换工地"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer nm"></span><span class="nm"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      <a class="navitem" href="PAGE-F16-01.html" title="我的待办"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem" href="PAGE-F10-01.html" title="项目总览"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html" title="楼层 / 房间"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" title="砌墙"><span class="phase-dot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" title="水电"><span class="phase-dot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" title="铺砖"><span class="phase-dot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" title="木工"><span class="phase-dot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" title="油灰工"><span class="phase-dot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" title="安装收尾"><span class="phase-dot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html" title="图纸"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html" title="基线签认"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html" title="检查点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html" title="变更单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem" href="PAGE-F08-01.html" title="问题"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem" href="PAGE-F12-01.html" title="档案资料"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem" href="PAGE-F13-01.html" title="补充事项"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html" title="公告栏"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem on" href="PAGE-F15-01.html" aria-current="page" title="付款节点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html" title="成员与项目"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html" title="项目结构"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html" title="数据导入导出"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13m0 0-3-3m3 3 3-3"/><path d="M17 20V7m0 0-3 3m3-3 3 3"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html" title="审计与证据包"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员">
+      <div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html" title="项目管理"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 8h8v13"/><path d="M4 21h16"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html" title="公司模板"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html" title="公司经验库"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      <div class="side-foot"><a class="navitem" href="PAGE-F02-03.html" title="个人设置"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a></div>
+    </nav>
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="tt"><h1>付款节点</h1><div class="sub">君华新城 · 联排别墅 · 付款前看清证据链是否齐全</div></div>
+        <span class="spacer"></span>
+        <label class="role-switch">演示身份<select class="select" id="demoRole" aria-label="演示身份"><option>业主</option><option>业主代理人</option><option>项目经理</option><option>设计经理</option><option>质检</option><option selected>预算专员</option><option>公司管理员</option></select></label>
+        <button class="btn primary" type="button" data-open-add data-roles="预算专员"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>录入付款节点</button>
+      </header>
+
+      <div class="note info" style="margin-bottom:var(--space-4)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg><span>付款节点只做提示，不拦截付款：每个节点显示关联工段内未放行的检查点数和未闭环的不一致问题数，付款前看清证据链是否齐全。</span></div>
+      <div class="demo-states" aria-label="原型状态演示">原型状态：
+        <button class="chip on" type="button" data-demo="ok">正常</button>
+        <button class="chip" type="button" data-demo="empty">空</button>
+        <button class="chip" type="button" data-demo="loading">加载</button>
+        <button class="chip" type="button" data-demo="error">错误</button>
+      </div>
+      <section class="card" aria-labelledby="ndTitle">
+        <div class="card-hd" style="flex-wrap:wrap"><h2 id="ndTitle">付款节点</h2><span class="tag" id="ndCnt"></span></div>
+        <div id="vOk">
+          <div class="nd-table scroll-x"><table>
+            <thead><tr><th>节点</th><th class="num">金额（元）</th><th>计划日期</th><th>关联工段</th><th class="num">未放行检查点</th><th class="num">未闭环不一致</th><th>状态</th><th data-roles="预算专员"></th></tr></thead>
+            <tbody id="rows"></tbody></table></div>
+          <div class="nd-cards" id="cards"></div>
+        </div>
+        <div class="state" id="vEmpty" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></div><h3>还没有付款节点</h3><p>按合同录入付款节点，关联工段后可在付款前看到证据链提示。</p><button class="btn primary" type="button" data-open-add data-roles="预算专员"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>录入付款节点</button></div>
+        <div class="card-bd" id="vLoading" hidden aria-busy="true"><div class="skeleton" style="width:45%;margin-bottom:var(--space-3)"></div><div class="skeleton" style="margin-bottom:var(--space-3)"></div><div class="skeleton" style="width:60%"></div></div>
+        <div class="state" id="vError" hidden><div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2l20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5-2.7M19 13a10 10 0 0 0-2.4-1.7M12 20h.01"/></svg></div><h3>付款节点加载失败（网络中断）</h3><p>请检查网络后重试。</p><button class="btn" type="button" data-demo-btn="ok"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>重新加载</button></div>
+      </section>
+
+    </main>
+  </div>
+  <nav class="tabbar" aria-label="手机底部导航">
+    <a class="tab" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span>待办</span><span class="tab-badge">7</span></a>
+    <a class="tab" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>检查点</span><span class="tab-badge">5</span></a>
+    <a class="tab" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>图纸</span></a>
+    <button class="tab on" type="button" id="moreTab" aria-expanded="false" aria-controls="side"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>更多</span></button>
+  </nav>
+  <div class="mask" id="dlgAdd" role="dialog" aria-modal="true" aria-labelledby="adTitle">
+    <form class="dialog" id="addForm" novalidate>
+      <div class="dlg-hd"><h2 id="adTitle">录入付款节点</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgAdd" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd"><div class="form-grid">
+        <div class="field full" id="nNmF"><label for="nNm">节点名称<span class="req">*</span></label><input class="input" id="nNm" maxlength="30" placeholder="例如：水电完工款"><span class="err" hidden>请填写节点名称</span></div>
+        <div class="field" id="nAmF"><label for="nAm">金额（元）<span class="req">*</span></label><input class="input num" id="nAm" type="number" min="1" step="1" inputmode="numeric" placeholder="例如 253600"><span class="err" hidden>请填写大于 0 的金额</span></div>
+        <div class="field" id="nDtF"><label for="nDt">计划日期<span class="req">*</span></label><input class="input" id="nDt" type="date"><span class="err" hidden>请选择计划日期</span></div>
+        <div class="field full" id="nPhF"><label>关联工段<span class="req">*</span> <span class="muted">（可多选）</span></label>
+          <div class="phs"><label class="phchk"><input type="checkbox" value="砌墙"><span class="phase-dot" style="background:var(--phase-1)"></span>砌墙</label><label class="phchk"><input type="checkbox" value="水电"><span class="phase-dot" style="background:var(--phase-2)"></span>水电</label><label class="phchk"><input type="checkbox" value="铺砖"><span class="phase-dot" style="background:var(--phase-3)"></span>铺砖</label><label class="phchk"><input type="checkbox" value="木工"><span class="phase-dot" style="background:var(--phase-4)"></span>木工</label><label class="phchk"><input type="checkbox" value="油灰工"><span class="phase-dot" style="background:var(--phase-5)"></span>油灰工</label><label class="phchk"><input type="checkbox" value="安装收尾"><span class="phase-dot" style="background:var(--phase-6)"></span>安装收尾</label></div>
+          <span class="err" hidden>请至少选择 1 个关联工段</span></div>
+      </div></div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgAdd">取消</button><button class="btn primary" type="submit">保存</button></div>
+    </form>
+  </div>
+  <div class="mask" id="dlgConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="dialog">
+      <div class="dlg-hd"><h2 id="cfTitle">确认提交</h2><span class="spacer"></span><button class="icon-btn" type="button" data-close="dlgConfirm" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="dlg-bd">
+        <p class="muted" style="font-size:var(--text-sm)">提交后不可撤回，请核对以下内容：</p>
+        <div class="confirm-summary"><dl id="cfRows"></dl></div>
+        <div class="note warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.01"/></svg><span id="cfWarnText"></span></div>
+      </div>
+      <div class="dlg-ft"><button class="btn" type="button" data-close="dlgConfirm">取消</button><button class="btn primary" type="button" id="cfOk">确认提交</button></div>
+    </div>
+  </div>
+  <script>
+
+  // —— 外壳通用脚本：演示身份、手机「更多」、提示条、二次确认 ——
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+  function role(){return $('#demoRole').value}
+  function applyRole(){
+    const r = role();
+    $$('[data-roles]').forEach(el => { el.hidden = !el.dataset.roles.split(',').includes(r); });
+    if (window.onRole) window.onRole(r);
+  }
+  $('#demoRole').addEventListener('change', applyRole);
+  $('#moreTab').addEventListener('click', e => { const o = document.body.classList.toggle('nav-open'); e.currentTarget.setAttribute('aria-expanded', o); });
+  function openDlg(id){const m=document.getElementById(id);m.classList.add('show');const f=m.querySelector('textarea,input:not([type=hidden]),select');if(f)setTimeout(()=>f.focus(),50)}
+  function closeDlg(id){document.getElementById(id).classList.remove('show')}
+  $$('.mask').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.mask.show').forEach(m => m.classList.remove('show')); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-close]'); if (b) closeDlg(b.dataset.close); });
+  // 不可撤回操作的二次确认：confirmDo({title, rows:[[标签,内容]], warn, ok, danger, onOk})
+  function confirmDo(o){
+    $('#cfTitle').textContent = o.title;
+    $('#cfRows').innerHTML = o.rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('');
+    $('#cfWarn').hidden = !o.warn; $('#cfWarnText').textContent = o.warn || '';
+    const ok = $('#cfOk'); ok.textContent = o.ok || '确认提交'; ok.className = 'btn ' + (o.danger ? 'danger' : 'primary');
+    ok.onclick = () => { closeDlg('dlgConfirm'); o.onOk && o.onOk(); };
+    openDlg('dlgConfirm'); setTimeout(() => ok.focus(), 60);
+  }
+  function stamp(el){el.classList.remove('just');void el.offsetWidth;el.classList.add('just')}
+
+
+  const PH = {'砌墙': 1, '水电': 2, '铺砖': 3, '木工': 4, '油灰工': 5, '安装收尾': 6};
+  const OPEN = {'砌墙': [5, 4], '水电': [0, 0], '铺砖': [0, 0], '木工': [0, 0], '油灰工': [0, 0], '安装收尾': [0, 0]};
+  const ND = [
+    {name: '开工预付款', amt: 380400, date: '2026-09-19', phs: ['砌墙'], st: '已付', paid: '赵会计 · 2026-09-19 10:26'},
+    {name: '砌墙完工款', amt: 126800, date: '2026-11-10', phs: ['砌墙'], st: '未付'},
+    {name: '水电完工款', amt: 253600, date: '2027-01-15', phs: ['水电'], st: '未付'},
+    {name: '泥瓦木作完工款', amt: 317000, date: '2027-04-20', phs: ['铺砖', '木工'], st: '未付'},
+    {name: '油漆完工款', amt: 126800, date: '2027-06-30', phs: ['油灰工'], st: '未付'},
+    {name: '竣工尾款', amt: 63400, date: '2027-08-30', phs: ['安装收尾'], st: '未付'}
+  ];
+  const sum = (n, k) => n.phs.reduce((s, p) => s + OPEN[p][k], 0);
+  const yuan = v => v.toLocaleString('zh-CN');
+  const phHtml = n => n.phs.map(p => '<span class="ph"><span class="phase-dot" style="background:var(--phase-' + PH[p] + ')"></span>' + p + '</span>').join('');
+  const cnt = (v, href) => '<a class="cnt ' + (v ? 'hot' : 'zero') + '" href="' + href + '">' + v + '</a>';
+  const sealHtml = (n, i) => '<span class="seal ' + (n.st === '已付' ? 'pass' : 'pend') + '" id="sl' + i + '">' + n.st + '</span>' + (n.paid ? '<div class="paid-meta">' + n.paid + '</div>' : '');
+  function render(){
+    const canPay = role() === '预算专员';
+    $('#rows').innerHTML = ND.map((n, i) => '<tr><td><div class="nd-name">' + esc(n.name) + '</div></td><td class="num">' + yuan(n.amt) + '</td><td class="num">' + n.date + '</td><td>' + phHtml(n) + '</td><td class="num">' + cnt(sum(n, 0), 'PAGE-F06-01.html') + '</td><td class="num">' + cnt(sum(n, 1), 'PAGE-F08-01.html') + '</td><td>' + sealHtml(n, i) + '</td>' +
+      (canPay ? '<td>' + (n.st === '未付' ? '<button class="btn sm" type="button" data-pay="' + i + '">标记已付</button>' : '') + '</td>' : '') + '</tr>').join('');
+    $('#cards').innerHTML = ND.map((n, i) => '<div class="nd-card"><div class="l1"><div><div class="nd-name">' + esc(n.name) + '</div><div class="nd-sub">计划 ' + n.date + '</div></div><div style="text-align:right">' + sealHtml(n, 'c' + i) + '</div></div>' +
+      '<div class="amt">' + yuan(n.amt) + ' 元</div><div>' + phHtml(n) + '</div>' +
+      '<div class="stats"><div class="stat">未放行检查点' + cnt(sum(n, 0), 'PAGE-F06-01.html') + '</div><div class="stat">未闭环不一致' + cnt(sum(n, 1), 'PAGE-F08-01.html') + '</div></div>' +
+      (canPay && n.st === '未付' ? '<button class="btn" type="button" data-pay="' + i + '">标记已付</button>' : '') + '</div>').join('');
+    $('#ndCnt').textContent = '共 ' + ND.length + ' 个 · 已付 ' + ND.filter(n => n.st === '已付').length;
+    $$('[data-pay]').forEach(b => b.onclick = () => pay(+b.dataset.pay));
+  }
+  function pay(i){
+    const n = ND[i], u = sum(n, 0), x = sum(n, 1);
+    confirmDo({title: u ? '还有 ' + u + ' 个检查点未放行，确认标记已付？' : '确认标记已付？',
+      rows: [['付款节点', n.name], ['金额', yuan(n.amt) + ' 元'], ['关联工段', n.phs.join('、')], ['未放行检查点', u + ' 个'], ['未闭环不一致问题', x + ' 个'], ['标记后', '状态改为「已付」并留痕，不可撤回']],
+      warn: u ? '付款提示不拦截：仍可标记已付，本次确认会记入留痕。' : '', ok: '确认标记已付',
+      onOk: () => { n.st = '已付'; n.paid = '赵会计 · 2026-10-27 ' + new Date().toTimeString().slice(0, 5) + (u ? ' · 确认时未放行 ' + u + ' 个' : ''); render(); ['#sl' + i, '#slc' + i].forEach(s => $(s) && stamp($(s))); toast(n.name + ' 已标记为已付'); }});
+  }
+  $$('[data-open-add]').forEach(b => b.onclick = () => { $('#addForm').reset(); $$('#addForm .field').forEach(f => f.classList.remove('invalid')); $$('#addForm .err').forEach(e => e.hidden = true); openDlg('dlgAdd'); });
+  $('#addForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const phs = $$('#addForm .phs input:checked').map(c => c.value), am = +$('#nAm').value;
+    const chk = [['#nNmF', !$('#nNm').value.trim()], ['#nAmF', !(am > 0)], ['#nDtF', !$('#nDt').value], ['#nPhF', !phs.length]];
+    chk.forEach(([id, b]) => { $(id).classList.toggle('invalid', b); $(id + ' .err').hidden = !b; });
+    if (chk.some(c => c[1])) return;
+    ND.push({name: $('#nNm').value.trim(), amt: am, date: $('#nDt').value, phs, st: '未付'});
+    ND.sort((a, b) => a.date.localeCompare(b.date));
+    closeDlg('dlgAdd'); render(); toast('已保存付款节点，状态：未付');
+  });
+  window.onRole = () => render();
+  function demo(s){ $$('[data-demo]').forEach(x => x.classList.toggle('on', x.dataset.demo === s)); $('#vOk').hidden = s !== 'ok'; $('#vEmpty').hidden = s !== 'empty'; $('#vLoading').hidden = s !== 'loading'; $('#vError').hidden = s !== 'error'; applyRole(); }
+  $$('[data-demo]').forEach(b => b.onclick = () => demo(b.dataset.demo));
+  $$('[data-demo-btn]').forEach(b => b.onclick = () => demo(b.dataset.demoBtn));
+
+  applyRole();
+  </script>
+</body>
+</html>

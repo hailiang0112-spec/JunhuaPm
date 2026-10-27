@@ -1,0 +1,107 @@
+/* 君华装修项目管理平台 · 设计 Token（浅色 Only） */
+:root {
+  /* ─── Surface (3 levels) ─── */
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-warm: #f7f9fc;
+  --surface-raised: var(--surface);
+  --surface-overlay: var(--surface);
+
+  /* ─── Foreground (4 levels) ─── */
+  --fg: #111827;
+  --fg-2: #374151;
+  --muted: #5b6779;
+  --meta: var(--muted);
+
+  /* ─── Border (2 levels) ─── */
+  --border: #d5dce6;
+  --border-soft: #e3e8ef;
+
+  /* ─── Accent ─── */
+  --accent: #1e5fd0;
+  --accent-on: #ffffff;
+  --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+  --accent-active: color-mix(in oklab, var(--accent), black 14%);
+
+  /* ─── Semantic ─── */
+  --success: #15803d;
+  --warn: #b45309;
+  --danger: #c62828;
+
+  /* ─── Typography — fonts ─── */
+  --font-display: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, "Courier New", monospace;
+
+  /* ─── Type scale ─── */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+
+  /* ─── Leading & Tracking ─── */
+  --leading-body: 1.6;
+  --leading-tight: 1.25;
+  --tracking-display: -0.01em;
+
+  /* ─── Spacing (4px base) ─── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* ─── Section rhythm ─── */
+  --section-y-desktop: 24px;
+  --section-y-tablet: 20px;
+  --section-y-phone: 16px;
+
+  /* ─── Radius ─── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+
+  /* ─── Surface elevation ─── */
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--border);
+  --elev-raised: 0 1px 2px color-mix(in oklab, var(--fg), transparent 95%), 0 6px 18px color-mix(in oklab, var(--fg), transparent 95%);
+  --elev-float: 0 8px 32px color-mix(in oklab, var(--fg), transparent 88%);
+
+  /* ─── Focus ─── */
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
+
+  /* ─── Motion ─── */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ─── Layout ─── */
+  --container-max: 1440px;
+  --container-gutter-desktop: 24px;
+  --container-gutter-tablet: 20px;
+  --container-gutter-phone: 16px;
+
+  /* ─── 产品扩展：语义浅底与工段色（沿用原型 v1.20） ─── */
+  --accent-soft: #eaf1fe;
+  --success-soft: #e8f6ed;
+  --warn-soft: #fdf3e3;
+  --danger-soft: #fdecec;
+  --info: #0f766e;
+  --info-soft: #e6f4f2;
+  --phase-1: #c2410c;
+  --phase-2: #0f766e;
+  --phase-3: #b45309;
+  --phase-4: #166534;
+  --phase-5: #7c3aed;
+  --phase-6: #0369a1;
+  --sidebar-w: 260px;
+  --tabbar-h: 60px;
+}

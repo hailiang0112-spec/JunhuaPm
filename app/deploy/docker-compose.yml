@@ -1,0 +1,112 @@
+# 单机部署（技术方案 §7.1）：db + web + worker + backup + nginx。凭据从 .env 读取（deployment-secret）。
+services:
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_OWNER_PASSWORD: ${APP_OWNER_PASSWORD}
+      APP_RUNTIME_PASSWORD: ${APP_RUNTIME_PASSWORD}
+      TZ: Asia/Shanghai
+    volumes:
+      - dbdata:/var/lib/postgresql
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 20
+  web:
+    build: ../backend
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: "0"
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      COOKIE_SECURE: ${COOKIE_SECURE}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS}
+      DB_HOST: db
+      DB_NAME: jh
+      DB_USER: app_runtime
+      DB_PASSWORD: ${APP_RUNTIME_PASSWORD}
+      MIGRATE_DB_USER: app_owner
+      MIGRATE_DB_PASSWORD: ${APP_OWNER_PASSWORD}
+      FILE_STORAGE: ${FILE_STORAGE}
+      FILE_ROOT: /data/files
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      SEED_BASE: ${SEED_BASE}
+      ERROR_LOG_FILE: /data/logs/error.log
+      JOBS_INLINE: "0"
+    volumes:
+      - filedata:/data/files
+      - logs:/data/logs
+  worker:
+    build: ../backend
+    command: ["worker"]
+    restart: unless-stopped
+    depends_on: [web]
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: "0"
+      DB_HOST: db
+      DB_NAME: jh
+      DB_USER: app_runtime
+      DB_PASSWORD: ${APP_RUNTIME_PASSWORD}
+      FILE_STORAGE: ${FILE_STORAGE}
+      FILE_ROOT: /data/files
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      ERROR_LOG_FILE: /data/logs/error.log
+      JOBS_INLINE: "0"
+    volumes:
+      - filedata:/data/files
+      - logs:/data/logs
+  backup:
+    build: ../backend
+    command: ["backup"]
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DB_HOST: db
+      DB_NAME: jh
+      DB_USER: app_owner
+      DB_PASSWORD: ${APP_OWNER_PASSWORD}
+      FILE_STORAGE: ${FILE_STORAGE}
+      FILE_ROOT: /data/files
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      BACKUP_DIR: /data/backups
+      OFFSITE_TARGET: ${OFFSITE_TARGET}
+      OFFSITE_DIR: /data/offsite
+      OFFSITE_S3_ENDPOINT: ${OFFSITE_S3_ENDPOINT}
+      OFFSITE_S3_BUCKET: ${OFFSITE_S3_BUCKET}
+      OFFSITE_S3_ACCESS_KEY: ${OFFSITE_S3_ACCESS_KEY}
+      OFFSITE_S3_SECRET_KEY: ${OFFSITE_S3_SECRET_KEY}
+      CERT_FILE: /certs/fullchain.pem
+      ERROR_LOG_SUMMARY_FILE: /data/logs/error.log
+    volumes:
+      - filedata:/data/files:ro
+      - logs:/data/logs:ro
+      - ${BACKUP_HOST_DIR:-./backups}:/data/backups
+      - ${OFFSITE_HOST_DIR:-./offsite}:/data/offsite
+      - ${CERT_HOST_DIR:-./certs}:/certs:ro
+  nginx:
+    build: ../frontend
+    restart: unless-stopped
+    depends_on: [web]
+    ports:
+      - "${HTTP_PORT:-80}:80"
+volumes:
+  dbdata:
+  filedata:
+  logs:

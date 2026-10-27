@@ -1,0 +1,21 @@
+[2026-10-27 08:17:12 +0000] [22689] [INFO] Starting gunicorn 26.2.0
+[2026-10-27 08:17:12 +0000] [22689] [INFO] Listening at: http://127.0.0.1:8101 (22689)
+[2026-10-27 08:17:12 +0000] [22689] [INFO] Using worker: gthread
+[2026-10-27 08:17:12 +0000] [22702] [INFO] Booting worker with pid: 22702
+[2026-10-27 08:17:12 +0000] [22704] [INFO] Booting worker with pid: 22704
+[2026-10-27 08:17:12 +0000] [22689] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+Forbidden: /api/projects/1/invitations
+Gone: /api/invitations/F688rSTkKS96m-PLe9-X32VMl6yLDieO
+Bad Request: /api/invitations/QAivr-KyDunLiDCSSk4H-yWq95zl3udp/accept
+Forbidden: /api/projects/1
+Forbidden: /api/projects/1/checkpoints
+Bad Request: /api/auth/login
+Bad Request: /api/auth/login
+Bad Request: /api/auth/login
+Bad Request: /api/auth/login
+Locked: /api/auth/login
+Bad Request: /api/me/password
+[2026-10-27 08:19:24 +0000] [22689] [INFO] Handling signal: term
+[2026-10-27 16:19:24 +0800] [22704] [INFO] Worker exiting (pid: 22704)
+[2026-10-27 16:19:24 +0800] [22702] [INFO] Worker exiting (pid: 22702)
+[2026-10-27 08:19:24 +0000] [22689] [INFO] Shutting down: Master

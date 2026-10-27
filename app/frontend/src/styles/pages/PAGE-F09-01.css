@@ -1,0 +1,38 @@
+/* PAGE-F09-01 公司经验库 */
+.pg-exp .tabs{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-3)}
+.pg-exp .fbar{display:grid;gap:var(--space-2);padding:var(--space-3) var(--space-4)}
+.pg-exp .fbar .row{gap:var(--space-2)}
+.pg-exp .fbar .lb{font-size:var(--text-xs);color:var(--muted);width:36px}
+.pg-exp .search{position:relative;max-width:320px}
+.pg-exp .entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4);margin-bottom:var(--space-4)}
+@media (max-width:1199px){.pg-exp .entries{grid-template-columns:1fr}}
+.pg-exp .entry{margin-bottom:0;display:flex;flex-direction:column}
+.pg-exp .entry .card-hd{align-items:flex-start}
+.pg-exp .entry .proc{font-weight:600;display:flex;align-items:center;gap:var(--space-2);flex:1;min-width:0}
+.pg-exp .entry .card-bd{display:grid;gap:var(--space-3);flex:1}
+.pg-exp .entry .lbl{font-size:var(--text-xs);color:var(--muted);margin-bottom:2px}
+.pg-exp .entry .txt{font-size:var(--text-sm);line-height:1.6}
+.pg-exp .entry .ft{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);font-size:var(--text-xs);color:var(--muted)}
+.pg-exp .entry .ft .spacer{flex:1}
+.pg-exp .seal.mute,.exp-dlg .seal.mute{color:var(--muted)}
+.pg-exp .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) 0;font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.pg-exp .state h3{font-size:var(--text-lg);color:var(--fg);margin-bottom:var(--space-1)}
+.pg-exp .state p{margin-bottom:var(--space-4)}
+.pg-exp .tabs .badge{margin-left:6px}
+.exp-dlg .vlist{list-style:none;display:grid;gap:var(--space-3)}
+.exp-dlg .vlist li{border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:var(--space-3)}
+.exp-dlg .vlist .vh{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;font-size:var(--text-sm)}
+.exp-dlg .vlist .vh b{font-variant-numeric:tabular-nums}
+.exp-dlg .vlist details{margin-top:var(--space-2);font-size:var(--text-sm)}
+.exp-dlg .vlist summary{cursor:pointer;color:var(--accent);min-height:32px;display:flex;align-items:center}
+.exp-dlg .vlist dl{display:grid;gap:var(--space-1);margin-top:var(--space-2)}
+.exp-dlg .vlist dt,.exp-dlg .ro dt{color:var(--muted);font-size:var(--text-xs)}
+.exp-dlg .radios{display:grid;gap:var(--space-2)}
+.exp-dlg .radios label{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer}
+.exp-dlg .radios label:hover{border-color:var(--accent)}
+.exp-dlg .radios label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.exp-dlg .radios input{margin-top:4px;accent-color:var(--accent)}
+.exp-dlg .radios small{display:block;color:var(--muted);font-size:var(--text-xs)}
+.exp-dlg .ro{background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-3);display:grid;gap:var(--space-2);font-size:var(--text-sm)}
+.exp-dlg fieldset{border:0}
+@media (max-width:767px){.pg-exp .btn.sm,.pg-exp .chip{height:40px}.pg-exp .search{max-width:none}}

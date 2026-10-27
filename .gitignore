@@ -1,0 +1,21 @@
+# 依赖与构建产物（可由 deploy/build.sh 重新生成）
+node_modules/
+.venv/
+app/frontend/dist/
+app/frontend/*.tsbuildinfo
+app/backend/wheelhouse/
+app/backend/data/
+app/backend/staticfiles/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 部署密钥与运行数据（deployment-secret，不进仓库）
+app/deploy/.env
+app/deploy/backups/
+app/deploy/offsite/
+app/deploy/certs/
+
+# 测试运行时下载的大文件（证据包 ZIP、导出文件），结果与截图保留
+output/tests/e2e/**/downloads/
+output/tests/e2e/**/fixtures/*.zip

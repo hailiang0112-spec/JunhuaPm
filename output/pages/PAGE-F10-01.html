@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F10-01">
+  <title>项目总览 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    /* 外壳补充（只用 Token 变量） */
+    [hidden]{display:none !important}
+    .side{display:flex;flex-direction:column}
+    .side .navlist{flex:1}
+    .side .navfoot{border-top:1px solid var(--border-soft);padding-top:var(--space-2);margin-top:var(--space-3)}
+    .side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer}
+    .side .sitepick:hover{border-color:var(--accent)}
+    .side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    a.btn{text-decoration:none}
+    .navitem .badge{margin-left:auto}
+    .navdot{margin:0 5px}
+    .topbar{flex-wrap:wrap;row-gap:var(--space-2)}
+    .topbar .ttl{min-width:0;flex:1 1 280px}
+    .topbar .acts{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+    .rolepick{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted)}
+    .rolepick select{min-height:32px;padding:0 var(--space-2);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font:var(--text-sm) var(--font-body);cursor:pointer}
+    .rolepick select:hover{border-color:var(--muted)}
+    .rolepick select:focus-visible{outline:none;border-color:var(--accent);box-shadow:var(--focus-ring)}
+    .card-hd{flex-wrap:wrap;row-gap:var(--space-2)}
+    .card-hd .desc{font-size:var(--text-sm);color:var(--muted)}
+    .card-bd.tight{padding:var(--space-2) 0 0}
+    .card-bd.tight>.scroll-x>table th:first-child,.card-bd.tight>.scroll-x>table td:first-child{padding-left:var(--space-4)}
+    .card-bd.tight>.scroll-x>table th:last-child,.card-bd.tight>.scroll-x>table td:last-child{padding-right:var(--space-4)}
+    .legend{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);font-size:var(--text-xs);color:var(--muted);padding:var(--space-2) var(--space-4) var(--space-3)}
+    .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:var(--space-1);vertical-align:-2px;border:1px solid var(--border-soft)}
+    .hint{font-size:var(--text-sm);color:var(--muted);padding:var(--space-2) var(--space-4) var(--space-3)}
+    .num-b{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
+    .down{color:var(--danger)}
+    .up{color:var(--success)}
+    .nowrap{white-space:nowrap}
+    .cellbar{display:flex;align-items:center;gap:var(--space-2)}
+    .cellbar .pbar{flex:1;min-width:60px}
+    .cellbar span{font-size:var(--text-xs);font-variant-numeric:tabular-nums;color:var(--fg-2);min-width:36px;text-align:right}
+    .chiprow{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .chiprow .lb{font-size:var(--text-xs);color:var(--muted);align-self:center}
+    .chartbox svg{display:block;width:100%;height:auto}
+    .chartbox text{font-family:var(--font-body)}
+    .mask{z-index:60}
+    .toast{z-index:70}
+    .dialog .dh{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border-bottom:1px solid var(--border-soft)}
+    .dialog .dh h3{font-size:var(--text-lg)}
+    .dialog .db{padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)}
+    .dialog .df{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);flex-wrap:wrap}
+    .dialog.wide{width:min(760px,100%)}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .form-grid .full{grid-column:1/-1}
+    @media (max-width:767px){.form-grid{grid-template-columns:1fr}}
+    .confirm-summary dl{display:grid;grid-template-columns:auto 1fr;gap:var(--space-1) var(--space-3)}
+    .confirm-summary dd{margin:0}
+    .morenav{gap:var(--space-1)}
+    .morenav .navgroup{padding-top:var(--space-3)}
+    .sheet{align-self:flex-end}
+    button.tab{border:0;background:none;font:inherit;font-size:var(--text-xs);cursor:pointer}
+    .tab{position:relative;min-height:44px}
+    .tab .tbadge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .grid-2>*,.grid-3>*{min-width:0}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    @media (max-width:767px){
+      .topbar h1{font-size:var(--text-lg)}
+      .btn{min-height:40px}
+      .btn.sm{min-height:36px}
+      .chip{min-height:40px}
+      .card-hd .spacer{display:none}
+    }
+
+
+    .lv-none{fill:var(--surface-warm)} .lv0{fill:var(--border-soft)}
+    .lv1{fill:color-mix(in oklab,var(--accent) 14%,var(--surface))} .lv2{fill:color-mix(in oklab,var(--accent) 30%,var(--surface))}
+    .lv3{fill:color-mix(in oklab,var(--accent) 50%,var(--surface))} .lv4{fill:color-mix(in oklab,var(--accent) 72%,var(--surface))} .lv5{fill:var(--accent)}
+    i.lv-none{background:var(--surface-warm)} i.lv0{background:var(--border-soft)} i.lv1{background:color-mix(in oklab,var(--accent) 14%,var(--surface))}
+    i.lv2{background:color-mix(in oklab,var(--accent) 30%,var(--surface))} i.lv3{background:color-mix(in oklab,var(--accent) 50%,var(--surface))}
+    i.lv4{background:color-mix(in oklab,var(--accent) 72%,var(--surface))} i.lv5{background:var(--accent)}
+    .mx a rect{transition:stroke var(--motion-fast) var(--ease-standard);stroke:var(--surface);stroke-width:2}
+    .mx a:hover rect,.mx a:focus-visible rect{stroke:var(--fg)}
+    .mx a:focus{outline:none}
+    .mx text{font-size:13px}
+    .kpi .vl small{font-size:var(--text-base);font-weight:600;margin-left:2px;color:var(--muted)}
+    .kpi .sb{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-2)}
+    /* 证据链指标 */
+    .evi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4)}
+    @media (max-width:1199px){.evi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:767px){.evi{grid-template-columns:1fr}}
+    .metric{border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2)}
+    .metric .lb{font-size:var(--text-sm);color:var(--fg-2);font-weight:600}
+    .metric .vl{font-size:var(--text-3xl);font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+    .metric .vl.na{font-size:var(--text-xl);color:var(--muted);font-weight:600}
+    .metric .frac{font-size:var(--text-xs);color:var(--muted)}
+    .meter{position:relative;height:8px;border-radius:var(--radius-pill);background:var(--border-soft);margin-top:var(--space-3)}
+    .meter>i{position:absolute;left:0;top:0;bottom:0;border-radius:inherit}
+    .meter>i.ok{background:var(--success)} .meter>i.low{background:var(--warn)}
+    .meter>b{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--fg);transform:translateX(-1px)}
+    .meter>em{position:absolute;top:-22px;transform:translateX(-50%);font-style:normal;font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+    .meter>em.end{transform:translateX(-100%)}
+    /* 出勤日历 */
+    .calbar{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4)}
+    .calbar .month{font-weight:600;min-width:104px;text-align:center}
+    table.cal{table-layout:fixed;min-width:560px}
+    table.cal th{text-align:center}
+    table.cal td{height:58px;padding:var(--space-1) var(--space-2);border:2px solid var(--surface);border-radius:var(--radius-sm);vertical-align:top;cursor:default}
+    table.cal td .cd{display:block;font-size:var(--text-xs);color:var(--muted)}
+    table.cal td .cn{display:block;font-weight:700;font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+    td.c0{background:var(--border-soft)} td.c1{background:color-mix(in oklab,var(--info) 14%,var(--surface))}
+    td.c2{background:color-mix(in oklab,var(--info) 32%,var(--surface))} td.c3{background:color-mix(in oklab,var(--info) 55%,var(--surface))}
+    td.c4{background:var(--info)} td.c4 .cn,td.c4 .cd{color:var(--accent-on)}
+    td.cu{background:var(--surface);outline:1px dashed var(--border);outline-offset:-3px} td.cu .cn{color:var(--muted);font-weight:500;font-size:var(--text-xs)}
+    td.cf{background:var(--surface)} td.ce{background:transparent}
+    td.today{box-shadow:inset 0 0 0 2px var(--fg)}
+    i.c0{background:var(--border-soft)} i.c1{background:color-mix(in oklab,var(--info) 14%,var(--surface))} i.c2{background:color-mix(in oklab,var(--info) 32%,var(--surface))}
+    i.c3{background:color-mix(in oklab,var(--info) 55%,var(--surface))} i.c4{background:var(--info)} i.cu{background:var(--surface);border:1px dashed var(--border)}
+    /* 工段速览 */
+    .phcard{display:block;border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:var(--space-3);text-decoration:none;color:var(--fg);transition:border-color var(--motion-fast) var(--ease-standard)}
+    .phcard:hover{border-color:var(--accent)} .phcard:active{background:var(--surface-warm)} .phcard:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+    .phcard .h{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)}
+    .phcard .h b{font-size:var(--text-lg)}
+    .phcard .h .tag{margin-left:auto}
+    .phcard .m{display:grid;grid-template-columns:1fr 1fr;gap:2px var(--space-3);font-size:var(--text-sm);color:var(--muted);margin-top:var(--space-2)}
+    .fl-tag{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:var(--radius-sm);background:var(--surface-warm);border:1px solid var(--border-soft);font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+    .logcol{display:flex;flex-direction:column;gap:var(--space-1)}
+    .logcol .from{color:var(--muted)}
+    tr.row-link td a.rl{color:var(--fg);text-decoration:none}
+    .sumrow{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+  @media (max-width:767px){.side{display:none}}
+  </style>
+</head>
+<body data-default-role="业主">
+<div class="app">
+  <nav class="side" aria-label="主导航">
+      <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+      <button class="sitepick nm" type="button" aria-label="切换工地"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1"/><path d="M14 7h1"/><path d="M9 11h1"/><path d="M14 11h1"/><path d="M10 21v-4h4v4"/></svg><span>君华新城 · 联排别墅</span></button>
+      <div class="navlist">
+      <a class="navitem" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem on" href="PAGE-F10-01.html" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" data-phase="p1"><span class="phase-dot navdot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" data-phase="p2"><span class="phase-dot navdot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" data-phase="p3"><span class="phase-dot navdot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" data-phase="p4"><span class="phase-dot navdot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" data-phase="p5"><span class="phase-dot navdot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" data-phase="p6"><span class="phase-dot navdot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 12l4 4-4 4"/><path d="M21 16H7"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem" href="PAGE-F08-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem" href="PAGE-F12-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem" href="PAGE-F13-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><path d="M18 15v6"/><path d="M15 18h6"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem" href="PAGE-F15-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 8l3 4 3-4"/><path d="M8.5 12.5h7"/><path d="M8.5 15.5h7"/><path d="M12 12v6"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员"><div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1"/><path d="M14 7h1"/><path d="M9 11h1"/><path d="M14 11h1"/><path d="M10 21v-4h4v4"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      </div>
+      <div class="navfoot"><a class="navitem" href="PAGE-F02-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a></div>
+    </nav>
+  <main class="main" id="main">
+
+    <header class="topbar">
+      <div class="ttl">
+        <h1>项目总览</h1>
+        <div class="sub">君华新城 · 联排别墅装修工程　｜　386㎡ · 业主 刘先生 · 项目经理 张工　｜　<span class="tag brand">施工中</span></div>
+      </div>
+      <div class="acts">
+        <label class="rolepick"><span>演示身份</span><select id="role" aria-label="演示身份"><option selected>业主</option><option>业主代理人</option><option>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+        <a class="btn primary" href="PAGE-F08-01.html?new=1" data-roles="业主,业主代理人,项目经理,设计经理,质检,预算专员"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>登记问题</a>
+      </div>
+    </header>
+
+    <section class="grid-kpi" id="kpis" aria-label="关键指标" style="margin-bottom:var(--space-4)"></section>
+
+    <section class="card" aria-labelledby="evi-t">
+      <div class="card-hd">
+        <h2 id="evi-t">证据链四项指标</h2>
+        <span class="desc">按规矩走的程度 · 目标线来自本期成功度量</span>
+        <span class="spacer"></span>
+        <div class="chiprow" role="group" aria-label="按工段筛选" id="evi-chips"></div>
+      </div>
+      <div class="card-bd">
+        <div class="evi" id="evi"></div>
+        <p class="muted" style="font-size:var(--text-xs);margin-top:var(--space-3)">覆盖前发现比例的 90% 目标线针对水电阶段；分母为 0 的指标显示「暂无数据」。点指标卡可查看对应记录。</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="gantt-t">
+      <div class="card-hd"><h2 id="gantt-t">项目进度总览 · 六阶段时间轴</h2><span class="desc">浅色为计划区间，深色为实际完成度，红色虚线为今天</span></div>
+      <div class="card-bd"><div class="scroll-x"><div class="chartbox" id="gantt" style="min-width:720px"></div></div></div>
+    </section>
+
+    <section class="card" aria-labelledby="fm-t">
+      <div class="card-hd"><h2 id="fm-t">楼层 × 阶段 完成度矩阵</h2><span class="desc">点楼层名看该楼层全部事项 · 点单元格进入该工段并筛选该楼层</span><span class="spacer"></span><a class="btn sm" href="PAGE-F10-02.html">楼层 / 房间视图</a></div>
+      <div class="card-bd" style="padding-bottom:0"><div class="scroll-x"><div class="chartbox mx" id="fmx" style="min-width:640px"></div></div></div>
+      <div class="legend" id="mx-legend"></div>
+    </section>
+
+    <div class="grid-2">
+      <section class="card" aria-labelledby="slow-t">
+        <div class="card-hd"><h2 id="slow-t">房间完成度 · 短板 TOP 8</h2><span class="desc">32 个房间中进展最慢的 8 个</span></div>
+        <div class="card-bd tight"><div class="scroll-x"><table><thead><tr><th>楼层 / 房间</th><th class="num">事项</th><th style="width:40%">加权完成度</th><th class="num">问题</th></tr></thead><tbody id="slow"></tbody></table></div></div>
+      </section>
+      <section class="card" aria-labelledby="rmiss-t">
+        <div class="card-hd"><h2 id="rmiss-t">房间问题聚焦 TOP 6</h2><span class="desc">按房间统计发现与闭环</span></div>
+        <div class="card-bd tight"><div class="scroll-x"><table><thead><tr><th>楼层 / 房间</th><th class="num">问题</th><th class="num">闭环</th><th class="num">遗留</th><th style="width:30%">闭环率</th></tr></thead><tbody id="rmiss"></tbody></table></div></div>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="cal-t">
+      <div class="card-hd"><h2 id="cal-t">每日出勤日历</h2><span class="desc">每格为当日各工段出勤之和 · 只显示人工登记数据</span></div>
+      <div class="calbar">
+        <button class="btn sm" type="button" onclick="calShift(-1)" aria-label="上一月"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>上月</button>
+        <span class="month" id="cal-m" aria-live="polite"></span>
+        <button class="btn sm" type="button" onclick="calShift(1)" aria-label="下一月">下月<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        <span class="spacer"></span>
+        <span class="sumrow" id="cal-sum"></span>
+      </div>
+      <div class="scroll-x" style="padding:0 var(--space-4)"><table class="cal"><thead><tr><th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th></tr></thead><tbody id="cal"></tbody></table></div>
+      <div class="legend"><span><i class="c0"></i>0 人</span><span><i class="c1"></i>1–4 人</span><span><i class="c2"></i>5–8 人</span><span><i class="c3"></i>9–12 人</span><span><i class="c4"></i>13 人及以上</span><span><i class="cu"></i>未登记（按 0 计，不推算）</span></div>
+    </section>
+
+    <section class="card" aria-labelledby="ib-t">
+      <div class="card-hd"><h2 id="ib-t">问题发现与闭环 · 按阶段</h2><span class="desc">不含已作废问题 · 点柱形进入该工段的问题卡</span></div>
+      <div class="card-bd"><div class="scroll-x"><div class="chartbox" id="ibar" style="min-width:560px"></div></div></div>
+      <div class="legend"><span><i style="background:var(--success)"></i>已闭环</span><span><i style="background:var(--warn)"></i>处理中</span><span><i style="background:var(--danger)"></i>未闭环</span></div>
+    </section>
+
+    <section class="card" aria-labelledby="leg-t">
+      <div class="card-hd"><h2 id="leg-t">问题遗留清单 · 需重点跟进</h2><span class="desc">未闭环与处理中的问题，按超期天数从大到小</span><span class="spacer"></span><a class="btn sm" href="PAGE-F08-01.html">问题台账<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a></div>
+      <div class="card-bd tight"><div class="scroll-x"><table style="min-width:860px"><thead><tr><th>编号</th><th>阶段</th><th>楼层 / 房间</th><th>问题</th><th>等级</th><th>状态</th><th>负责人</th><th>要求闭环</th><th class="num">超期</th></tr></thead><tbody id="legacy"></tbody></table></div></div>
+    </section>
+
+    <section class="card" aria-labelledby="log-t">
+      <div class="card-hd"><h2 id="log-t">计划变更台账 · 全阶段</h2><span class="desc">工段起止、班组、权重、范围的每次调整自动留档，只追加不覆盖</span><span class="spacer"></span><span class="tag warn" id="log-n"></span><button class="btn sm" type="button" onclick="exportCSV()"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>导出 CSV</button></div>
+      <div class="card-bd tight"><div class="scroll-x"><table style="min-width:820px"><thead><tr><th>记录时间</th><th>工段</th><th>变更项</th><th>变更前 → 变更后</th><th class="num">工期影响</th><th>变更原因备注</th></tr></thead><tbody id="logs"></tbody></table></div></div>
+    </section>
+
+    <section class="card" aria-labelledby="ph-t">
+      <div class="card-hd"><h2 id="ph-t">各工段速览</h2><span class="desc">工期 / 出勤 / 事项 / 问题 · 点卡片进入工段详情</span></div>
+      <div class="card-bd"><div class="grid-3" id="phcards"></div></div>
+    </section>
+
+  </main>
+</div>
+<nav class="tabbar" aria-label="手机导航">
+    <a class="tab" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>待办</span><span class="tbadge">7</span></a>
+    <a class="tab" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>检查点</span><span class="tbadge">5</span></a>
+    <a class="tab" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg><span>图纸</span></a>
+    <button class="tab" type="button" onclick="openMask('m-more')"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span>更多</span></button>
+  </nav>
+<div class="mask" id="m-more" onclick="maskClick(event)">
+    <div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="m-more-t">
+      <div class="dh"><h3 id="m-more-t">全部导航</h3><span class="spacer"></span><button class="btn sm" type="button" onclick="closeMask('m-more')">关闭</button></div>
+      <div class="db morenav">
+      <a class="navitem" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span class="nm">我的待办</span><span class="badge nm">7</span></a>
+      <div class="navgroup">总览</div>
+      <a class="navitem on" href="PAGE-F10-01.html" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><span class="nm">项目总览</span></a>
+      <a class="navitem" href="PAGE-F10-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">楼层 / 房间</span></a>
+      <div class="navgroup">施工阶段</div>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p1" data-phase="p1"><span class="phase-dot navdot" style="background:var(--phase-1)"></span><span class="nm">砌墙</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p2" data-phase="p2"><span class="phase-dot navdot" style="background:var(--phase-2)"></span><span class="nm">水电</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p3" data-phase="p3"><span class="phase-dot navdot" style="background:var(--phase-3)"></span><span class="nm">铺砖</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p4" data-phase="p4"><span class="phase-dot navdot" style="background:var(--phase-4)"></span><span class="nm">木工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p5" data-phase="p5"><span class="phase-dot navdot" style="background:var(--phase-5)"></span><span class="nm">油灰工</span></a>
+      <a class="navitem" href="PAGE-F10-03.html?phase=p6" data-phase="p6"><span class="phase-dot navdot" style="background:var(--phase-6)"></span><span class="nm">安装收尾</span></a>
+      <div class="navgroup">证据链</div>
+      <a class="navitem" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg><span class="nm">图纸</span></a>
+      <a class="navitem" href="PAGE-F05-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span class="nm">基线签认</span></a>
+      <a class="navitem" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="nm">检查点</span><span class="badge nm">5</span></a>
+      <a class="navitem" href="PAGE-F07-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 12l4 4-4 4"/><path d="M21 16H7"/></svg><span class="nm">变更单</span></a>
+      <a class="navitem" href="PAGE-F08-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg><span class="nm">问题</span></a>
+      <div class="navgroup">房屋档案</div>
+      <a class="navitem" href="PAGE-F12-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="nm">档案资料</span></a>
+      <a class="navitem" href="PAGE-F13-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><path d="M18 15v6"/><path d="M15 18h6"/></svg><span class="nm">补充事项</span></a>
+      <a class="navitem" href="PAGE-F13-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="nm">公告栏</span></a>
+      <a class="navitem" href="PAGE-F15-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 8l3 4 3-4"/><path d="M8.5 12.5h7"/><path d="M8.5 15.5h7"/><path d="M12 12v6"/></svg><span class="nm">付款节点</span></a>
+      <div class="navgroup">项目设置</div>
+      <a class="navitem" href="PAGE-F01-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg><span class="nm">成员与项目</span></a>
+      <a class="navitem" href="PAGE-F03-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-4h12v4"/></svg><span class="nm">项目结构</span></a>
+      <a class="navitem" href="PAGE-F03-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span class="nm">数据导入导出</span></a>
+      <a class="navitem" href="PAGE-F17-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+      <div data-roles="公司管理员"><div class="navgroup">公司</div>
+      <a class="navitem" href="PAGE-F01-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1"/><path d="M14 7h1"/><path d="M9 11h1"/><path d="M14 11h1"/><path d="M10 21v-4h4v4"/></svg><span class="nm">项目管理</span></a>
+      <a class="navitem" href="PAGE-F03-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span class="nm">公司模板</span></a>
+      <a class="navitem" href="PAGE-F09-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20"/></svg><span class="nm">公司经验库</span></a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+/* 外壳：演示身份、弹窗、提示条 */
+function curRole(){ return document.getElementById('role').value; }
+function applyRole(){
+  var r = curRole();
+  document.querySelectorAll('[data-roles]').forEach(function(el){
+    el.hidden = el.getAttribute('data-roles').split(',').indexOf(r) < 0;
+  });
+  if (typeof onRoleChange === 'function') onRoleChange(r);
+}
+function openMask(id){ var m = document.getElementById(id); m.classList.add('show'); var f = m.querySelector('input,select,textarea,button'); if (f) f.focus(); }
+function closeMask(id){ document.getElementById(id).classList.remove('show'); }
+function maskClick(e){ if (e.target.classList.contains('mask')) e.target.classList.remove('show'); }
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') document.querySelectorAll('.mask.show').forEach(function(m){ m.classList.remove('show'); }); });
+var toastTimer = null;
+function toast(msg){
+  var t = document.getElementById('toast'); t.textContent = msg; t.hidden = false;
+  t.style.animation = 'none'; void t.offsetWidth; t.style.animation = '';
+  clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.hidden = true; }, 2600);
+}
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+document.getElementById('role').addEventListener('change', applyRole);
+
+
+var D = {"today":"2026-10-27","phases":[{"id":"p1","name":"砌墙","start":"2026-09-19","end":"2026-11-08","crew":"瓦工班 · 陈师傅（6人）","scope":"各房间新砌隔墙、构造柱、门窗过梁、顶部斜砌塞缝挂网","tasks":[{"n":"放线定位、材料进场验收","plan":"09-19","owner":"陈师傅","w":1,"fl":"all","rm":"all","note":"按图纸在楼地面弹出墙体与门窗洞口线；砌块、水泥、砂、钢筋进场核对合格证与检测报告，砌块出釜静置 28 天以上，砂浆按 M5 配比机械搅拌。","std":"轴线位移 ≤10mm、弹线偏差 ≤3mm；材料合格证与检测报告齐全，砌块强度等级、砂浆配比符合设计；见证取样送检合格。","pct":100,"act":"09-19","files":3},{"n":"负一楼车库隔墙砌筑","plan":"09-20","owner":"陈师傅","w":2,"fl":"b1","rm":"b1-car","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"09-23","files":2,"ck":["pass","已放行","CK-008"]},{"n":"负一楼保姆间隔墙砌筑","plan":"09-21","owner":"陈师傅","w":2,"fl":"b1","rm":"b1-nan","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"09-25","files":2,"ck":["pass","已放行","CK-009"]},{"n":"负一楼卫生间新砌隔墙及管道井封堵","plan":"09-22","owner":"陈师傅","w":2,"fl":"b1","rm":"b1-wc","note":"隔墙采用 120mm 加气混凝土砌块，管道井随砌随封；管根处细石混凝土封堵并做防水砂浆倒角，井壁内外双面抹灰。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；管道井封堵密实无渗漏；井壁抹灰无空鼓、无开裂。","pct":100,"act":"09-29","files":4,"ck":["pass","已放行","CK-012"]},{"n":"负一层大厅造型墙砌筑","plan":"09-23","owner":"陈师傅","w":2,"fl":"b1","rm":"b1-hall","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"10-09","files":2},{"n":"负一楼衣帽间新建隔墙","plan":"09-24","owner":"陈师傅","w":2,"fl":"b1","rm":"b1-clo","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"10-10","files":2},{"n":"夹层储藏室 1 隔墙砌筑","plan":"09-25","owner":"陈师傅","w":2,"fl":"me","rm":"me-st1","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"10-14","files":2,"ck":["pass","已放行","CK-016"]},{"n":"夹层储藏室 2 隔墙砌筑","plan":"09-26","owner":"陈师傅","w":2,"fl":"me","rm":"me-st2","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":80,"act":"","files":1},{"n":"夹层设备间隔墙及防潮处理","plan":"09-27","owner":"陈师傅","w":2,"fl":"me","rm":"me-eq","note":"隔墙底部浇筑 200mm 高 C20 混凝土导墙，砌块含水率控制 8%~12%；墙面抹 20mm 厚防水砂浆，与地面防水层搭接 ≥150mm。","std":"导墙高度 ≥200mm 且与楼板整体浇筑；防水砂浆厚度均匀、无空鼓；24h 淋水试验无渗漏。","pct":60,"act":"","files":2,"ck":["stop","不得覆盖","CK-019"]},{"n":"夹层电梯间井道封堵","plan":"09-28","owner":"陈师傅","w":1,"fl":"me","rm":"me-lift","note":"电梯井道与楼板缝隙用 C20 细石混凝土分层封堵，钢筋头割除并做防腐；封堵前清理浮灰、湿润基面，外侧做防水砂浆收面。","std":"封堵密实无空洞、无渗漏；封堵面与楼板齐平，平整度 ≤3mm；防火封堵材料耐火极限符合设计。","pct":50,"act":"","files":1,"ck":["stop","不得覆盖","CK-020"]},{"n":"一楼厨房新砌隔墙","plan":"09-29","owner":"陈师傅","w":2,"fl":"f1","rm":"f1-kit","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":2,"ck":["stop","不一致","CK-027"]},{"n":"一楼餐厅新砌隔墙","plan":"09-30","owner":"陈师傅","w":2,"fl":"f1","rm":"f1-din","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":100,"act":"10-20","files":3},{"n":"一楼电梯间隔墙与井道封堵","plan":"10-01","owner":"陈师傅","w":2,"fl":"f1","rm":"f1-lift","note":"电梯井道与楼板缝隙用 C20 细石混凝土分层封堵，钢筋头割除并做防腐；封堵前清理浮灰、湿润基面，外侧做防水砂浆收面。","std":"封堵密实无空洞、无渗漏；封堵面与楼板齐平，平整度 ≤3mm；防火封堵材料耐火极限符合设计。","pct":40,"act":"","files":1,"ck":["stop","不得覆盖","CK-024"]},{"n":"一楼佛堂隔墙及地台基础","plan":"10-02","owner":"陈师傅","w":2,"fl":"f1","rm":"f1-alt","note":"地台基础采用 C25 混凝土浇筑，内配 φ8@200 双向钢筋，与结构楼板植筋连接；顶面标高按佛龛尺寸预留 50mm 石材厚度。","std":"地台标高偏差 ≤3mm、表面平整度 ≤3mm；植筋抗拔抽检合格；混凝土无蜂窝麻面。","pct":0,"act":"","files":0,"ck":["stop","不得覆盖","CK-026"]},{"n":"一楼读书区隔墙砌筑","plan":"10-03","owner":"陈师傅","w":1,"fl":"f1","rm":"f1-read","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":60,"act":"","files":1},{"n":"二楼书房 A 隔墙砌筑","plan":"10-04","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-sa","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"二楼卧室 A 隔墙砌筑","plan":"10-04","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-ba","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 隔墙及管道井","plan":"10-05","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-wca","note":"隔墙采用 120mm 加气混凝土砌块，管道井随砌随封；管根处细石混凝土封堵并做防水砂浆倒角，井壁内外双面抹灰。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；管道井封堵密实无渗漏；井壁抹灰无空鼓、无开裂。","pct":0,"act":"","files":0},{"n":"二楼书房 B 隔墙砌筑","plan":"10-06","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-sb","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":2,"ck":["stop","不一致","CK-031"]},{"n":"二楼卧室 B 隔墙砌筑","plan":"10-07","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-bb","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 隔墙及管道井","plan":"10-08","owner":"陈师傅","w":2,"fl":"f2","rm":"f2-wcb","note":"隔墙采用 120mm 加气混凝土砌块，管道井随砌随封；管根处细石混凝土封堵并做防水砂浆倒角，井壁内外双面抹灰。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；管道井封堵密实无渗漏；井壁抹灰无空鼓、无开裂。","pct":0,"act":"","files":0},{"n":"二楼电梯间井道封堵","plan":"10-09","owner":"陈师傅","w":1,"fl":"f2","rm":"f2-lift","note":"电梯井道与楼板缝隙用 C20 细石混凝土分层封堵，钢筋头割除并做防腐；封堵前清理浮灰、湿润基面，外侧做防水砂浆收面。","std":"封堵密实无空洞、无渗漏；封堵面与楼板齐平，平整度 ≤3mm；防火封堵材料耐火极限符合设计。","pct":0,"act":"","files":0},{"n":"三楼主卧室隔墙砌筑","plan":"10-10","owner":"陈师傅","w":2,"fl":"f3","rm":"f3-mb","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"三楼主衣帽间隔墙砌筑","plan":"10-11","owner":"陈师傅","w":2,"fl":"f3","rm":"f3-mc","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"三楼多功能室隔墙砌筑","plan":"10-12","owner":"陈师傅","w":2,"fl":"f3","rm":"f3-mf","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"三楼多功能室洗手间隔墙","plan":"10-13","owner":"陈师傅","w":1,"fl":"f3","rm":"f3-mfwc","note":"采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。","std":"垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。","pct":0,"act":"","files":0},{"n":"三楼电梯间井道封堵","plan":"10-14","owner":"陈师傅","w":1,"fl":"f3","rm":"f3-lift","note":"电梯井道与楼板缝隙用 C20 细石混凝土分层封堵，钢筋头割除并做防腐；封堵前清理浮灰、湿润基面，外侧做防水砂浆收面。","std":"封堵密实无空洞、无渗漏；封堵面与楼板齐平，平整度 ≤3mm；防火封堵材料耐火极限符合设计。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间隔墙与设备基础","plan":"10-15","owner":"陈师傅","w":2,"fl":"rf","rm":"rf-lau","note":"洗衣设备基础用 C25 混凝土浇筑，高出屋面完成面 150mm，四周做 R50 圆弧防水收头；基础内预留地脚螺栓孔。","std":"基础标高偏差 ≤3mm；与屋面防水层收头圆弧顺直无开裂；蓄水 24h 无渗漏。","pct":0,"act":"","files":0},{"n":"门窗洞口过梁安装","plan":"10-16","owner":"陈师傅","w":2,"fl":"all","rm":"all","note":"门窗洞口设预制或现浇钢筋混凝土过梁，两端支承长度 ≥250mm；过梁底模按跨度 1‰~3‰ 起拱，混凝土 C25 浇筑并养护 7 天。","std":"过梁支承长度 ≥250mm；底面平整度 ≤2mm；混凝土强度达设计值后方可拆模，梁体无裂缝。","pct":0,"act":"","files":0},{"n":"顶部斜砌顶砖、塞缝、挂钢丝网","plan":"10-17","owner":"陈师傅","w":2,"fl":"all","rm":"all","note":"墙体砌至梁底预留 15~20mm 缝隙，待砌体沉降 7 天后用膨胀砂浆斜砌顶紧；砌体与混凝土交接处满挂 300mm 宽镀锌钢丝网，搭接 ≥100mm。","std":"顶砖斜砌角度 45°~60°、灰缝饱满；钢丝网固定牢固、无翘边；交接缝抹灰后无开裂。","pct":0,"act":"","files":0},{"n":"砌体验收（垂直度 / 平整度实测）","plan":"10-18","owner":"王工","w":2,"fl":"all","rm":"all","note":"按《砌体结构工程施工质量验收规范》GB 50203 用 2m 靠尺、塞尺、线锤对已完砌体逐间实测实量，记录超差点位并整改后复测。","std":"垂直度 ≤3mm、表面平整度 ≤3mm、水平灰缝平直度 ≤7mm；实测实量合格率 100%，整改项复测合格。","pct":0,"act":"","files":0}],"w":8,"pct":35.2,"plan":76.0,"days":51,"status":"进行中"},{"id":"p2","name":"水电","start":"2026-11-09","end":"2027-02-08","crew":"水电班 · 赵师傅（6人）","scope":"各房间强弱电布管穿线、给排水敷设、中央空调新风配管、打压试水与隐蔽验收","tasks":[{"n":"水电点位现场交底、弹线定位","plan":"11-09","owner":"赵师傅","w":2,"fl":"all","rm":"all","note":"与业主、设计师现场逐间核对点位并弹线确定管线走向；开关距地 1300mm、插座 300mm 或按设计，冷热水管左热右冷、平行间距 150mm。","std":"点位数量与位置经业主签字确认；弹线偏差 ≤10mm；交底记录与确认单齐全。","pct":0,"act":"","files":0},{"n":"负一楼车库充电桩电源与给排水预留","plan":"11-12","owner":"赵师傅","w":2,"fl":"b1","rm":"b1-car","note":"车库充电桩由配电箱单独回路供电（16A/32A 按桩型），采用 ZR-YJV 阻燃电缆穿镀锌钢管沿墙敷设；给排水预留 DN25 冷水接口。","std":"回路与空开容量满足充电桩额定功率并留 20% 余量；绝缘电阻 ≥0.5MΩ；预留接口位置与桩体安装图一致。","pct":0,"act":"","files":0},{"n":"负一楼保姆间独立给排水与热水管","plan":"11-14","owner":"赵师傅","w":2,"fl":"b1","rm":"b1-nan","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"负一楼卫生间给排水与排风管","plan":"11-17","owner":"赵师傅","w":3,"fl":"b1","rm":"b1-wc","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"负一层大厅强弱电与灯位","plan":"11-19","owner":"赵师傅","w":2,"fl":"b1","rm":"b1-hall","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"负一楼衣帽间照明回路与插座","plan":"11-22","owner":"赵师傅","w":1,"fl":"b1","rm":"b1-clo","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"夹层设备间设备电源与地漏排水","plan":"11-25","owner":"赵师傅","w":3,"fl":"me","rm":"me-eq","note":"设备电源由配电箱单独回路引出、穿镀锌钢管沿墙敷设；地漏排水管采用 PVC-U 管、坡度 ≥1%，地漏存水弯水封深度 ≥50mm。","std":"绝缘电阻 ≥0.5MΩ；排水坡度 ≥1%、无积水；地漏水封深度 ≥50mm、无返味。","pct":0,"act":"","files":0},{"n":"夹层储藏室 1 照明与插座","plan":"11-27","owner":"赵师傅","w":1,"fl":"me","rm":"me-st1","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"夹层储藏室 2 照明与插座","plan":"11-30","owner":"赵师傅","w":1,"fl":"me","rm":"me-st2","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"夹层电梯间照明与井道电源","plan":"12-02","owner":"赵师傅","w":1,"fl":"me","rm":"me-lift","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"一楼厨房强弱电、燃气报警与给排水","plan":"12-05","owner":"赵师傅","w":3,"fl":"f1","rm":"f1-kit","note":"厨房燃气报警器电源单独从配电箱引出；报警器安装距顶 300mm 内、距灶具水平距离 ≥1m，并与燃气电磁阀联动。","std":"报警器安装位置符合产品说明与规范；联动切断动作可靠；绝缘电阻 ≥0.5MΩ。","pct":0,"act":"","files":0},{"n":"一楼餐厅灯位与插座","plan":"12-08","owner":"赵师傅","w":1,"fl":"f1","rm":"f1-din","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"一楼电梯间电源与照明","plan":"12-10","owner":"赵师傅","w":1,"fl":"f1","rm":"f1-lift","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"一楼客厅强弱电与音响线预埋","plan":"12-13","owner":"赵师傅","w":3,"fl":"f1","rm":"f1-liv","note":"音响线、HDMI、网线等弱电线缆单独穿管预埋至设备点位，两端预留 1.5m 余量并做好标记；与强电交叉处加金属屏蔽。","std":"线缆规格符合设备要求、预留长度 ≥1.5m；两端标识清晰可追溯；通断测试合格。","pct":0,"act":"","files":0},{"n":"一楼读书区照明与插座","plan":"12-15","owner":"赵师傅","w":1,"fl":"f1","rm":"f1-read","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"一楼佛堂专用照明与插座","plan":"12-18","owner":"赵师傅","w":2,"fl":"f1","rm":"f1-alt","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"二楼书房 A 强弱电布管穿线","plan":"12-21","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-sa","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"二楼卧室 A 强弱电与床头回路","plan":"12-23","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-ba","note":"床头两侧各设双控开关与 USB 插座（距地 700mm），床头回路与主灯分路控制；线管沿墙暗敷，弯头用弯管弹簧煨弯，禁止死弯。","std":"双控动作正常、无闪动；插座左零右火上接地；管内穿线总截面 ≤管内径 40%；绝缘电阻 ≥0.5MΩ。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 给排水与排风管","plan":"12-26","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-wca","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"二楼书房 B 强弱电布管穿线","plan":"12-28","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-sb","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"二楼卧室 B 强弱电与床头回路","plan":"12-31","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-bb","note":"床头两侧各设双控开关与 USB 插座（距地 700mm），床头回路与主灯分路控制；线管沿墙暗敷，弯头用弯管弹簧煨弯，禁止死弯。","std":"双控动作正常、无闪动；插座左零右火上接地；管内穿线总截面 ≤管内径 40%；绝缘电阻 ≥0.5MΩ。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 给排水与排风管","plan":"01-03","owner":"赵师傅","w":2,"fl":"f2","rm":"f2-wcb","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"二楼电梯间电源与照明","plan":"01-05","owner":"赵师傅","w":1,"fl":"f2","rm":"f2-lift","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"三楼主卧室、主衣帽间强弱电","plan":"01-08","owner":"赵师傅","w":3,"fl":"f3","rm":"f3-mb","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"三楼主卫给排水与排风管","plan":"01-10","owner":"赵师傅","w":3,"fl":"f3","rm":"f3-mwc","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"三楼多功能室强弱电与影音线","plan":"01-13","owner":"赵师傅","w":2,"fl":"f3","rm":"f3-mf","note":"音响线、HDMI、网线等弱电线缆单独穿管预埋至设备点位，两端预留 1.5m 余量并做好标记；与强电交叉处加金属屏蔽。","std":"线缆规格符合设备要求、预留长度 ≥1.5m；两端标识清晰可追溯；通断测试合格。","pct":0,"act":"","files":0},{"n":"三楼多功能室洗手间给排水","plan":"01-16","owner":"赵师傅","w":1,"fl":"f3","rm":"f3-mfwc","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"三楼电梯间电源与照明","plan":"01-18","owner":"赵师傅","w":1,"fl":"f3","rm":"f3-lift","note":"强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。","std":"绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间给排水与电源","plan":"01-21","owner":"赵师傅","w":2,"fl":"rf","rm":"rf-lau","note":"给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。","std":"打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。","pct":0,"act":"","files":0},{"n":"楼顶阳台排水与户外电源预留","plan":"01-23","owner":"赵师傅","w":2,"fl":"rf","rm":"rf-bal","note":"户外电源采用 IP66 防水插座与 ZR-YJV 电缆穿 PVC 管埋地敷设，埋深 ≥300mm 并铺砂盖砖；光伏线管预留至逆变器安装位置。","std":"埋深 ≥300mm、套管完好无破损；防水插座 IP66 且接地可靠；绝缘电阻 ≥0.5MΩ。","pct":0,"act":"","files":0},{"n":"种菜区给水与灌溉电源","plan":"01-26","owner":"赵师傅","w":1,"fl":"rf","rm":"rf-gar","note":"种菜区给水从屋面给水干管接出 DN20 PPR 管，沿女儿墙敷设至各灌溉点位，末端设快速取水阀；管路做保温防冻处理。","std":"通水试验无渗漏；取水阀操作灵活、出水通畅；保温层完整无破损。","pct":0,"act":"","files":0},{"n":"屋顶光伏线管预埋与并网预留","plan":"01-29","owner":"赵师傅","w":3,"fl":"rf","rm":"rf-pv","note":"户外电源采用 IP66 防水插座与 ZR-YJV 电缆穿 PVC 管埋地敷设，埋深 ≥300mm 并铺砂盖砖；光伏线管预留至逆变器安装位置。","std":"埋深 ≥300mm、套管完好无破损；防水插座 IP66 且接地可靠；绝缘电阻 ≥0.5MΩ。","pct":0,"act":"","files":0},{"n":"中央空调 / 新风配管及冷凝水管","plan":"01-31","owner":"赵师傅","w":2,"fl":"all","rm":"all","note":"冷媒铜管按设计规格选用，弯管用弯管器、焊接充氮保护；冷凝水管采用 PVC-U 管，坡度 ≥1% 且不得与冷媒管共用管卡。","std":"氮气保压 4.0MPa、24h 压降 ≤0.01MPa；冷凝水排水通畅无积水；保温层闭合无冷桥。","pct":0,"act":"","files":0},{"n":"管道打压试水、线路绝缘测试","plan":"02-03","owner":"王工","w":3,"fl":"all","rm":"all","note":"给水管打压至 0.8MPa 并稳压 30min 记录压降；电路逐回路摇测绝缘电阻并记录；排水管做灌水与通球试验。","std":"给水压降 ≤0.05MPa 且无渗漏；绝缘电阻 ≥0.5MΩ；排水通球率 100%、无堵塞。","pct":0,"act":"","files":0},{"n":"隐蔽工程验收（全过程拍照存档）","plan":"02-05","owner":"王工","w":2,"fl":"all","rm":"all","note":"水电管线封闭前组织业主、监理、施工三方验收，对管线走向、点位、间距逐间拍照存档，形成隐蔽工程验收记录与影像资料。","std":"验收记录三方签字齐全；影像资料覆盖全部隐蔽部位且可追溯到房间；遗留问题整改闭环。","pct":0,"act":"","files":0},{"n":"水电整改项复查与回路标识","plan":"02-08","owner":"赵师傅","w":2,"fl":"all","rm":"all","note":"对验收提出的整改项逐条复查消项；配电箱内回路逐一粘贴标识牌，注明回路名称、容量与对应区域。","std":"整改项 100% 闭环；回路标识与箱内开关一一对应；标识牌字迹清晰、耐擦拭。","pct":0,"act":"","files":0}],"w":22,"pct":0.0,"plan":0.0,"days":92,"status":"未开始"},{"id":"p3","name":"铺砖","start":"2026-12-19","end":"2027-03-18","crew":"铺砖班 · 周师傅（7人）","scope":"各房间防水闭水试验、通体砖 / 墙地砖铺贴、石材、勾缝与成品保护","tasks":[{"n":"基层清理、界面剂处理","plan":"12-19","owner":"周师傅","w":1,"fl":"all","rm":"all","note":"清除地面浮灰、油污与松动层，空鼓部位剔除重做；满涂界面剂一道，待表干后方可施工结合层。","std":"基层干净无浮灰、无空鼓；界面剂涂刷均匀无漏涂；基层含水率 ≤8%。","pct":0,"act":"","files":0},{"n":"负一楼卫生间防水及 48h 闭水试验","plan":"12-22","owner":"王工","w":2,"fl":"b1","rm":"b1-wc","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"负一楼车库地面找平与耐磨地坪","plan":"12-25","owner":"周师傅","w":2,"fl":"b1","rm":"b1-car","note":"车库耐磨地坪在混凝土初凝时撒布金刚砂耐磨骨料（用量 ≥5kg/m²），机械镘抹平压光；按 6m×6m 设切割缝、缝深 ≥1/3 板厚。","std":"表面平整度 ≤3mm、无起砂起壳；金刚砂撒布均匀；切割缝顺直、深度符合要求。","pct":0,"act":"","files":0},{"n":"负一层大厅石材铺贴","plan":"12-27","owner":"周师傅","w":3,"fl":"b1","rm":"b1-hall","note":"石材铺贴采用 1:3 干硬性水泥砂浆结合层（手握成团），石材背面涂素水泥浆；石材预排编号控制色差，缝宽按设计 1~2mm。","std":"空鼓率 ≤5%（单块 ≤1/4 面积）；表面平整度 ≤1mm、接缝高低差 ≤0.5mm；色差与纹路拼接自然。","pct":0,"act":"","files":0},{"n":"负一楼保姆间、衣帽间地砖铺贴","plan":"12-30","owner":"周师傅","w":2,"fl":"b1","rm":"b1-nan","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"楼顶阳台防水及 48h 闭水试验","plan":"01-02","owner":"王工","w":2,"fl":"rf","rm":"rf-bal","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"种菜区防水与排水层施工","plan":"01-05","owner":"周师傅","w":2,"fl":"rf","rm":"rf-gar","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"一楼客厅 800×800 通体砖铺贴","plan":"01-07","owner":"周师傅","w":3,"fl":"f1","rm":"f1-liv","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"一楼餐厅通体砖铺贴","plan":"01-10","owner":"周师傅","w":2,"fl":"f1","rm":"f1-din","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"一楼厨房墙地砖铺贴","plan":"01-13","owner":"周师傅","w":3,"fl":"f1","rm":"f1-kit","note":"墙面砖自下而上铺贴，底部留出地砖厚度；阳角做 45° 磨边碰角，阴角压向正确，缝宽 1.5mm 并勾缝密实。","std":"空鼓率 ≤5%；立面垂直度 ≤2mm、阴阳角方正 ≤3mm；45° 碰角顺直无爆边。","pct":0,"act":"","files":0},{"n":"一楼电梯间石材门套与地面","plan":"01-16","owner":"周师傅","w":1,"fl":"f1","rm":"f1-lift","note":"石材铺贴采用 1:3 干硬性水泥砂浆结合层（手握成团），石材背面涂素水泥浆；石材预排编号控制色差，缝宽按设计 1~2mm。","std":"空鼓率 ≤5%（单块 ≤1/4 面积）；表面平整度 ≤1mm、接缝高低差 ≤0.5mm；色差与纹路拼接自然。","pct":0,"act":"","files":0},{"n":"一楼读书区地面与墙面收口","plan":"01-19","owner":"周师傅","w":2,"fl":"f1","rm":"f1-read","note":"地面与墙面、门槛石接口处收边顺直，相接部位留 2mm 工艺缝并打胶；收口线条与地砖缝对齐。","std":"收口线条顺直、无高低差；打胶饱满无断缝；与地砖缝对位偏差 ≤2mm。","pct":0,"act":"","files":0},{"n":"一楼佛堂石材地面（含地台）","plan":"01-21","owner":"周师傅","w":2,"fl":"f1","rm":"f1-alt","note":"石材铺贴采用 1:3 干硬性水泥砂浆结合层（手握成团），石材背面涂素水泥浆；石材预排编号控制色差，缝宽按设计 1~2mm。","std":"空鼓率 ≤5%（单块 ≤1/4 面积）；表面平整度 ≤1mm、接缝高低差 ≤0.5mm；色差与纹路拼接自然。","pct":0,"act":"","files":0},{"n":"二楼书房 A 地面砖铺贴","plan":"01-24","owner":"周师傅","w":2,"fl":"f2","rm":"f2-sa","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"二楼卧室 A 地面砖铺贴","plan":"01-27","owner":"周师傅","w":2,"fl":"f2","rm":"f2-ba","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 墙地砖与防水","plan":"01-30","owner":"周师傅","w":2,"fl":"f2","rm":"f2-wca","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"二楼书房 B 地面砖铺贴","plan":"02-02","owner":"周师傅","w":2,"fl":"f2","rm":"f2-sb","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"二楼卧室 B 地面砖铺贴","plan":"02-04","owner":"周师傅","w":2,"fl":"f2","rm":"f2-bb","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 墙地砖与防水","plan":"02-07","owner":"周师傅","w":2,"fl":"f2","rm":"f2-wcb","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"二楼电梯间地面找平","plan":"02-10","owner":"周师傅","w":1,"fl":"f2","rm":"f2-lift","note":"水泥砂浆找平层配比 1:3，厚度按设计（一般 20~30mm），冲筋贴饼控制标高，表面拉毛；养护 ≥7 天。","std":"表面平整度 ≤3mm、标高偏差 ≤5mm；无空鼓、起砂、开裂；养护记录齐全。","pct":0,"act":"","files":0},{"n":"三楼主卧室地面砖铺贴","plan":"02-13","owner":"周师傅","w":3,"fl":"f3","rm":"f3-mb","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"三楼主衣帽间地面与柜下基层","plan":"02-15","owner":"周师傅","w":2,"fl":"f3","rm":"f3-mc","note":"柜体下基层按柜体尺寸预留并做防潮处理，避免柜体直接接触水泥砂浆层；基层标高与柜体底部调平件匹配。","std":"基层标高与柜体尺寸匹配（偏差 ≤3mm）；防潮层完整无破损；表面平整度 ≤3mm。","pct":0,"act":"","files":0},{"n":"三楼主卫墙地砖与防水","plan":"02-18","owner":"周师傅","w":3,"fl":"f3","rm":"f3-mwc","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"三楼多功能室地面砖铺贴","plan":"02-21","owner":"周师傅","w":2,"fl":"f3","rm":"f3-mf","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"三楼多功能室洗手间墙地砖","plan":"02-24","owner":"周师傅","w":1,"fl":"f3","rm":"f3-mfwc","note":"墙面砖自下而上铺贴，底部留出地砖厚度；阳角做 45° 磨边碰角，阴角压向正确，缝宽 1.5mm 并勾缝密实。","std":"空鼓率 ≤5%；立面垂直度 ≤2mm、阴阳角方正 ≤3mm；45° 碰角顺直无爆边。","pct":0,"act":"","files":0},{"n":"三楼电梯间地面找平","plan":"02-27","owner":"周师傅","w":1,"fl":"f3","rm":"f3-lift","note":"水泥砂浆找平层配比 1:3，厚度按设计（一般 20~30mm），冲筋贴饼控制标高，表面拉毛；养护 ≥7 天。","std":"表面平整度 ≤3mm、标高偏差 ≤5mm；无空鼓、起砂、开裂；养护记录齐全。","pct":0,"act":"","files":0},{"n":"夹层电梯间地面找平与地砖","plan":"03-01","owner":"周师傅","w":2,"fl":"me","rm":"me-lift","note":"地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。","std":"空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。","pct":0,"act":"","files":0},{"n":"夹层储藏室、设备间地面找平","plan":"03-04","owner":"周师傅","w":2,"fl":"me","rm":"me-st1","note":"水泥砂浆找平层配比 1:3，厚度按设计（一般 20~30mm），冲筋贴饼控制标高，表面拉毛；养护 ≥7 天。","std":"表面平整度 ≤3mm、标高偏差 ≤5mm；无空鼓、起砂、开裂；养护记录齐全。","pct":0,"act":"","files":0},{"n":"夹层储藏室 2 地面与货架基层","plan":"03-07","owner":"周师傅","w":1,"fl":"me","rm":"me-st2","note":"储藏室地面先按 1:3 水泥砂浆找平，再按货架立柱间距预埋钢板或加固木基层；地面与基层标高按货架底部调平螺栓需求预留。","std":"地面平整度 ≤3mm、无空鼓；预埋件位置偏差 ≤5mm；基层含水率 ≤8%。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间防水与地砖","plan":"03-10","owner":"周师傅","w":2,"fl":"rf","rm":"rf-lau","note":"防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。","std":"涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。","pct":0,"act":"","files":0},{"n":"楼顶阳台地砖找坡与泼水试验","plan":"03-12","owner":"周师傅","w":2,"fl":"rf","rm":"rf-bal","note":"按设计坡度（≥1%）找坡至地漏或排水沟，排水沟做 R30 圆弧收口；完工后泼水试验检查排水方向。","std":"坡度 ≥1% 且不积水；泼水试验 30min 内排空、无倒流；排水沟顺直无堵塞。","pct":0,"act":"","files":0},{"n":"种菜区地面与排水沟","plan":"03-15","owner":"周师傅","w":1,"fl":"rf","rm":"rf-gar","note":"按设计坡度（≥1%）找坡至地漏或排水沟，排水沟做 R30 圆弧收口；完工后泼水试验检查排水方向。","std":"坡度 ≥1% 且不积水；泼水试验 30min 内排空、无倒流；排水沟顺直无堵塞。","pct":0,"act":"","files":0},{"n":"勾缝、清理、成品保护","plan":"03-18","owner":"周师傅","w":2,"fl":"all","rm":"all","note":"采用专用勾缝剂（颜色与砖体协调）填缝压实；铺贴完成后覆盖保护膜或密度板，阳角加护角条。","std":"勾缝饱满、宽窄一致、无断缝；成品保护覆盖完整；移交前无划伤与污染。","pct":0,"act":"","files":0}],"w":18,"pct":0.0,"plan":0.0,"days":90,"status":"未开始"},{"id":"p4","name":"木工","start":"2027-02-19","end":"2027-06-18","crew":"木工班 · 吴师傅（8人）","scope":"各房间吊顶龙骨与石膏板、衣柜书柜柜体、木饰面、门套基层与收口、负一层大厅背景墙基层","tasks":[{"n":"木作材料进场、板材复尺","plan":"02-19","owner":"吴师傅","w":1,"fl":"all","rm":"all","note":"板材（E0 级多层板 / 阻燃板）、龙骨、五金进场核对品牌、环保等级与规格；现场复尺，按墙面垂直度与平整度调整深化尺寸。","std":"材料品牌规格与合同一致并提供 E0 级检测报告；复尺偏差记录完整；防火防腐处理到位。","pct":0,"act":"","files":0},{"n":"负一层大厅吊顶与吸音板基层","plan":"02-23","owner":"吴师傅","w":3,"fl":"b1","rm":"b1-hall","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"负一楼车库吊顶与门套基层","plan":"02-27","owner":"吴师傅","w":2,"fl":"b1","rm":"b1-car","note":"门套基层采用 18mm 阻燃板，与墙体交接处打胶密封；门洞净宽按门扇尺寸加 8mm 安装缝，垂直度用线锤校正后固定。","std":"门套垂直度 ≤2mm、对角线偏差 ≤3mm；门洞净宽偏差 ≤3mm；基层无空鼓。","pct":0,"act":"","files":0},{"n":"负一楼保姆间吊顶与柜体基层","plan":"03-03","owner":"吴师傅","w":2,"fl":"b1","rm":"b1-nan","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"负一楼衣帽间柜体基层与吊顶","plan":"03-07","owner":"吴师傅","w":2,"fl":"b1","rm":"b1-clo","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"负一楼卫生间吊顶基层","plan":"03-12","owner":"吴师傅","w":1,"fl":"b1","rm":"b1-wc","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"夹层设备间、储藏室柜体与基层","plan":"03-16","owner":"吴师傅","w":2,"fl":"me","rm":"me-eq","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"夹层储藏室 2 货架基层","plan":"03-20","owner":"吴师傅","w":1,"fl":"me","rm":"me-st2","note":"储物货架采用镀锌角钢立柱与层板，立柱用膨胀螺栓与墙体固定（间距 ≤800mm）；层板按使用荷载配置。","std":"货架垂直度 ≤3mm、摇动无位移；层板经 1.5 倍设计荷载试验无变形。","pct":0,"act":"","files":0},{"n":"夹层电梯间门套基层","plan":"03-24","owner":"吴师傅","w":1,"fl":"me","rm":"me-lift","note":"门套基层采用 18mm 阻燃板，与墙体交接处打胶密封；门洞净宽按门扇尺寸加 8mm 安装缝，垂直度用线锤校正后固定。","std":"门套垂直度 ≤2mm、对角线偏差 ≤3mm；门洞净宽偏差 ≤3mm；基层无空鼓。","pct":0,"act":"","files":0},{"n":"一楼客厅挑空区吊顶与造型","plan":"03-28","owner":"吴师傅","w":3,"fl":"f1","rm":"f1-liv","note":"挑空区吊顶设反支撑与转换层，造型按深化图放样并样板先行确认；弧形部位用双层石膏板错缝弯曲。","std":"造型与深化图一致并经业主确认；弧线顺滑无折角；吊顶承载力满足检修马道要求。","pct":0,"act":"","files":0},{"n":"一楼餐厅吊顶与灯槽","plan":"04-01","owner":"吴师傅","w":2,"fl":"f1","rm":"f1-din","note":"灯槽净宽 ≥120mm、槽深 ≥100mm，内壁做反光处理；灯槽下沿做遮盖边防止直射见光，并预留 LED 灯带电源。","std":"灯槽尺寸一致、边线顺直（直线度 ≤2mm/2m）；灯带试亮无明显暗区。","pct":0,"act":"","files":0},{"n":"一楼厨房吊顶基层与吊柜背板","plan":"04-05","owner":"吴师傅","w":2,"fl":"f1","rm":"f1-kit","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"一楼读书区书架与吊顶","plan":"04-09","owner":"吴师傅","w":2,"fl":"f1","rm":"f1-read","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"一楼佛堂佛龛与吊顶造型","plan":"04-13","owner":"吴师傅","w":3,"fl":"f1","rm":"f1-alt","note":"佛龛与视听墙基层按设备尺寸与图样放样，内嵌部位用 18mm 多层板双层叠合加固，并预埋线管与设备支架加固点。","std":"放样尺寸偏差 ≤2mm；基层承重满足设备荷载（≥30kg）；预埋点位与设备安装孔一致。","pct":0,"act":"","files":0},{"n":"一楼电梯间门套基层","plan":"04-17","owner":"吴师傅","w":1,"fl":"f1","rm":"f1-lift","note":"门套基层采用 18mm 阻燃板，与墙体交接处打胶密封；门洞净宽按门扇尺寸加 8mm 安装缝，垂直度用线锤校正后固定。","std":"门套垂直度 ≤2mm、对角线偏差 ≤3mm；门洞净宽偏差 ≤3mm；基层无空鼓。","pct":0,"act":"","files":0},{"n":"二楼卧室 A 吊顶及窗帘盒","plan":"04-22","owner":"吴师傅","w":2,"fl":"f2","rm":"f2-ba","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"二楼卧室 B 吊顶及窗帘盒","plan":"04-26","owner":"吴师傅","w":2,"fl":"f2","rm":"f2-bb","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"二楼书房 A、书房 B 吊顶与书架柜体","plan":"04-30","owner":"吴师傅","w":3,"fl":"f2","rm":"f2-sa","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 吊顶基层","plan":"05-04","owner":"吴师傅","w":1,"fl":"f2","rm":"f2-wca","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 吊顶基层","plan":"05-08","owner":"吴师傅","w":1,"fl":"f2","rm":"f2-wcb","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"二楼电梯间吊顶","plan":"05-12","owner":"吴师傅","w":1,"fl":"f2","rm":"f2-lift","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"三楼主卧室吊顶与灯槽","plan":"05-16","owner":"吴师傅","w":3,"fl":"f3","rm":"f3-mb","note":"灯槽净宽 ≥120mm、槽深 ≥100mm，内壁做反光处理；灯槽下沿做遮盖边防止直射见光，并预留 LED 灯带电源。","std":"灯槽尺寸一致、边线顺直（直线度 ≤2mm/2m）；灯带试亮无明显暗区。","pct":0,"act":"","files":0},{"n":"三楼主衣帽间吊顶与柜体基层","plan":"05-20","owner":"吴师傅","w":2,"fl":"f3","rm":"f3-mc","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"三楼多功能室吊顶与视听墙基层","plan":"05-24","owner":"吴师傅","w":3,"fl":"f3","rm":"f3-mf","note":"佛龛与视听墙基层按设备尺寸与图样放样，内嵌部位用 18mm 多层板双层叠合加固，并预埋线管与设备支架加固点。","std":"放样尺寸偏差 ≤2mm；基层承重满足设备荷载（≥30kg）；预埋点位与设备安装孔一致。","pct":0,"act":"","files":0},{"n":"三楼多功能室洗手间吊顶基层","plan":"05-28","owner":"吴师傅","w":1,"fl":"f3","rm":"f3-mfwc","note":"采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。","std":"吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。","pct":0,"act":"","files":0},{"n":"三楼电梯间门套与吊顶","plan":"06-02","owner":"吴师傅","w":1,"fl":"f3","rm":"f3-lift","note":"门套基层采用 18mm 阻燃板，与墙体交接处打胶密封；门洞净宽按门扇尺寸加 8mm 安装缝，垂直度用线锤校正后固定。","std":"门套垂直度 ≤2mm、对角线偏差 ≤3mm；门洞净宽偏差 ≤3mm；基层无空鼓。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间吊顶与柜体基层","plan":"06-06","owner":"吴师傅","w":2,"fl":"rf","rm":"rf-lau","note":"柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。","std":"柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。","pct":0,"act":"","files":0},{"n":"全屋衣柜 / 书柜柜体制作安装","plan":"06-10","owner":"吴师傅","w":4,"fl":"all","rm":"all","note":"柜体采用 18mm E0 级多层板 + 2mm PVC 封边；层板跨度 >900mm 加背拉条；柜体与吊顶、墙面交接处留 5mm 伸缩缝打胶。","std":"层板挠度 ≤L/250；门缝均匀 2~3mm、开合顺畅；封边无崩边、无胶线。","pct":0,"act":"","files":0},{"n":"木作收口、门套基层","plan":"06-14","owner":"吴师傅","w":2,"fl":"all","rm":"all","note":"门套、柜体与墙面收口打胶顺直；按《建筑装饰装修工程质量验收标准》GB 50210 用 2m 靠尺、塞尺对木作分项逐项实测并形成记录。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm、接缝直线度 ≤2mm；验收记录齐全、整改闭环。","pct":0,"act":"","files":0},{"n":"木作分项验收（平整度 / 缝隙）","plan":"06-18","owner":"王工","w":2,"fl":"all","rm":"all","note":"门套、柜体与墙面收口打胶顺直；按《建筑装饰装修工程质量验收标准》GB 50210 用 2m 靠尺、塞尺对木作分项逐项实测并形成记录。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm、接缝直线度 ≤2mm；验收记录齐全、整改闭环。","pct":0,"act":"","files":0}],"w":22,"pct":0.0,"plan":0.0,"days":120,"status":"未开始"},{"id":"p5","name":"油灰工","start":"2027-05-19","end":"2027-08-02","crew":"油灰班 · 郑师傅（5人）","scope":"各房间石膏板接缝防裂、阴阳角找方、腻子批刮打磨、底漆面漆及艺术漆配合","tasks":[{"n":"墙面石膏板接缝处理、防裂处理","plan":"05-19","owner":"郑师傅","w":3,"fl":"all","rm":"all","note":"石膏板接缝先嵌缝石膏填实，再贴 50mm 宽玻纤网格带（转角用阴阳角条），刮平压实后满批一遍。","std":"接缝平直无凹陷；网格带无起鼓、无外露；打磨后无接缝痕迹。","pct":0,"act":"","files":0},{"n":"阴阳角找方、护角条粘贴","plan":"05-23","owner":"郑师傅","w":2,"fl":"all","rm":"all","note":"采用成品 PVC 或金属护角条，用粘结石膏点粘找直；阴阳角用 2m 靠尺校正至方正顺直。","std":"阴阳角方正度 ≤3mm、直线度 ≤3mm；护角条无脱空、无露边。","pct":0,"act":"","files":0},{"n":"负一层大厅墙面找平与防潮底涂","plan":"05-27","owner":"郑师傅","w":2,"fl":"b1","rm":"b1-hall","note":"墙面清理后涂刷防潮底涂一道，重点处理返潮部位与墙脚 300mm 范围；待表干后再批刮找平层。","std":"底涂涂刷均匀无漏涂；返潮部位无渗水痕迹；基层含水率 ≤8%。","pct":0,"act":"","files":0},{"n":"负一楼车库、保姆间墙面找平","plan":"05-30","owner":"郑师傅","w":2,"fl":"b1","rm":"b1-car","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"负一楼卫生间防潮腻子","plan":"06-03","owner":"郑师傅","w":1,"fl":"b1","rm":"b1-wc","note":"卫生间、厨房等潮湿区采用 N 型耐水防潮腻子，批刮前基面刷防潮底涂；腻子分两遍批刮，每遍厚度 ≤1mm。","std":"耐水性符合 N 型要求（浸水 48h 无起泡脱落）；基层含水率 ≤8% 方可批刮。","pct":0,"act":"","files":0},{"n":"负一楼衣帽间墙面批刮","plan":"06-07","owner":"郑师傅","w":2,"fl":"b1","rm":"b1-clo","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"夹层设备间、储藏室墙面腻子","plan":"06-11","owner":"郑师傅","w":2,"fl":"me","rm":"me-eq","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"夹层电梯间墙面腻子","plan":"06-14","owner":"郑师傅","w":1,"fl":"me","rm":"me-lift","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"一楼客厅、餐厅一遍腻子","plan":"06-18","owner":"郑师傅","w":3,"fl":"f1","rm":"f1-liv","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"一楼厨房、电梯间耐水腻子","plan":"06-22","owner":"郑师傅","w":2,"fl":"f1","rm":"f1-kit","note":"卫生间、厨房等潮湿区采用 N 型耐水防潮腻子，批刮前基面刷防潮底涂；腻子分两遍批刮，每遍厚度 ≤1mm。","std":"耐水性符合 N 型要求（浸水 48h 无起泡脱落）；基层含水率 ≤8% 方可批刮。","pct":0,"act":"","files":0},{"n":"一楼读书区、佛堂腻子","plan":"06-26","owner":"郑师傅","w":2,"fl":"f1","rm":"f1-read","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"二楼卧室 A、B 与书房 A、B 一遍腻子","plan":"06-29","owner":"郑师傅","w":2,"fl":"f2","rm":"f2-ba","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"二楼卧室 B 顶面腻子批刮","plan":"07-03","owner":"郑师傅","w":1,"fl":"f2","rm":"f2-bb","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 防水腻子","plan":"07-07","owner":"郑师傅","w":1,"fl":"f2","rm":"f2-wca","note":"卫生间、厨房等潮湿区采用 N 型耐水防潮腻子，批刮前基面刷防潮底涂；腻子分两遍批刮，每遍厚度 ≤1mm。","std":"耐水性符合 N 型要求（浸水 48h 无起泡脱落）；基层含水率 ≤8% 方可批刮。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 防水腻子","plan":"07-11","owner":"郑师傅","w":1,"fl":"f2","rm":"f2-wcb","note":"卫生间、厨房等潮湿区采用 N 型耐水防潮腻子，批刮前基面刷防潮底涂；腻子分两遍批刮，每遍厚度 ≤1mm。","std":"耐水性符合 N 型要求（浸水 48h 无起泡脱落）；基层含水率 ≤8% 方可批刮。","pct":0,"act":"","files":0},{"n":"三楼主卧室、主衣帽间腻子","plan":"07-14","owner":"郑师傅","w":3,"fl":"f3","rm":"f3-mb","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"三楼多功能室与洗手间腻子","plan":"07-18","owner":"郑师傅","w":2,"fl":"f3","rm":"f3-mf","note":"墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。","std":"表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间、楼顶阳台外墙腻子与防水涂料","plan":"07-22","owner":"郑师傅","w":2,"fl":"rf","rm":"rf-bal","note":"外墙采用柔性耐水腻子，配套丙烯酸外墙防水涂料两遍，阴阳角与管根做增强层；施工避开雨天，气温 ≥5℃。","std":"涂层无漏涂、无流坠；附着力拉拔 ≥0.5MPa；24h 淋水无渗漏。","pct":0,"act":"","files":0},{"n":"二遍腻子及打磨、灯带照度检查（全屋）","plan":"07-26","owner":"郑师傅","w":3,"fl":"all","rm":"all","note":"二遍腻子压实刮平，干后用 400# 砂纸打磨并清扫粉尘；用 200W 侧光灯逐墙照射检查平整度与接茬。","std":"打磨后无砂痕、无接茬；侧光照射无波浪、无明暗差；基层平整度 ≤2mm。","pct":0,"act":"","files":0},{"n":"底漆 + 两遍面漆涂刷（全屋）","plan":"07-29","owner":"郑师傅","w":4,"fl":"all","rm":"all","note":"底漆一遍、面漆两遍（乳胶漆按设计色号），每遍间隔 ≥4h；喷涂或滚涂均匀，边角用小刷补涂到位。","std":"漆膜饱满均匀、无流挂、无漏刷、无刷痕；色差目视一致；漆膜厚度符合产品说明。","pct":0,"act":"","files":0},{"n":"木器漆 / 艺术漆配合与收口","plan":"08-02","owner":"郑师傅","w":2,"fl":"all","rm":"all","note":"木器漆按设计做开放或封闭效果，底漆封闭后打磨、面漆两遍；艺术漆按确认样板施工，与周边收口贴美纹纸保护。","std":"以确认样板为准、色差目视无差异；漆面光滑无颗粒；收口线顺直无污染。","pct":0,"act":"","files":0}],"w":16,"pct":0.0,"plan":0.0,"days":76,"status":"未开始"},{"id":"p6","name":"安装收尾","start":"2027-07-19","end":"2027-08-30","crew":"安装班（待进场 · 计划 8 人）","scope":"各房间灯具面板、洁具五金、橱柜卫浴柜、木门地板、空调风口、光伏与户外设施、保洁竣工","tasks":[{"n":"灯具、开关插座面板安装","plan":"07-19","owner":"待定","w":2,"fl":"all","rm":"all","note":"灯具与面板安装前断电并验电；灯具用膨胀螺栓固定、承载 ≥4 倍灯重；面板安装水平、与墙面贴合无缝。","std":"灯具安装牢固（承载 ≥4 倍自重）、无晃动；面板水平度 ≤1mm、与墙面缝隙 ≤0.5mm；通电试亮全部正常。","pct":0,"act":"","files":0},{"n":"洁具、五金件安装调试","plan":"07-20","owner":"待定","w":2,"fl":"all","rm":"all","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"全屋木门、地板铺装","plan":"07-21","owner":"待定","w":3,"fl":"all","rm":"all","note":"木门按门洞尺寸调整后安装，合页上二下三、门缝均匀 2~3mm；地板铺装前基层平整度 ≤2mm，四周预留 8~10mm 伸缩缝。","std":"门扇开合顺畅无自开自闭、门缝 2~3mm；地板无空响、接缝高低差 ≤0.5mm；伸缩缝顺直。","pct":0,"act":"","files":0},{"n":"中央空调风口、新风面板安装","plan":"07-23","owner":"待定","w":2,"fl":"all","rm":"all","note":"风口与吊顶开孔尺寸匹配、四边留缝均匀；风口内侧做防结露保温；面板安装后与吊顶面齐平。","std":"风口气密无漏风、四边缝隙 ≤2mm；送风风速与设计偏差 ≤15%；面板与吊顶齐平无凸凹。","pct":0,"act":"","files":0},{"n":"负一楼车库卷帘门与车位设施安装","plan":"07-24","owner":"待定","w":2,"fl":"b1","rm":"b1-car","note":"车库卷帘门轨道垂直安装并与墙体牢固固定；车位设施（挡车器、车位标线）按车位尺寸定位放线。","std":"卷帘门升降顺畅、限位准确；轨道垂直度 ≤2mm/m；车位标线尺寸偏差 ≤10mm。","pct":0,"act":"","files":0},{"n":"负一楼衣帽间五金与灯具安装","plan":"07-25","owner":"待定","w":1,"fl":"b1","rm":"b1-clo","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"负一楼保姆间家具与电器安装","plan":"07-26","owner":"待定","w":2,"fl":"b1","rm":"b1-nan","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"负一楼卫生间洁具与浴霸安装","plan":"07-27","owner":"待定","w":2,"fl":"b1","rm":"b1-wc","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"负一层大厅家具与灯具安装","plan":"07-29","owner":"待定","w":2,"fl":"b1","rm":"b1-hall","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"夹层电梯间呼梯面板与灯具安装","plan":"07-30","owner":"待定","w":1,"fl":"me","rm":"me-lift","note":"呼梯面板与电梯厂家配合安装，接线由持证人员操作；面板与墙面间隙均匀并用密封胶收口。","std":"呼梯动作灵敏可靠、与轿厢联动正常；面板平整度 ≤1mm、无缝隙。","pct":0,"act":"","files":0},{"n":"夹层储藏室货架与灯具安装","plan":"07-31","owner":"待定","w":1,"fl":"me","rm":"me-st1","note":"储物货架采用镀锌角钢立柱与层板，立柱用膨胀螺栓与墙体固定（间距 ≤800mm）；层板按使用荷载配置。","std":"货架垂直度 ≤3mm、摇动无位移；层板经 1.5 倍设计荷载试验无变形。","pct":0,"act":"","files":0},{"n":"夹层储藏室 2 货架与照明","plan":"08-01","owner":"待定","w":1,"fl":"me","rm":"me-st2","note":"储物货架采用镀锌角钢立柱与层板，立柱用膨胀螺栓与墙体固定（间距 ≤800mm）；层板按使用荷载配置。","std":"货架垂直度 ≤3mm、摇动无位移；层板经 1.5 倍设计荷载试验无变形。","pct":0,"act":"","files":0},{"n":"夹层设备间机组接线与联动调试","plan":"08-02","owner":"待定","w":3,"fl":"me","rm":"me-eq","note":"设备机组按电气图接线、相序正确，接地电阻 ≤4Ω；与楼宇控制及联动系统逐点调试并记录参数。","std":"相序正确、接地电阻 ≤4Ω；联动点位 100% 动作正确；调试记录完整。","pct":0,"act":"","files":0},{"n":"一楼厨房橱柜、烟机灶具安装","plan":"08-04","owner":"待定","w":3,"fl":"f1","rm":"f1-kit","note":"橱柜台面开孔位置与灶具、水槽尺寸匹配，台面接缝用同色胶填缝；烟机排烟管接至公共烟道并加装止逆阀。","std":"柜门缝隙均匀、开合顺畅；台面水平度 ≤2mm；烟道连接密封无漏烟。","pct":0,"act":"","files":0},{"n":"一楼餐厅家具与灯具安装","plan":"08-05","owner":"待定","w":2,"fl":"f1","rm":"f1-din","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"一楼电梯间轿厢装修与门套安装","plan":"08-06","owner":"待定","w":2,"fl":"f1","rm":"f1-lift","note":"电梯轿厢装修选用轻质不燃材料，与厂家确认附加荷载；门套安装垂直、与电梯门套尺寸匹配。","std":"轿厢装修后荷载不超过厂家限值；门套垂直度 ≤2mm；电梯运行无异常噪音。","pct":0,"act":"","files":0},{"n":"一楼客厅家具与灯具安装","plan":"08-07","owner":"待定","w":3,"fl":"f1","rm":"f1-liv","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"一楼读书区书柜与灯具安装","plan":"08-08","owner":"待定","w":2,"fl":"f1","rm":"f1-read","note":"灯具与面板安装前断电并验电；灯具用膨胀螺栓固定、承载 ≥4 倍灯重；面板安装水平、与墙面贴合无缝。","std":"灯具安装牢固（承载 ≥4 倍自重）、无晃动；面板水平度 ≤1mm、与墙面缝隙 ≤0.5mm；通电试亮全部正常。","pct":0,"act":"","files":0},{"n":"一楼佛堂佛龛灯光与陈设安装","plan":"08-10","owner":"待定","w":2,"fl":"f1","rm":"f1-alt","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"二楼书房 A、B 家具与灯具安装","plan":"08-11","owner":"待定","w":2,"fl":"f2","rm":"f2-sa","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"二楼卧室 A 家具与灯具安装","plan":"08-12","owner":"待定","w":1,"fl":"f2","rm":"f2-ba","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"二楼卧室 B 家具与灯具安装","plan":"08-13","owner":"待定","w":1,"fl":"f2","rm":"f2-bb","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"二楼卫生间 A 卫浴柜与五金安装","plan":"08-14","owner":"待定","w":1,"fl":"f2","rm":"f2-wca","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"二楼卫生间 B 卫浴柜与五金安装","plan":"08-16","owner":"待定","w":1,"fl":"f2","rm":"f2-wcb","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"二楼电梯间灯具与面板安装","plan":"08-17","owner":"待定","w":1,"fl":"f2","rm":"f2-lift","note":"灯具与面板安装前断电并验电；灯具用膨胀螺栓固定、承载 ≥4 倍灯重；面板安装水平、与墙面贴合无缝。","std":"灯具安装牢固（承载 ≥4 倍自重）、无晃动；面板水平度 ≤1mm、与墙面缝隙 ≤0.5mm；通电试亮全部正常。","pct":0,"act":"","files":0},{"n":"三楼主卧室家具与灯具安装","plan":"08-18","owner":"待定","w":3,"fl":"f3","rm":"f3-mb","note":"按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。","std":"家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。","pct":0,"act":"","files":0},{"n":"三楼主衣帽间五金与灯具安装","plan":"08-19","owner":"待定","w":2,"fl":"f3","rm":"f3-mc","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"三楼主卫洁具与浴柜安装","plan":"08-20","owner":"待定","w":2,"fl":"f3","rm":"f3-mwc","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"三楼多功能室影音设备与灯具安装","plan":"08-22","owner":"待定","w":3,"fl":"f3","rm":"f3-mf","note":"影音设备按点位安装，音箱定位与沙发听音位对称；线缆隐蔽走线、标识清晰，完成后做声场与画面调试。","std":"设备安装牢固、位置对称偏差 ≤10mm；画面与声音调试合格；线缆隐蔽无外露。","pct":0,"act":"","files":0},{"n":"三楼多功能室洗手间洁具安装","plan":"08-23","owner":"待定","w":1,"fl":"f3","rm":"f3-mfwc","note":"洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。","std":"洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。","pct":0,"act":"","files":0},{"n":"屋顶洗衣间洗衣机与晾晒设施安装","plan":"08-24","owner":"待定","w":2,"fl":"rf","rm":"rf-lau","note":"洗衣机就位后调平并做防跳固定，排水接至地漏；栏杆与户外设施按规范固定，不锈钢件做防锈处理。","std":"洗衣机运转无异常震动、排水无渗漏；栏杆高度 ≥1100mm、垂直度 ≤3mm，抗水平推力 ≥1.0kN/m。","pct":0,"act":"","files":0},{"n":"楼顶阳台栏杆与户外设施安装","plan":"08-25","owner":"待定","w":3,"fl":"rf","rm":"rf-bal","note":"洗衣机就位后调平并做防跳固定，排水接至地漏；栏杆与户外设施按规范固定，不锈钢件做防锈处理。","std":"洗衣机运转无异常震动、排水无渗漏；栏杆高度 ≥1100mm、垂直度 ≤3mm，抗水平推力 ≥1.0kN/m。","pct":0,"act":"","files":0},{"n":"种菜区灌溉系统与围栏安装","plan":"08-26","owner":"待定","w":2,"fl":"rf","rm":"rf-gar","note":"灌溉主管沿女儿墙敷设、支管接入各菜畦，按覆盖半径布置滴灌或喷头；围栏立柱用混凝土固定、间距 ≤1500mm。","std":"通水试验各出水点出水均匀、无渗漏；围栏立柱垂直度 ≤3mm、摇动无松动。","pct":0,"act":"","files":0},{"n":"屋顶光伏组件安装与并网调试","plan":"08-28","owner":"待定","w":3,"fl":"rf","rm":"rf-pv","note":"光伏支架与屋面结构可靠连接并做防水处理，组件按设计倾角安装；直流侧接线防反接、逆变器可靠接地，联系电网完成并网调试。","std":"支架抗风压符合设计、屋面连接处无渗漏；绝缘电阻 ≥1MΩ；并网发电正常、发电量记录完整。","pct":0,"act":"","files":0},{"n":"全屋深度保洁、成品验收整改","plan":"08-29","owner":"张工","w":3,"fl":"all","rm":"all","note":"开荒保洁按从上到下、从内到外顺序进行，重点清理水泥浆点、胶痕与油漆污染；整改项逐一列单并复查销项。","std":"目视无灰尘、无污渍、无胶痕；玻璃与石材无划痕；整改项 100% 闭环并经业主确认。","pct":0,"act":"","files":0},{"n":"竣工验收、资料移交、保修交底","plan":"08-30","owner":"张工","w":2,"fl":"all","rm":"all","note":"组织业主、监理、施工方三方竣工验收，移交竣工图、隐蔽工程记录、材料合格证与检测报告、设备说明书与保修卡。","std":"验收结论为合格并三方签字；资料移交清单齐全；保修范围与期限已向业主书面交底。","pct":0,"act":"","files":0}],"w":14,"pct":0.0,"plan":0.0,"days":43,"status":"未开始"}],"floors":[{"id":"b1","name":"负一楼","desc":"影音 / 设备 / 储藏 / 车库","n":28,"done":5,"pct":18.2,"w":55,"wph":[10,10,9,10,7,9],"issues":1,"closed":1,"mid":0,"open":0},{"id":"me","name":"夹层","desc":"电梯间 / 储藏室 / 设备间","n":20,"done":1,"pct":17.1,"w":31,"wph":[7,6,5,4,3,6],"issues":1,"closed":0,"mid":1,"open":0},{"id":"f1","name":"一楼","desc":"厨房 / 餐厅 / 客厅 / 读书区 / 佛堂","n":32,"done":1,"pct":5.1,"w":67,"wph":[9,11,13,13,7,14],"issues":3,"closed":1,"mid":1,"open":1},{"id":"f2","name":"二楼","desc":"书房 / 卧室 / 卫生间","n":37,"done":0,"pct":0.0,"w":61,"wph":[13,13,13,10,5,7],"issues":3,"closed":0,"mid":1,"open":2},{"id":"f3","name":"三楼","desc":"主卧 / 衣帽间 / 多功能室","n":28,"done":0,"pct":0.0,"w":56,"wph":[8,10,12,10,5,11],"issues":0,"closed":0,"mid":0,"open":0},{"id":"rf","name":"楼顶阳台","desc":"洗衣间 / 露台 / 种菜区 / 光伏","n":16,"done":0,"pct":0.0,"w":33,"wph":[2,8,9,2,2,10],"issues":0,"closed":0,"mid":0,"open":0},{"id":"all","name":"全楼通用","desc":"跨楼层通项：放线、过梁、隐蔽验收、竣工","n":26,"done":1,"pct":1.7,"w":58,"wph":[7,11,3,9,14,14],"issues":3,"closed":3,"mid":0,"open":0}],"rooms":[{"id":"b1-car","fl":"b1","name":"车库","n":6,"pct":16.7,"issues":0,"closed":0},{"id":"b1-clo","fl":"b1","name":"衣帽间","n":5,"pct":25.0,"issues":0,"closed":0},{"id":"b1-nan","fl":"b1","name":"保姆间","n":5,"pct":20.0,"issues":0,"closed":0},{"id":"b1-wc","fl":"b1","name":"负一楼卫生间","n":6,"pct":18.2,"issues":1,"closed":1},{"id":"b1-hall","fl":"b1","name":"负一层大厅","n":6,"pct":14.3,"issues":0,"closed":0},{"id":"me-lift","fl":"me","name":"电梯间","n":6,"pct":7.1,"issues":0,"closed":0},{"id":"me-st1","fl":"me","name":"储藏室 1","n":4,"pct":33.3,"issues":0,"closed":0},{"id":"me-st2","fl":"me","name":"储藏室 2","n":5,"pct":26.7,"issues":0,"closed":0},{"id":"me-eq","fl":"me","name":"设备间","n":5,"pct":10.0,"issues":1,"closed":0},{"id":"f1-kit","fl":"f1","name":"厨房","n":6,"pct":0.0,"issues":1,"closed":0},{"id":"f1-din","fl":"f1","name":"餐厅","n":5,"pct":22.2,"issues":0,"closed":0},{"id":"f1-lift","fl":"f1","name":"电梯间","n":5,"pct":11.4,"issues":0,"closed":0},{"id":"f1-liv","fl":"f1","name":"客厅","n":5,"pct":0.0,"issues":1,"closed":1},{"id":"f1-read","fl":"f1","name":"读书区","n":6,"pct":6.0,"issues":0,"closed":0},{"id":"f1-alt","fl":"f1","name":"佛堂","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"f2-lift","fl":"f2","name":"电梯间","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"f2-sa","fl":"f2","name":"书房 A","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"f2-ba","fl":"f2","name":"卧室 A","n":6,"pct":0.0,"issues":0,"closed":0},{"id":"f2-wca","fl":"f2","name":"卫生间 A","n":6,"pct":0.0,"issues":1,"closed":0},{"id":"f2-sb","fl":"f2","name":"书房 B","n":3,"pct":0.0,"issues":2,"closed":0},{"id":"f2-bb","fl":"f2","name":"卧室 B","n":6,"pct":0.0,"issues":0,"closed":0},{"id":"f2-wcb","fl":"f2","name":"卫生间 B","n":6,"pct":0.0,"issues":0,"closed":0},{"id":"f3-lift","fl":"f3","name":"电梯间","n":4,"pct":0.0,"issues":0,"closed":0},{"id":"f3-mb","fl":"f3","name":"主卧室","n":6,"pct":0.0,"issues":0,"closed":0},{"id":"f3-mc","fl":"f3","name":"主衣帽间","n":4,"pct":0.0,"issues":0,"closed":0},{"id":"f3-mwc","fl":"f3","name":"主卫","n":3,"pct":0.0,"issues":0,"closed":0},{"id":"f3-mf","fl":"f3","name":"多功能室","n":6,"pct":0.0,"issues":0,"closed":0},{"id":"f3-mfwc","fl":"f3","name":"多功能室洗手间","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"rf-lau","fl":"rf","name":"洗衣间","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"rf-bal","fl":"rf","name":"楼顶阳台","n":5,"pct":0.0,"issues":0,"closed":0},{"id":"rf-gar","fl":"rf","name":"种菜区","n":4,"pct":0.0,"issues":0,"closed":0},{"id":"rf-pv","fl":"rf","name":"屋顶光伏","n":2,"pct":0.0,"issues":0,"closed":0}],"fm":{"b1":[100.0,0.0,0.0,0.0,0.0,0.0],"me":[75.7,0.0,0.0,0.0,0.0,0.0],"f1":[37.8,0.0,0.0,0.0,0.0,0.0],"f2":[0.0,0.0,0.0,0.0,0.0,0.0],"f3":[0.0,0.0,0.0,0.0,0.0,0.0],"rf":[0.0,0.0,0.0,0.0,0.0,0.0],"all":[14.3,0.0,0.0,0.0,0.0,0.0]},"rmx":{"b1-car":[100.0,0.0,0.0,0.0,0.0,0.0],"b1-clo":[100.0,0.0,null,0.0,0.0,0.0],"b1-nan":[100.0,0.0,0.0,0.0,null,0.0],"b1-wc":[100.0,0.0,0.0,0.0,0.0,0.0],"b1-hall":[100.0,0.0,0.0,0.0,0.0,0.0],"me-lift":[50.0,0.0,0.0,0.0,0.0,0.0],"me-st1":[100.0,0.0,0.0,null,null,0.0],"me-st2":[80.0,0.0,0.0,0.0,null,0.0],"me-eq":[60.0,0.0,null,0.0,0.0,0.0],"f1-kit":[0.0,0.0,0.0,0.0,0.0,0.0],"f1-din":[100.0,0.0,0.0,0.0,null,0.0],"f1-lift":[40.0,0.0,0.0,0.0,null,0.0],"f1-liv":[null,0.0,0.0,0.0,0.0,0.0],"f1-read":[60.0,0.0,0.0,0.0,0.0,0.0],"f1-alt":[0.0,0.0,0.0,0.0,null,0.0],"f2-lift":[0.0,0.0,0.0,0.0,null,0.0],"f2-sa":[0.0,0.0,0.0,0.0,null,0.0],"f2-ba":[0.0,0.0,0.0,0.0,0.0,0.0],"f2-wca":[0.0,0.0,0.0,0.0,0.0,0.0],"f2-sb":[0.0,0.0,0.0,null,null,null],"f2-bb":[0.0,0.0,0.0,0.0,0.0,0.0],"f2-wcb":[0.0,0.0,0.0,0.0,0.0,0.0],"f3-lift":[0.0,0.0,0.0,0.0,null,null],"f3-mb":[0.0,0.0,0.0,0.0,0.0,0.0],"f3-mc":[0.0,null,0.0,0.0,null,0.0],"f3-mwc":[null,0.0,0.0,null,null,0.0],"f3-mf":[0.0,0.0,0.0,0.0,0.0,0.0],"f3-mfwc":[0.0,0.0,0.0,0.0,null,0.0],"rf-lau":[0.0,0.0,0.0,0.0,null,0.0],"rf-bal":[null,0.0,0.0,null,0.0,0.0],"rf-gar":[null,0.0,0.0,null,null,0.0],"rf-pv":[null,0.0,null,null,null,0.0]},"issues":[{"id":"I24","pid":"p1","fl":"b1","rm":"b1-wc","t":"负一楼卫生间管道井封堵处有渗水痕迹","lv":"一般","st":"已闭环","d":"2026-09-27","due":"2026-09-30","closed":"2026-09-29","owner":"陈师傅","fix":"封堵层凿开重做细石混凝土，外侧加刷防水砂浆，24h 观察无渗水","src":"原型导入","over":0},{"id":"I25","pid":"p1","fl":"f1","rm":"f1-liv","t":"一楼客厅原墙面抹灰层大面积空鼓（约 6㎡）","lv":"重要","st":"已闭环","d":"2026-09-19","due":"2026-09-23","closed":"2026-09-21","owner":"陈师傅","fix":"空鼓部位铲除至基层，刷界面剂后重新抹灰找平，复测空鼓率为 0","src":"原型导入","over":0},{"id":"I26","pid":"p1","fl":"all","rm":"all","t":"砌块进场验收：部分批次强度等级标识 MU7.5，低于设计 MU10","lv":"严重","st":"已闭环","d":"2026-09-19","due":"2026-09-21","closed":"2026-09-20","owner":"张工","fix":"该批次 200 块全部退场，供应商补送 MU10 并附出厂检测报告，现场封样送检合格","src":"原型导入","over":0},{"id":"I28","pid":"p1","fl":"all","rm":"all","t":"施工临时配电箱未做二级漏电保护，存在用电风险","lv":"严重","st":"已闭环","d":"2026-09-19","due":"2026-09-19","closed":"2026-09-19","owner":"张工","fix":"加装二级漏保并做接地电阻实测（3.8Ω），配电箱挂牌上锁、专人管理","src":"原型导入","over":0},{"id":"I29","pid":"p1","fl":"all","rm":"all","t":"建筑垃圾未按指定点位堆放，影响材料车进场通道","lv":"一般","st":"已闭环","d":"2026-09-19","due":"2026-09-23","closed":"2026-09-24","owner":"张工","fix":"联系物业划定专用堆放点，每日收工前清运，进场通道保持 3.5m 净宽","src":"原型导入","over":0},{"id":"I27","pid":"p1","fl":"f2","rm":"f2-sb","t":"二楼书房 B 门洞现场净宽 860mm，与图纸 900mm 不符","lv":"重要","st":"处理中","d":"2026-10-15","due":"2026-10-20","closed":"","owner":"李工","fix":"设计确认按现场尺寸调整门扇规格，过梁位置同步复核并出具变更单","src":"检查点 CK-031","over":7},{"id":"I03","pid":"p1","fl":"f1","rm":"f1-kit","t":"一楼厨房烟道预留位置与设计图纸不符（偏移 120mm）","lv":"重要","st":"处理中","d":"2026-10-16","due":"2026-10-22","closed":"","owner":"李工","fix":"变更单 BG-003 待业主签认（+1,800 元，设计方承担），签认后拆除原预留位移位重砌","src":"检查点 CK-027","over":5},{"id":"I31","pid":"p1","fl":"f2","rm":"f2-wca","t":"二楼卫生间 A 管道井砌筑前未预留穿墙套管","lv":"重要","st":"未闭环","d":"2026-10-21","due":"2026-10-25","closed":"","owner":"陈师傅","fix":"待补充对策","src":"手工登记","over":2},{"id":"I32","pid":"p1","fl":"me","rm":"me-eq","t":"夹层设备间防潮导墙有一段（约 1.2m）高度不足 200mm","lv":"一般","st":"处理中","d":"2026-10-24","due":"2026-10-29","closed":"","owner":"陈师傅","fix":"凿除不足段，重新支模浇筑 C20 导墙至 200mm，养护后再砌上部砌块","src":"手工登记","over":0},{"id":"I30","pid":"p1","fl":"f1","rm":"all","t":"入户门与一楼门窗未做成品保护，转运材料时有磕碰","lv":"一般","st":"未闭环","d":"2026-10-23","due":"2026-10-30","closed":"","owner":"陈师傅","fix":"门套包珍珠棉加木板，门窗贴保护膜并挂警示牌，已磕碰部位修补","src":"手工登记","over":0},{"id":"I33","pid":"p2","fl":"f2","rm":"f2-sb","t":"二楼书房 B 强电箱位与门洞调整方案冲突","lv":"一般","st":"未闭环","d":"2026-10-26","due":"2026-11-05","closed":"","owner":"赵师傅","fix":"待补充对策","src":"手工登记","over":0}],"att":{"2026-09-19":4,"2026-09-21":4,"2026-09-22":4,"2026-09-23":4,"2026-09-24":4,"2026-09-25":4,"2026-09-26":4,"2026-09-28":4,"2026-09-29":4,"2026-09-30":4,"2026-10-01":0,"2026-10-02":0,"2026-10-03":0,"2026-10-05":4,"2026-10-06":4,"2026-10-07":4,"2026-10-08":5,"2026-10-09":5,"2026-10-10":5,"2026-10-12":6,"2026-10-13":6,"2026-10-14":6,"2026-10-15":6,"2026-10-16":6,"2026-10-17":6,"2026-10-19":6,"2026-10-20":6,"2026-10-21":6,"2026-10-23":6,"2026-10-24":5,"2026-10-26":6,"2026-10-27":6},"logs":[{"t":"2026-10-20 09:05","pid":"p4","pname":"木工","items":[{"f":"施工范围","a":"各房间吊顶龙骨与石膏板、衣柜书柜柜体、木饰面、门套基层与收口","b":"各房间吊顶龙骨与石膏板、衣柜书柜柜体、木饰面、门套基层与收口、负一层大厅背景墙基层","dd":null}],"note":"业主补充事项 BC-002：负一层大厅增加背景墙","dur":null},{"t":"2026-10-12 16:46","pid":"p2","pname":"水电","items":[{"f":"计划开始日期","a":"2026-10-19","b":"2026-11-09","dd":null},{"f":"计划结束日期","a":"2027-01-18","b":"2027-02-08","dd":null}],"dur":0,"note":"顺延至砌墙完成后进场"},{"t":"2026-10-12 16:40","pid":"p1","pname":"砌墙","items":[{"f":"计划结束日期","a":"2026-10-18","b":"2026-11-08","dd":21}],"dur":21,"note":"二楼书房 B 门洞、一楼厨房烟道待设计变更，相关隔墙暂缓砌筑"},{"t":"2026-10-11 18:20","pid":"p1","pname":"砌墙","items":[{"f":"班组负责人","a":"瓦工班 · 陈师傅（4人）","b":"瓦工班 · 陈师傅（6人）","dd":null}],"note":"增派 2 名瓦工追赶进度","dur":null}],"evi":{"all":[[4,5],[5,6],[18,19],[2,3]],"p1":[[4,5],[5,6],[17,18],[2,3]],"p2":[[0,0],[0,0],[1,1],[0,0]],"p3":[[0,0],[0,0],[0,0],[0,0]],"p4":[[0,0],[0,0],[0,0],[0,0]],"p5":[[0,0],[0,0],[0,0],[0,0]],"p6":[[0,0],[0,0],[0,0],[0,0]]},"photos":{"p1":[{"cap":"砌体材料进场验收（MU10 烧结多孔砖）","st":"已验收","fl":"全楼通用","by":"王工","t":"09-19","src":"原型导入"},{"cap":"开工放线定位复核（轴线与门洞尺寸）","st":"已验收","fl":"全楼通用","by":"王工","t":"09-19","src":"原型导入"},{"cap":"负一楼卫生间管道井封堵完成面","st":"已验收","fl":"负一楼 · 负一楼卫生间","by":"王工","t":"09-29","src":""},{"cap":"负一层大厅造型墙垂直度实测","st":"待复验","fl":"负一楼 · 负一层大厅","by":"王工","t":"10-10","src":""},{"cap":"一楼餐厅隔墙顶部预留沉降缝","st":"待复验","fl":"一楼 · 餐厅","by":"张工","t":"10-20","src":""},{"cap":"夹层设备间防潮导墙浇筑","st":"施工中","fl":"夹层 · 设备间","by":"张工","t":"10-24","src":""}]}};
+var TODAY = D.today;
+function dt(s){ return new Date(s + 'T00:00:00'); }
+function days(a,b){ return Math.round((dt(b) - dt(a)) / 86400000); }
+function md(s){ return s.slice(5); }
+function f1(v){ return (Math.round(v * 10) / 10).toFixed(1); }
+function floorName(id){ for (var i = 0; i < D.floors.length; i++) if (D.floors[i].id === id) return D.floors[i].name; return id; }
+function roomName(id){ if (id === 'all') return '本层通用'; for (var i = 0; i < D.rooms.length; i++) if (D.rooms[i].id === id) return D.rooms[i].name; return id; }
+function phIdx(pid){ return +pid.slice(1); }
+var ISS = D.issues;
+
+/* KPI 六卡：AC-F10-01 / AC-F10-02 */
+(function(){
+  var sw = 0, act = 0, pln = 0, run = 0, S = null, E = null;
+  D.phases.forEach(function(p){ sw += p.w; act += p.w * p.pct; pln += p.w * p.plan; if (p.status === '进行中') run++;
+    if (!S || p.start < S) S = p.start; if (!E || p.end > E) E = p.end; });
+  act /= sw; pln /= sw;
+  var gap = act - pln, dur = days(S, E) + 1, used = Math.min(Math.max(days(S, TODAY) + 1, 0), dur);
+  var man = 0; Object.keys(D.att).forEach(function(k){ man += D.att[k]; });
+  var today = D.att[TODAY];
+  var tot = ISS.length, closed = ISS.filter(function(i){ return i.st === '已闭环'; }).length;
+  var mid = ISS.filter(function(i){ return i.st === '处理中'; }).length, open = ISS.filter(function(i){ return i.st === '未闭环'; }).length;
+  var over = ISS.filter(function(i){ return i.over > 0; }).length;
+  function card(lb, v, u, sb){ return '<div class="kpi"><div class="lb">' + lb + '</div><div class="vl">' + v + '<small>' + u + '</small></div><div class="sb">' + sb + '</div></div>'; }
+  document.getElementById('kpis').innerHTML =
+    card('总体完成度', f1(act), '%', '<span class="tag ' + (gap >= 0 ? 'ok' : 'bad') + '">计划基准 ' + f1(pln) + '% · ' + (gap >= 0 ? '领先 ' : '滞后 ') + f1(Math.abs(gap)) + ' 个百分点</span>') +
+    card('工期进度', f1(used / dur * 100), '%', '<span class="tag">' + S + ' ~ ' + E + '</span><span class="tag">已用 ' + used + ' 天 / 总 ' + dur + ' 天</span>') +
+    card('今日出勤', today == null ? '未登记' : today, today == null ? '' : '人', '<span class="tag brand">在施 ' + run + ' 个工段</span><span class="tag">累计 ' + man + ' 人·日</span>') +
+    card('发现问题', tot, '项', '<span class="tag ' + (over ? 'bad' : 'ok') + '">超期未闭环 ' + over + ' 项</span>') +
+    card('已闭环', closed, '项', '<span class="tag ' + (closed / tot >= .8 ? 'ok' : 'warn') + '">闭环率 ' + f1(closed / tot * 100) + '%</span>') +
+    card('问题遗留', mid + open, '项', '<span class="tag warn">处理中 ' + mid + '</span><span class="tag bad">未闭环 ' + open + '</span>');
+})();
+
+/* 证据链四项指标：AC-F10-04 ~ AC-F10-08 */
+var EVI_DEF = [
+  { lb:'覆盖前发现比例', unit:'条不一致记录', num:'覆盖前发现', tgt:90, href:'PAGE-F08-01.html?type=不一致' },
+  { lb:'隐蔽检查点合规率', unit:'个已放行或已覆盖的隐蔽检查点', num:'覆盖前同时具备签认版核对、照片与放行', tgt:100, href:'PAGE-F06-01.html?hidden=1' },
+  { lb:'最新签认版使用率', unit:'条核对记录', num:'使用当时最新签认版', tgt:100, href:'PAGE-F06-01.html' },
+  { lb:'变更先签后做比例', unit:'张已生效变更单', num:'非后补变更', tgt:100, href:'PAGE-F07-01.html?st=已生效' }
+];
+var eviScope = 'all';
+function renderEvi(){
+  var scopes = [['all','全项目']].concat(D.phases.map(function(p){ return [p.id, p.name]; }));
+  document.getElementById('evi-chips').innerHTML = scopes.map(function(s){
+    return '<button type="button" class="chip' + (s[0] === eviScope ? ' on' : '') + '" aria-pressed="' + (s[0] === eviScope) + '" onclick="eviScope=\'' + s[0] + '\';renderEvi()">' + s[1] + '</button>'; }).join('');
+  var vals = D.evi[eviScope];
+  document.getElementById('evi').innerHTML = EVI_DEF.map(function(m, i){
+    var M = vals[i][0], N = vals[i][1], h = '';
+    h += '<a class="metric card link" style="margin:0;text-decoration:none;color:var(--fg)" href="' + m.href + '">';
+    h += '<span class="lb">' + m.lb + '</span>';
+    if (!N) {
+      h += '<span class="vl na">暂无数据</span><span class="frac">所选范围内没有' + m.unit.replace(/^[条个张]/, '') + '</span>';
+      h += '<div class="meter" aria-hidden="true"><b style="left:' + m.tgt + '%"></b><em class="' + (m.tgt === 100 ? 'end' : '') + '" style="left:' + m.tgt + '%">目标 ' + m.tgt + '%</em></div>';
+      h += '<span class="tag" style="align-self:flex-start">分母为 0</span>';
+    } else {
+      var v = M / N * 100, ok = v >= m.tgt;
+      h += '<span class="vl">' + f1(v) + '<small style="font-size:var(--text-base);color:var(--muted)">%</small></span>';
+      h += '<span class="frac">' + m.num + ' ' + M + ' / ' + N + ' ' + m.unit + '</span>';
+      h += '<div class="meter" role="img" aria-label="' + m.lb + ' ' + f1(v) + '%，目标 ' + m.tgt + '%"><i class="' + (ok ? 'ok' : 'low') + '" style="width:' + v + '%"></i><b style="left:' + m.tgt + '%"></b><em class="' + (m.tgt === 100 ? 'end' : '') + '" style="left:' + m.tgt + '%">目标 ' + m.tgt + '%</em></div>';
+      h += '<span class="tag ' + (ok ? 'ok' : 'warn') + '" style="align-self:flex-start">' + (ok ? '达到目标' : '低于目标 ' + f1(m.tgt - v) + ' 个百分点') + '</span>';
+    }
+    return h + '</a>';
+  }).join('');
+}
+renderEvi();
+
+/* 甘特图 */
+(function(){
+  var W = 1000, L = 92, R = 960, T = 34, RH = 40, H = T + RH * 6 + 24;
+  var s0 = dt('2026-09-01'), s1 = dt('2027-09-01');
+  function x(d){ return L + (dt(d) - s0) / (s1 - s0) * (R - L); }
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="六阶段计划与实际进度时间轴">';
+  for (var m = 0; m <= 12; m++) {
+    var y = 2026 + Math.floor((8 + m) / 12), mo = (8 + m) % 12 + 1, ds = y + '-' + (mo < 10 ? '0' : '') + mo + '-01', xx = x(ds);
+    s += '<line x1="' + xx + '" y1="' + (T - 8) + '" x2="' + xx + '" y2="' + (H - 20) + '" style="stroke:var(--border-soft)"/>';
+    if (m < 12) s += '<text x="' + (xx + 4) + '" y="' + (T - 14) + '" style="fill:var(--muted)" font-size="12">' + (mo === 1 || m === 0 ? y + '年' : '') + mo + '月</text>';
+  }
+  D.phases.forEach(function(p, i){
+    var y = T + i * RH, x1 = x(p.start), x2 = x(p.end), w = x2 - x1, n = i + 1;
+    s += '<a href="PAGE-F10-03.html?phase=' + p.id + '"><text x="' + (L - 10) + '" y="' + (y + 22) + '" text-anchor="end" font-size="14" font-weight="600" style="fill:var(--fg)">' + p.name + '</text></a>';
+    s += '<rect x="' + x1 + '" y="' + (y + 8) + '" width="' + w + '" height="20" rx="4" style="fill:color-mix(in oklab,var(--phase-' + n + ') 20%,var(--surface))"/>';
+    if (p.pct > 0) s += '<rect x="' + x1 + '" y="' + (y + 8) + '" width="' + (w * p.pct / 100) + '" height="20" rx="4" style="fill:var(--phase-' + n + ')"/>';
+    var nearEnd = x2 > 830;
+    s += '<text x="' + (nearEnd ? x1 - 6 : x2 + 6) + '" y="' + (y + 22) + '" font-size="12"' + (nearEnd ? ' text-anchor="end"' : '') + ' style="fill:var(--fg-2)">' + f1(p.pct) + '%（计划 ' + f1(p.plan) + '%）</text>';
+  });
+  var tx = x(TODAY);
+  s += '<line x1="' + tx + '" y1="' + (T - 4) + '" x2="' + tx + '" y2="' + (H - 20) + '" stroke-width="1.5" stroke-dasharray="4 3" style="stroke:var(--danger)"/>';
+  s += '<text x="' + (tx + 4) + '" y="' + (H - 6) + '" font-size="12" style="fill:var(--danger)">今天 ' + md(TODAY) + '</text></svg>';
+  document.getElementById('gantt').innerHTML = s;
+})();
+
+/* 楼层 × 阶段矩阵：7 档色阶 */
+function lv(v){ if (v == null) return 'lv-none'; if (v <= 0) return 'lv0'; if (v < 40) return 'lv1'; if (v < 70) return 'lv2'; if (v < 90) return 'lv3'; if (v < 99.95) return 'lv4'; return 'lv5'; }
+(function(){
+  var W = 900, L = 110, T = 30, CW = (W - L) / 6, RH = 40, rows = D.floors, H = T + RH * rows.length + 4;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="楼层与阶段完成度矩阵">';
+  D.phases.forEach(function(p, j){ s += '<text x="' + (L + CW * j + CW / 2) + '" y="20" text-anchor="middle" font-size="13" font-weight="600" style="fill:var(--fg-2)">' + p.name + '</text>'; });
+  rows.forEach(function(f, i){
+    var y = T + i * RH;
+    s += '<a href="PAGE-F10-02.html?floor=' + f.id + '" aria-label="查看' + f.name + '全部事项"><text x="' + (L - 10) + '" y="' + (y + 25) + '" text-anchor="end" font-size="14" font-weight="600" style="fill:var(--fg)">' + f.name + '</text></a>';
+    D.fm[f.id].forEach(function(v, j){
+      var c = lv(v), dark = c === 'lv4' || c === 'lv5';
+      s += '<a href="PAGE-F10-03.html?phase=' + D.phases[j].id + '&amp;floor=' + f.id + '" aria-label="' + f.name + ' ' + D.phases[j].name + ' ' + (v == null ? '无事项' : f1(v) + '%') + '">';
+      s += '<rect class="' + c + '" x="' + (L + CW * j + 2) + '" y="' + (y + 2) + '" width="' + (CW - 4) + '" height="' + (RH - 4) + '" rx="6"/>';
+      s += '<text x="' + (L + CW * j + CW / 2) + '" y="' + (y + 25) + '" text-anchor="middle" style="fill:' + (dark ? 'var(--accent-on)' : 'var(--fg-2)') + '">' + (v == null ? '—' : f1(v) + '%') + '</text></a>';
+    });
+  });
+  document.getElementById('fmx').innerHTML = s + '</svg>';
+  document.getElementById('mx-legend').innerHTML = [['lv0','0% 未开始'],['lv1','1–39%'],['lv2','40–69%'],['lv3','70–89%'],['lv4','90–99%'],['lv5','100% 完成'],['lv-none','无事项']].map(function(x){ return '<span><i class="' + x[0] + '"></i>' + x[1] + '</span>'; }).join('');
+})();
+
+/* 房间短板 TOP8 与问题 TOP6 */
+(function(){
+  var rooms = D.rooms.slice();
+  var slow = rooms.slice().sort(function(a, b){ return a.pct - b.pct || b.issues - a.issues || b.n - a.n; }).slice(0, 8);
+  document.getElementById('slow').innerHTML = slow.map(function(r){
+    return '<tr class="row-link" tabindex="0" onclick="location.href=\'PAGE-F10-02.html?room=' + r.id + '\'" onkeydown="if(event.key===\'Enter\')this.click()"><td class="nowrap"><span class="fl-tag">' + floorName(r.fl) + '</span> <b>' + r.name + '</b></td><td class="num">' + r.n + '</td><td><div class="cellbar"><div class="pbar"><i style="width:' + r.pct + '%"></i></div><span>' + f1(r.pct) + '%</span></div></td><td class="num' + (r.issues - r.closed ? ' down' : '') + '">' + r.issues + '</td></tr>';
+  }).join('');
+  var top = rooms.filter(function(r){ return r.issues > 0; }).sort(function(a, b){ return b.issues - a.issues || (b.issues - b.closed) - (a.issues - a.closed); }).slice(0, 6);
+  document.getElementById('rmiss').innerHTML = top.map(function(r){
+    var rate = r.closed / r.issues * 100, leg = r.issues - r.closed;
+    return '<tr class="row-link" tabindex="0" onclick="location.href=\'PAGE-F10-02.html?room=' + r.id + '\'" onkeydown="if(event.key===\'Enter\')this.click()"><td class="nowrap"><span class="fl-tag">' + floorName(r.fl) + '</span> <b>' + r.name + '</b></td><td class="num">' + r.issues + '</td><td class="num">' + r.closed + '</td><td class="num' + (leg ? ' down' : '') + '">' + leg + '</td><td><div class="cellbar"><div class="pbar"><i style="width:' + rate + '%;background:var(--success)"></i></div><span>' + rate.toFixed(0) + '%</span></div></td></tr>';
+  }).join('') + (top.length < 6 ? '<tr><td colspan="5" class="muted" style="font-size:var(--text-xs)">其余房间暂无问题记录</td></tr>' : '');
+})();
+
+/* 出勤日历：AC-F11-03 / AC-F11-04 */
+var calM = TODAY.slice(0, 7);
+function calShift(n){
+  var y = +calM.slice(0, 4), m = +calM.slice(5, 7) + n;
+  if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; }
+  var k = y + '-' + (m < 10 ? '0' : '') + m;
+  if (k < '2026-09' || k > '2027-08') { toast('项目周期为 2026-09-19 ~ 2027-08-30'); return; }
+  calM = k; renderCal();
+}
+function renderCal(){
+  var y = +calM.slice(0, 4), m = +calM.slice(5, 7), first = new Date(y, m - 1, 1), nd = new Date(y, m, 0).getDate();
+  var off = (first.getDay() + 6) % 7, cells = [];
+  for (var i = 0; i < off; i++) cells.push(null);
+  for (var d = 1; d <= nd; d++) cells.push(calM + '-' + (d < 10 ? '0' : '') + d);
+  while (cells.length % 7) cells.push(null);
+  var tot = 0, workd = 0, peak = 0, peakD = '', unreg = 0, h = '';
+  for (var r = 0; r < cells.length / 7; r++) {
+    h += '<tr>';
+    for (var c = 0; c < 7; c++) {
+      var ds = cells[r * 7 + c];
+      if (!ds) { h += '<td class="ce"></td>'; continue; }
+      var inProj = ds >= '2026-09-19', fut = ds > TODAY, v = D.att[ds], cls, txt;
+      if (!inProj) { cls = 'cf'; txt = ''; }
+      else if (fut) { cls = 'cf'; txt = ''; }
+      else if (v == null) { cls = 'cu'; txt = '未登记'; unreg++; }
+      else { cls = v === 0 ? 'c0' : v <= 4 ? 'c1' : v <= 8 ? 'c2' : v <= 12 ? 'c3' : 'c4'; txt = v + ' 人'; tot += v; if (v > 0) workd++; if (v > peak) { peak = v; peakD = ds; } }
+      h += '<td class="' + cls + (ds === TODAY ? ' today' : '') + '" title="' + ds + '"><span class="cd">' + (+ds.slice(8)) + ' 日</span><span class="cn">' + txt + '</span></td>';
+    }
+    h += '</tr>';
+  }
+  document.getElementById('cal').innerHTML = h;
+  document.getElementById('cal-m').textContent = y + ' 年 ' + m + ' 月';
+  document.getElementById('cal-sum').innerHTML = '<span class="tag brand">合计 ' + tot + ' 人·日</span><span class="tag">施工 ' + workd + ' 天</span><span class="tag warn">峰值 ' + peak + ' 人' + (peakD ? ' · ' + md(peakD) : '') + '</span>' + (unreg ? '<span class="tag">未登记 ' + unreg + ' 天</span>' : '');
+}
+renderCal();
+
+/* 按阶段问题柱图 */
+(function(){
+  var W = 900, H = 210, L = 40, R = 880, T = 20, B = H - 36, max = 1;
+  var data = D.phases.map(function(p){ var l = ISS.filter(function(i){ return i.pid === p.id; });
+    return { p:p, c:l.filter(function(i){ return i.st === '已闭环'; }).length, m:l.filter(function(i){ return i.st === '处理中'; }).length, o:l.filter(function(i){ return i.st === '未闭环'; }).length, n:l.length }; });
+  data.forEach(function(d){ if (d.n > max) max = d.n; });
+  max = Math.max(4, Math.ceil(max / 2) * 2);
+  var gw = (R - L) / 6, bw = 56, s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="各阶段问题发现与闭环">';
+  for (var g = 0; g <= 4; g++) { var yy = B - (B - T) * g / 4; s += '<line x1="' + L + '" y1="' + yy + '" x2="' + R + '" y2="' + yy + '" style="stroke:var(--border-soft)"/><text x="' + (L - 8) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="12" style="fill:var(--muted)">' + (max * g / 4) + '</text>'; }
+  data.forEach(function(d, i){
+    var cx = L + gw * i + gw / 2, x0 = cx - bw / 2, y = B;
+    s += '<a href="PAGE-F10-03.html?phase=' + d.p.id + '#issues" aria-label="' + d.p.name + ' 问题 ' + d.n + ' 项">';
+    [['c','var(--success)'],['m','var(--warn)'],['o','var(--danger)']].forEach(function(k){
+      var hh = (B - T) * d[k[0]] / max; if (!hh) return; y -= hh;
+      s += '<rect x="' + x0 + '" y="' + y + '" width="' + bw + '" height="' + hh + '" style="fill:' + k[1] + '"/>';
+    });
+    if (!d.n) s += '<rect x="' + x0 + '" y="' + (B - 2) + '" width="' + bw + '" height="2" style="fill:var(--border)"/>';
+    s += '<text x="' + cx + '" y="' + (y - 6) + '" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--fg)">' + d.n + '</text>';
+    s += '<text x="' + cx + '" y="' + (B + 20) + '" text-anchor="middle" font-size="13" style="fill:var(--fg-2)">' + d.p.name + '</text></a>';
+  });
+  document.getElementById('ibar').innerHTML = s + '</svg>';
+})();
+
+/* 问题遗留清单：AC-F08-04 */
+function stSeal(st){ return st === '已闭环' ? '<span class="seal pass">已闭环</span>' : st === '处理中' ? '<span class="seal pend">处理中</span>' : '<span class="seal stop">未闭环</span>'; }
+function lvTag(l){ return '<span class="tag ' + (l === '严重' ? 'bad' : l === '重要' ? 'warn' : '') + '">' + l + '</span>'; }
+(function(){
+  var list = ISS.filter(function(i){ return i.st !== '已闭环'; }).sort(function(a, b){ return b.over - a.over || (a.due < b.due ? -1 : 1); });
+  document.getElementById('legacy').innerHTML = list.map(function(i){
+    var p = D.phases[phIdx(i.pid) - 1];
+    return '<tr class="row-link" tabindex="0" onclick="location.href=\'PAGE-F08-01.html?id=' + i.id + '\'" onkeydown="if(event.key===\'Enter\')this.click()"><td class="muted">' + i.id + '</td><td class="nowrap"><span class="phase-dot" style="background:var(--phase-' + phIdx(i.pid) + ')"></span> ' + p.name + '</td><td class="nowrap"><span class="fl-tag">' + floorName(i.fl) + '</span> ' + roomName(i.rm) + '</td><td style="min-width:240px">' + esc(i.t) + '</td><td>' + lvTag(i.lv) + '</td><td>' + stSeal(i.st) + '</td><td class="nowrap">' + i.owner + '</td><td class="nowrap">' + i.due + '</td><td class="num">' + (i.over ? '<b class="down">' + i.over + ' 天</b>' : '<span class="muted">—</span>') + '</td></tr>';
+  }).join('');
+})();
+
+/* 计划变更台账：REQ-F14-02 */
+(function(){
+  document.getElementById('log-n').textContent = '累计 ' + D.logs.length + ' 条';
+  document.getElementById('logs').innerHTML = D.logs.map(function(r){
+    return '<tr><td class="nowrap muted">' + r.t + '</td><td class="nowrap"><span class="phase-dot" style="background:var(--phase-' + phIdx(r.pid) + ')"></span> <b>' + r.pname + '</b></td>' +
+      '<td><div class="logcol">' + r.items.map(function(it){ return '<span class="nowrap">' + it.f + '</span>'; }).join('') + '</div></td>' +
+      '<td style="min-width:260px"><div class="logcol">' + r.items.map(function(it){ return '<span><span class="from">' + esc(it.a) + '</span> → <b>' + esc(it.b) + '</b></span>'; }).join('') + '</div></td>' +
+      '<td class="num nowrap">' + (r.dur == null ? '<span class="muted">—</span>' : r.dur > 0 ? '<b class="down">+' + r.dur + ' 天</b>' : r.dur < 0 ? '<b class="up">' + r.dur + ' 天</b>' : '0 天') + '</td>' +
+      '<td class="muted" style="min-width:180px">' + esc(r.note) + '</td></tr>';
+  }).join('');
+})();
+function exportCSV(){
+  var rows = [['记录时间','工段','变更项','变更前','变更后','工期影响（天）','变更原因备注']];
+  D.logs.slice().reverse().forEach(function(r){ r.items.forEach(function(it){ rows.push([r.t, r.pname, it.f, it.a, it.b, r.dur == null ? '' : r.dur, r.note]); }); });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type:'text/csv;charset=utf-8' }));
+  a.download = '君华新城联排别墅-计划变更留档-' + TODAY + '.csv'; document.body.appendChild(a); a.click(); a.remove();
+  toast('已导出计划变更留档 CSV（' + (rows.length - 1) + ' 行）');
+}
+
+/* 工段速览卡 */
+(function(){
+  document.getElementById('phcards').innerHTML = D.phases.map(function(p, i){
+    var n = i + 1, tot = 0, peak = 0, wd = 0;
+    if (p.id === 'p1') Object.keys(D.att).forEach(function(k){ var v = D.att[k]; tot += v; if (v > peak) peak = v; if (v > 0) wd++; });
+    var l = ISS.filter(function(x){ return x.pid === p.id; }), c = l.filter(function(x){ return x.st === '已闭环'; }).length;
+    var cls = p.status === '已完成' ? 'ok' : p.status === '进行中' ? 'brand' : '';
+    return '<a class="phcard" href="PAGE-F10-03.html?phase=' + p.id + '"><div class="h"><span class="phase-dot" style="background:var(--phase-' + n + ')"></span><b>' + p.name + '</b><span class="tag ' + cls + '">' + p.status + '</span></div>' +
+      '<div class="cellbar"><div class="pbar"><i style="width:' + p.pct + '%;background:var(--phase-' + n + ')"></i></div><span>' + f1(p.pct) + '%</span></div>' +
+      '<div class="m"><span>工期 ' + md(p.start) + ' ~ ' + md(p.end) + '</span><span>计划基准 ' + f1(p.plan) + '%</span><span>累计出勤 ' + tot + ' 人·日</span><span>峰值 ' + peak + ' 人 / 施工 ' + wd + ' 天</span><span>工作项 ' + p.tasks.length + ' 项</span><span>问题 ' + l.length + ' · 闭环 ' + c + '</span></div></a>';
+  }).join('');
+})();
+applyRole();
+
+</script>
+</body>
+</html>

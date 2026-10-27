@@ -1,0 +1,978 @@
+{
+ "passed": 140,
+ "total": 140,
+ "failed": [],
+ "byFlow": {
+  "FLOW-01": {
+   "passed": 30,
+   "total": 30
+  },
+  "FLOW-03": {
+   "passed": 22,
+   "total": 22
+  },
+  "FLOW-21": {
+   "passed": 46,
+   "total": 46
+  },
+  "FLOW-02": {
+   "passed": 26,
+   "total": 26
+  },
+  "FLOW-14": {
+   "passed": 16,
+   "total": 16
+  }
+ },
+ "consoleErrors": [],
+ "expectedBusiness4xx": [
+  "[pm@1440] http://127.0.0.1:5201/api/projects/1/invitations Failed to load resource: the server responded with a status of 403 (Forbidden)",
+  "[anon@375] http://127.0.0.1:5201/api/invitations/F688rSTkKS96m-PLe9-X32VMl6yLDieO Failed to load resource: the server responded with a status of 410 (Gone)",
+  "[anon@1440] http://127.0.0.1:5201/api/invitations/QAivr-KyDunLiDCSSk4H-yWq95zl3udp/accept Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "[13900001111@375] http://127.0.0.1:5201/api/projects/1 Failed to load resource: the server responded with a status of 403 (Forbidden)",
+  "[13900001111@375] http://127.0.0.1:5201/api/projects/1/checkpoints?status=%E5%85%A8%E9%83%A8&page=1 Failed to load resource: the server responded with a status of 403 (Forbidden)",
+  "[anon@375] http://127.0.0.1:5201/api/auth/login Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "[anon@375] http://127.0.0.1:5201/api/auth/login Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "[anon@375] http://127.0.0.1:5201/api/auth/login Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "[anon@375] http://127.0.0.1:5201/api/auth/login Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "[anon@375] http://127.0.0.1:5201/api/auth/login Failed to load resource: the server responded with a status of 423 (Locked)",
+  "[13800000010@1440] http://127.0.0.1:5201/api/me/password Failed to load resource: the server responded with a status of 400 (Bad Request)"
+ ],
+ "hscroll375": [
+  {
+   "label": "PAGE-F01-01 项目管理",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F01-01 新建弹窗",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F02-02 邀请落地",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F02-01 登录",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F02-03 强制改密",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 owner",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 member",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 qc",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 budget",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 dm",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F16-01 我的待办 pm",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F06-02 检查点详情（代理人）",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F09-01 经验库",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  }
+ ],
+ "hscrollOverflow": [],
+ "seconds": 125.8,
+ "checks": [
+  {
+   "flow": "FLOW-01",
+   "name": "缺项目名称提交被拒并提示",
+   "ok": true,
+   "detail": "['请填写项目名称', '请填写项目地址', '请选择计划开工日期', '请选择计划交房日期']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "被拒后不产生项目",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "完整提交后 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "新项目出现在列表且状态「筹备」",
+   "ok": true,
+   "detail": "{'id': 3, 'name': '湖畔花园 · 叠拼别墅', 'address': '湖畔路 2 号', 'status': '筹备', 'plannedStart': '2026-12-01', 'plannedHandover': '2027-11-30', 'actualHandover': None, 'releaseTimeoutHours': 24, 'roles': ['admin'], 'roleLabels': ['公司管理员'], 'permissions': ['archive.folder_manage', 'audit.read', 'contract.read'"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "模板复制到位：楼层 6、房间 32、工段 6、工作项 187",
+   "ok": true,
+   "detail": "(6, 32, 6, 187)"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "375 项目管理无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "375 新建项目弹窗无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "多角色保存 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "孙工同时具有质检与预算专员",
+   "ok": true,
+   "detail": "质检\n预算专员"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "角色只在该项目生效：孙工项目列表只含君华新城",
+   "ok": true,
+   "detail": "['君华新城 · 联排别墅']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "孙工在本项目角色含 budget",
+   "ok": true,
+   "detail": "{'id': 1, 'name': '君华新城 · 联排别墅', 'address': '君华新城 A 区 12 栋（建面 386㎡）', 'status': '施工中', 'plannedStart': '2026-09-19', 'plannedHandover': '2027-08-30', 'actualHandover': None, 'releaseTimeoutHours': 24,"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "项目经理邀请公司管理员被拒「只有公司管理员可以设置该角色」",
+   "ok": true,
+   "detail": "只有公司管理员可以设置该角色"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "生成邀请链接",
+   "ok": true,
+   "detail": "http://127.0.0.1:5201/invite/F688rSTkKS96m-PLe9-X32VMl6yLDieO"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "邀请一次性、7 天有效（截止 = 现在 + 7 天）",
+   "ok": true,
+   "detail": "生成邀请链接\n已为 139****1111 生成邀请，角色：质检\nhttp://127.0.0.1:5201/invite/F688rSTkKS96m-PLe9-X32VMl6yLDieO\n仅可使用一次，2026-11-03 16:17 前有效\n完成\n复制链接"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "375 邀请页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "新号以所填姓名建号并进入首页",
+   "ok": true,
+   "detail": "{'id': 12, 'name': '冯质检', 'phone': '13900001111', 'isCompanyAdmin': False, 'mustChangePassword': False, 'createdAt': '2026-10-27', 'projects': [{'id': 1, 'name': '君华新城 · 联排别墅', 'status': '施工中', 'roles': ['qc'], 'roleLabels': ['质检'], 'permissions': ['acceptance_photo.edit', 'archive.upload', 'checkpo"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "邀请一次性：再次打开提示「邀请已失效…」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "已有账号显示「输入你的登录密码即可加入」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "已有账号输错原密码被拒",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "已有账号关联到第二个项目",
+   "ok": true,
+   "detail": "['滨江壹号 · 独栋别墅', '君华新城 · 联排别墅']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "已有账号加入后原密码不变（仍可用原密码登录）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "业主邀请只能选「业主方成员」",
+   "ok": true,
+   "detail": "['业主方成员']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "修改公司模板（工段权重）保存成功",
+   "ok": true,
+   "detail": "['工段已更新，保存模板后生效', '工段已更新，保存模板后生效']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "改模板后再建项目成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "新项目按修改后的模板（权重 +2/−2）",
+   "ok": true,
+   "detail": "[10, 20]"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "模板修改不影响已建项目",
+   "ok": true,
+   "detail": "[8, 22]"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "移除成员 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "被移除者下一次请求即无权访问",
+   "ok": true,
+   "detail": "http://127.0.0.1:5201/forbidden 君\n君华装修项目管理平台\n图纸与现场一致 · 证据可追溯\n无权访问该项目\n\n你在该项目中没有任何角色，页面不显示该项目的信息。\n\n返回我的待办"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "已交房缺日期被拒「请填写实际交房日期」",
+   "ok": true,
+   "detail": "['请填写实际交房日期']"
+  },
+  {
+   "flow": "FLOW-01",
+   "name": "项目状态未变（仍为施工中）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "1440 登录页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "1440 正确密码登录进入我的待办",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "1440 会话 7 天无操作失效（Cookie 有效期 ≈7 天）",
+   "ok": true,
+   "detail": "7.0"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "375 登录页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "375 正确密码登录进入我的待办",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "375 会话 7 天无操作失效（Cookie 有效期 ≈7 天）",
+   "ok": true,
+   "detail": "7.0"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "第 5 次错误后锁定并显示剩余时间",
+   "ok": true,
+   "detail": "君\n君华装修项目管理平台\n图纸与现场一致 · 证据可追溯\n登录\n\n使用受邀开通的手机号和密码登录\n\n该账号已锁定：15 分钟内连续 5 次密码错误。\n请在 15:00 后重试。\n手机号\n密码\n已锁定 15:00\n\n忘记密码请联系公司管理员重置\n\n仅限受邀成员使用。没有账号请向项目经理或公司管理员索取邀请链接。"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "剩余时间约 15 分钟",
+   "ok": true,
+   "detail": "请在 15:00 后重试"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "锁定期间登录按钮不可用",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "重置密码接口响应不可缓存（Cache-Control: no-store）",
+   "ok": true,
+   "detail": "no-store"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "临时密码在重置弹窗中显示",
+   "ok": true,
+   "detail": "Jhc2c85f78"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "关闭后临时密码不再显示（只显示一次）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "刷新后页面不含临时密码",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "服务端日志检索不到临时密码明文",
+   "ok": true,
+   "detail": "backend.log 839 字节"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "临时密码登录后进入改密页并提示",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "375 强制改密页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "改密前点导航仍停留在个人设置",
+   "ok": true,
+   "detail": "http://127.0.0.1:5201/me"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "设置新密码后可访问首页",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "原密码错误被拒",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "修改密码成功 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "改密后另一设备的会话失效（回到登录页）",
+   "ok": true,
+   "detail": "http://127.0.0.1:5201/login?expired=1"
+  },
+  {
+   "flow": "FLOW-03",
+   "name": "改密设备本身仍保持登录",
+   "ok": true,
+   "detail": "http://127.0.0.1:5201/"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner 待办类型包含 ['待放行检查点', '待签变更单', '待签图纸', '待签基线']",
+   "ok": true,
+   "detail": "['即将施工，基线未签认', '待放行检查点', '待签变更单', '待签图纸', '待签基线']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner 看不到其他角色的待办类型",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(12, '12', 12)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(12, '12', 12)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "owner@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member 待办类型包含 ['待放行检查点']",
+   "ok": true,
+   "detail": "['待放行检查点']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member 只看到其待办类型",
+   "ok": true,
+   "detail": "['待放行检查点']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(4, '4', 4)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(4, '4', 4)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "member@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc 待办类型包含 ['待核对检查点']",
+   "ok": true,
+   "detail": "['待核对检查点']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc 只看到其待办类型",
+   "ok": true,
+   "detail": "['待核对检查点']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(3, '3', 3)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(3, '3', 3)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "qc@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget 待办类型包含 ['待预算定价变更单']",
+   "ok": true,
+   "detail": "['待预算定价变更单']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget 只看到其待办类型",
+   "ok": true,
+   "detail": "['待预算定价变更单']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(1, '1', 1)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(1, '1', 1)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "budget@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm 待办类型包含 ['待出新版图纸']",
+   "ok": true,
+   "detail": "['待出新版图纸']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm 只看到其待办类型",
+   "ok": true,
+   "detail": "['待出新版图纸']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(1, '1', 1)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(1, '1', 1)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "dm@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm 待办类型包含 ['即将施工，基线未签认', '被退回基线', '被驳回变更单']",
+   "ok": true,
+   "detail": "['即将施工，基线未签认', '待放行检查点', '被退回基线', '被驳回变更单']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm 看不到其他角色的待办类型",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "项目经理的待放行只含超时项",
+   "ok": true,
+   "detail": "['CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）']"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm@1440 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(9, '9', 9)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm@1440 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm@375 导航总数与列表条数一致",
+   "ok": true,
+   "detail": "(9, '9', 9)"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "pm@375 首页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "复制后提示「已复制」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "剪贴板含项目名",
+   "ok": true,
+   "detail": "【君华新城 · 联排别墅】待放行检查点\n事项：CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）\n负责人：刘先生（业主）、刘太太（业主）、钱工（代理人）\n已超时 6 小时（放行时限 24 小时），请尽快处理\n直达链接：http://127.0.0.1:5201/p/1/checkpoints/2"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "剪贴板含事项",
+   "ok": true,
+   "detail": "【君华新城 · 联排别墅】待放行检查点\n事项：CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）\n负责人：刘先生（业主）、刘太太（业主）、钱工（代理人）\n已超时 6 小时（放行时限 24 小时），请尽快处理\n直达链接：http://127.0.0.1:5201/p/1/checkpoints/2"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "剪贴板含负责人",
+   "ok": true,
+   "detail": "【君华新城 · 联排别墅】待放行检查点\n事项：CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）\n负责人：刘先生（业主）、刘太太（业主）、钱工（代理人）\n已超时 6 小时（放行时限 24 小时），请尽快处理\n直达链接：http://127.0.0.1:5201/p/1/checkpoints/2"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "剪贴板含截止或超时信息",
+   "ok": true,
+   "detail": "【君华新城 · 联排别墅】待放行检查点\n事项：CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）\n负责人：刘先生（业主）、刘太太（业主）、钱工（代理人）\n已超时 6 小时（放行时限 24 小时），请尽快处理\n直达链接：http://127.0.0.1:5201/p/1/checkpoints/2"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "剪贴板含直达链接",
+   "ok": true,
+   "detail": "【君华新城 · 联排别墅】待放行检查点\n事项：CK-002 二楼 · 书房 B 拉结筋间距与伸入长度（隐蔽）\n负责人：刘先生（业主）、刘太太（业主）、钱工（代理人）\n已超时 6 小时（放行时限 24 小时），请尽快处理\n直达链接：http://127.0.0.1:5201/p/1/checkpoints/2"
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "业主放行成功 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "放行后该待办消失",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-21",
+   "name": "待办数量减 1 且导航数同步",
+   "ok": true,
+   "detail": "(12, 11, '12', '11')"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "业主撤销原代理人（钱工）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "业主方成员在指定前无放行按钮（只读）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "业主指定钱工为代理人",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "指定后代理人看到放行按钮",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "375 检查点详情无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理放行确认摘要标注代理",
+   "ok": true,
+   "detail": "确认放行 CK-002 检查点 CK-002 拉结筋间距与伸入长度（二楼 · 书房 B） 依据核对 #1 · 王工 · 结论「一致」 放行人 钱工（业主代理人，标注代理放行） 放行时间 以服务器时间为准  放行后记录不可撤回，下一道工序可以覆盖此处。  返回修改 确认放行"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理人放行成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "放行记录标注「代理放行」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理人不能签认基线（无签认按钮）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理人不能签认图纸",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理人不能签认变更单",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "业主改指定陈女士",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "代理人变更留痕（时间线含钱工与陈女士）",
+   "ok": true,
+   "detail": "业主代理人\n最多 1 名\n陈\n陈女士 业主代理人\n已代理放行 0 次\n\n代理人只能放行检查点，不能签认基线、图纸版本和变更单。\n\n2026-10-27 16:17刘先生 指定 钱工 为业主代理人\n2026-10-27 16:18刘先生 撤销 钱工 的代理人身份\n2026-10-27 16:18刘先生 指定 钱工 为业主代理人\n2026-10-27 16:18刘先生 将代理人由 钱工 更换为 陈女士\n更换代理人\n撤销代理"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "改指定后原代理人失去放行权",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "撤销代理成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "撤销后下一次请求即不能放行",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "既有代理放行记录不变",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "签认摘要署名刘太太",
+   "ok": true,
+   "detail": "签认 1 项基线 二楼书房 B 强弱电布管穿线 水电点位图 V1 · 1,280 元 · 计划完成 2026-11-01 · 检查点 2 个 合计 1,280 元 签认人 刘太太（业主）  将生成 1 条独立签认记录，每条包含签认人、时间和该项基线的完整内容快照。签认后不可撤回。  返回修改 确认签认"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "刘太太签认即时生效",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "基线状态已签认",
+   "ok": true,
+   "detail": "已签认"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "签认记录署名为刘太太",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "刘先生的同项待办消失（待签基线项数减 1）",
+   "ok": true,
+   "detail": "(['二楼水电工作项基线 2 项（二楼书房 A 强弱电布管穿线等）'], ['二楼书房 A 强弱电布管穿线'])"
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "公司管理员无放行 / 核对按钮",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "公司管理员无基线签认按钮",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "公司管理员无定价按钮",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-02",
+   "name": "公司管理员成员与邀请管理仍可用",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "提交条目含工段、工序、问题类型、检查要点、对策",
+   "ok": true,
+   "detail": "提交到公司经验库\n已自动脱敏：只提交以下字段，不含业主姓名、项目地址和照片。提交后进入待审核，审核通过才对其他项目可见。\n工段\n水电\n工序\n一楼厨房强弱电、燃气报警与给排水\n问题类型\n施工偏离签认图\n检查要点\n给水管打压 0.8MPa 保压 30 分钟\n对策\n按签认版水电点位图返工：打压 30 分钟压降 0.08MPa后复核\n另行附带现场照片（1 张）\n取消\n提交待审核"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "提交条目不含业主姓名与地址",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "默认不带照片",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "提交经验条目 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "审核确认摘要含审核人孙工",
+   "ok": true,
+   "detail": "确认审核\n条目\n水电 · 一楼厨房强弱电、燃气报警与给排水\n状态\n历史观察\n审核人\n孙工\n时间\n2026-10-27 16:19\n可见范围\n审核后对公司全部项目成员可见\n取消\n审核通过"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "审核通过 toast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "审核后条目可见并记录审核人、时间、状态",
+   "ok": true,
+   "detail": "水电 · 一楼厨房强弱电、燃气报警与给排水\n历史观察\n施工偏离签认图\n检查要点\n给水管打压 0.8MPa 保压 30 分钟\n对策\n按签认版水电点位图返工：打压 30 分钟压降 0.08MPa后复核\nv2\n· 孙工 审核 · 2026-10-27 16:19\n版本历史\n修改"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "修改生成新版本 toast「已保存为 v2，旧版本保留可查」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "旧版本可查（版本历史含 V1 与新版本）",
+   "ok": true,
+   "detail": "版本历史 · 水电 · 一楼厨房强弱电、燃气报警与给排水\nv3\n当前\n历史观察\n2026-10-27 16:19 · 孙工\n滨江壹号复核：保压 30 分钟压降限值写明\n查看该版本内容\nv2\n历史观察\n2026-10-27 16:19 · 孙工\n审核通过，状态：历史观察\n查看该版本内容\nv1\n待审核\n2026-10-27 16:19 · 王工\n从已闭环的不一致问题提交\n查看该版本内容\n关闭"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "1440 审核后对公司其他项目成员可见（业主可见该条目）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "1440 经验库无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "375 审核后对公司其他项目成员可见（业主可见该条目）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "375 经验库无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "另一项目新建水电检查点时列出水电已审核条目（3 条）",
+   "ok": true,
+   "detail": "['已验证', '历史观察', '未验证经验']"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "按已验证、历史观察、未验证经验排序",
+   "ok": true,
+   "detail": "['已验证', '历史观察', '未验证经验']"
+  },
+  {
+   "flow": "FLOW-14",
+   "name": "一键加入检查要点",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}

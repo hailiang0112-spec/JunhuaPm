@@ -1,0 +1,31 @@
+/* PAGE-F17-01 审计与证据包：页面特有样式（取自原型 <style>） */
+.top2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:var(--space-4);align-items:start}
+.top2>.card{min-width:0}
+.ig-res{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border-radius:var(--radius-md);background:var(--surface-warm)}
+.ig-res .hd{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.ig-res .big{font-size:var(--text-lg);font-weight:700}
+.ig-res dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-1) var(--space-3);font-size:var(--text-sm)}
+.ig-res dt{color:var(--muted)}
+.ig-res .mono{word-break:break-all}
+.range{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+.range .full{grid-column:1/-1}
+.dates{display:flex;gap:var(--space-2);align-items:center}
+.dates .input{min-width:0}
+.zip{list-style:none;display:flex;flex-direction:column;gap:var(--space-1);font-size:var(--text-sm)}
+.zip li{display:flex;gap:var(--space-2);align-items:flex-start}
+.zip li .icon{color:var(--success);width:16px;height:16px;margin-top:3px}
+.zip li .muted{font-size:var(--text-xs)}
+.log-f{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-2);align-items:end}
+.log-f .field label{font-size:var(--text-xs)}
+.log-f .input,.log-f .select{min-height:36px;font-size:var(--text-sm)}
+.op{white-space:nowrap}
+.before{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in oklab,var(--muted),transparent 50%)}
+.cols{display:flex;flex-wrap:wrap;gap:var(--space-1)}
+.au-col{display:flex;flex-direction:column;gap:var(--space-3)}
+.au-note{margin-bottom:var(--space-4)}
+.au-state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+.au-state p{font-size:var(--text-sm)}
+.log-table td{word-break:break-word}
+.log-table .nowrap{white-space:nowrap;font-variant-numeric:tabular-nums}
+@media (max-width:1199px){.top2{grid-template-columns:minmax(0,1fr)}.log-f{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:767px){.range{grid-template-columns:minmax(0,1fr)}.log-f{grid-template-columns:minmax(0,1fr)}.au-col>.btn,.exp-act .btn,.csv-act .btn{width:100%;justify-content:center;height:44px}.dates{flex-direction:column;align-items:stretch}.log-table{min-width:720px}}

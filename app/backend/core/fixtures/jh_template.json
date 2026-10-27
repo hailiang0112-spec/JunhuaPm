@@ -1,0 +1,2226 @@
+{
+ "floors": [
+  {
+   "code": "b1",
+   "name": "负一楼",
+   "order": 0
+  },
+  {
+   "code": "me",
+   "name": "夹层",
+   "order": 1
+  },
+  {
+   "code": "f1",
+   "name": "一楼",
+   "order": 2
+  },
+  {
+   "code": "f2",
+   "name": "二楼",
+   "order": 3
+  },
+  {
+   "code": "f3",
+   "name": "三楼",
+   "order": 4
+  },
+  {
+   "code": "rf",
+   "name": "楼顶阳台",
+   "order": 5
+  }
+ ],
+ "rooms": [
+  {
+   "code": "b1-car",
+   "floor": "b1",
+   "name": "车库",
+   "order": 0
+  },
+  {
+   "code": "b1-clo",
+   "floor": "b1",
+   "name": "衣帽间",
+   "order": 1
+  },
+  {
+   "code": "b1-nan",
+   "floor": "b1",
+   "name": "保姆间",
+   "order": 2
+  },
+  {
+   "code": "b1-wc",
+   "floor": "b1",
+   "name": "负一楼卫生间",
+   "order": 3
+  },
+  {
+   "code": "b1-hall",
+   "floor": "b1",
+   "name": "负一层大厅",
+   "order": 4
+  },
+  {
+   "code": "me-lift",
+   "floor": "me",
+   "name": "电梯间",
+   "order": 5
+  },
+  {
+   "code": "me-st1",
+   "floor": "me",
+   "name": "储藏室 1",
+   "order": 6
+  },
+  {
+   "code": "me-st2",
+   "floor": "me",
+   "name": "储藏室 2",
+   "order": 7
+  },
+  {
+   "code": "me-eq",
+   "floor": "me",
+   "name": "设备间",
+   "order": 8
+  },
+  {
+   "code": "f1-kit",
+   "floor": "f1",
+   "name": "厨房",
+   "order": 9
+  },
+  {
+   "code": "f1-din",
+   "floor": "f1",
+   "name": "餐厅",
+   "order": 10
+  },
+  {
+   "code": "f1-lift",
+   "floor": "f1",
+   "name": "电梯间",
+   "order": 11
+  },
+  {
+   "code": "f1-liv",
+   "floor": "f1",
+   "name": "客厅",
+   "order": 12
+  },
+  {
+   "code": "f1-read",
+   "floor": "f1",
+   "name": "读书区",
+   "order": 13
+  },
+  {
+   "code": "f1-alt",
+   "floor": "f1",
+   "name": "佛堂",
+   "order": 14
+  },
+  {
+   "code": "f2-lift",
+   "floor": "f2",
+   "name": "电梯间",
+   "order": 15
+  },
+  {
+   "code": "f2-sa",
+   "floor": "f2",
+   "name": "书房 A",
+   "order": 16
+  },
+  {
+   "code": "f2-ba",
+   "floor": "f2",
+   "name": "卧室 A",
+   "order": 17
+  },
+  {
+   "code": "f2-wca",
+   "floor": "f2",
+   "name": "卫生间 A",
+   "order": 18
+  },
+  {
+   "code": "f2-sb",
+   "floor": "f2",
+   "name": "书房 B",
+   "order": 19
+  },
+  {
+   "code": "f2-bb",
+   "floor": "f2",
+   "name": "卧室 B",
+   "order": 20
+  },
+  {
+   "code": "f2-wcb",
+   "floor": "f2",
+   "name": "卫生间 B",
+   "order": 21
+  },
+  {
+   "code": "f3-lift",
+   "floor": "f3",
+   "name": "电梯间",
+   "order": 22
+  },
+  {
+   "code": "f3-mb",
+   "floor": "f3",
+   "name": "主卧室",
+   "order": 23
+  },
+  {
+   "code": "f3-mc",
+   "floor": "f3",
+   "name": "主衣帽间",
+   "order": 24
+  },
+  {
+   "code": "f3-mwc",
+   "floor": "f3",
+   "name": "主卫",
+   "order": 25
+  },
+  {
+   "code": "f3-mf",
+   "floor": "f3",
+   "name": "多功能室",
+   "order": 26
+  },
+  {
+   "code": "f3-mfwc",
+   "floor": "f3",
+   "name": "多功能室洗手间",
+   "order": 27
+  },
+  {
+   "code": "rf-lau",
+   "floor": "rf",
+   "name": "洗衣间",
+   "order": 28
+  },
+  {
+   "code": "rf-bal",
+   "floor": "rf",
+   "name": "楼顶阳台",
+   "order": 29
+  },
+  {
+   "code": "rf-gar",
+   "floor": "rf",
+   "name": "种菜区",
+   "order": 30
+  },
+  {
+   "code": "rf-pv",
+   "floor": "rf",
+   "name": "屋顶光伏",
+   "order": 31
+  }
+ ],
+ "phases": [
+  {
+   "code": "p1",
+   "name": "砌墙",
+   "start": "2026-09-19",
+   "end": "2026-10-18",
+   "team": "瓦工班 · 陈师傅（4人）",
+   "weight": 8,
+   "scope": "各房间新砌隔墙、构造柱、门窗过梁、顶部斜砌塞缝挂网",
+   "order": 0,
+   "tasks": [
+    {
+     "name": "放线定位、材料进场验收",
+     "plan": "09-19",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一楼车库隔墙砌筑",
+     "plan": "09-20",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一楼保姆间隔墙砌筑",
+     "plan": "09-21",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-nan"
+    },
+    {
+     "name": "负一楼卫生间新砌隔墙及管道井封堵",
+     "plan": "09-22",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "负一层大厅造型墙砌筑",
+     "plan": "09-23",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "负一楼衣帽间新建隔墙",
+     "plan": "09-24",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-clo"
+    },
+    {
+     "name": "夹层储藏室 1 隔墙砌筑",
+     "plan": "09-25",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-st1"
+    },
+    {
+     "name": "夹层储藏室 2 隔墙砌筑",
+     "plan": "09-26",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-st2"
+    },
+    {
+     "name": "夹层设备间隔墙及防潮处理",
+     "plan": "09-27",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-eq"
+    },
+    {
+     "name": "夹层电梯间井道封堵",
+     "plan": "09-28",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "一楼厨房新砌隔墙",
+     "plan": "09-29",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼餐厅新砌隔墙",
+     "plan": "09-30",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-din"
+    },
+    {
+     "name": "一楼电梯间隔墙与井道封堵",
+     "plan": "10-01",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-lift"
+    },
+    {
+     "name": "一楼佛堂隔墙及地台基础",
+     "plan": "10-02",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-alt"
+    },
+    {
+     "name": "一楼读书区隔墙砌筑",
+     "plan": "10-03",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "二楼书房 A 隔墙砌筑",
+     "plan": "10-04",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sa"
+    },
+    {
+     "name": "二楼卧室 A 隔墙砌筑",
+     "plan": "10-04",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卫生间 A 隔墙及管道井",
+     "plan": "10-05",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼书房 B 隔墙砌筑",
+     "plan": "10-06",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sb"
+    },
+    {
+     "name": "二楼卧室 B 隔墙砌筑",
+     "plan": "10-07",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼卫生间 B 隔墙及管道井",
+     "plan": "10-08",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "二楼电梯间井道封堵",
+     "plan": "10-09",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-lift"
+    },
+    {
+     "name": "三楼主卧室隔墙砌筑",
+     "plan": "10-10",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼主衣帽间隔墙砌筑",
+     "plan": "10-11",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mc"
+    },
+    {
+     "name": "三楼多功能室隔墙砌筑",
+     "plan": "10-12",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "三楼多功能室洗手间隔墙",
+     "plan": "10-13",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-mfwc"
+    },
+    {
+     "name": "三楼电梯间井道封堵",
+     "plan": "10-14",
+     "owner": "陈师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-lift"
+    },
+    {
+     "name": "屋顶洗衣间隔墙与设备基础",
+     "plan": "10-15",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-lau"
+    },
+    {
+     "name": "门窗洞口过梁安装",
+     "plan": "10-16",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "顶部斜砌顶砖、塞缝、挂钢丝网",
+     "plan": "10-17",
+     "owner": "陈师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "砌体验收（垂直度 / 平整度实测）",
+     "plan": "10-18",
+     "owner": "王工",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  },
+  {
+   "code": "p2",
+   "name": "水电",
+   "start": "2026-10-19",
+   "end": "2027-01-18",
+   "team": "水电班 · 赵师傅（6人）",
+   "weight": 22,
+   "scope": "各房间强弱电布管穿线、给排水敷设、中央空调新风配管、打压试水与隐蔽验收",
+   "order": 1,
+   "tasks": [
+    {
+     "name": "水电点位现场交底、弹线定位",
+     "plan": "10-19",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一楼车库充电桩电源与给排水预留",
+     "plan": "10-22",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一楼保姆间独立给排水与热水管",
+     "plan": "10-24",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-nan"
+    },
+    {
+     "name": "负一楼卫生间给排水与排风管",
+     "plan": "10-27",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "负一层大厅强弱电与灯位",
+     "plan": "10-29",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "负一楼衣帽间照明回路与插座",
+     "plan": "11-01",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "b1",
+     "room": "b1-clo"
+    },
+    {
+     "name": "夹层设备间设备电源与地漏排水",
+     "plan": "11-04",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "me",
+     "room": "me-eq"
+    },
+    {
+     "name": "夹层储藏室 1 照明与插座",
+     "plan": "11-06",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st1"
+    },
+    {
+     "name": "夹层储藏室 2 照明与插座",
+     "plan": "11-09",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st2"
+    },
+    {
+     "name": "夹层电梯间照明与井道电源",
+     "plan": "11-11",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "一楼厨房强弱电、燃气报警与给排水",
+     "plan": "11-14",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼餐厅灯位与插座",
+     "plan": "11-17",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-din"
+    },
+    {
+     "name": "一楼电梯间电源与照明",
+     "plan": "11-19",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-lift"
+    },
+    {
+     "name": "一楼客厅强弱电与音响线预埋",
+     "plan": "11-22",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-liv"
+    },
+    {
+     "name": "一楼读书区照明与插座",
+     "plan": "11-24",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "一楼佛堂专用照明与插座",
+     "plan": "11-27",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-alt"
+    },
+    {
+     "name": "二楼书房 A 强弱电布管穿线",
+     "plan": "11-30",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sa"
+    },
+    {
+     "name": "二楼卧室 A 强弱电与床头回路",
+     "plan": "12-02",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卫生间 A 给排水与排风管",
+     "plan": "12-05",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼书房 B 强弱电布管穿线",
+     "plan": "12-07",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sb"
+    },
+    {
+     "name": "二楼卧室 B 强弱电与床头回路",
+     "plan": "12-10",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼卫生间 B 给排水与排风管",
+     "plan": "12-13",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "二楼电梯间电源与照明",
+     "plan": "12-15",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-lift"
+    },
+    {
+     "name": "三楼主卧室、主衣帽间强弱电",
+     "plan": "12-18",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼主卫给排水与排风管",
+     "plan": "12-20",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mwc"
+    },
+    {
+     "name": "三楼多功能室强弱电与影音线",
+     "plan": "12-23",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "三楼多功能室洗手间给排水",
+     "plan": "12-26",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-mfwc"
+    },
+    {
+     "name": "三楼电梯间电源与照明",
+     "plan": "12-28",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-lift"
+    },
+    {
+     "name": "屋顶洗衣间给排水与电源",
+     "plan": "12-31",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-lau"
+    },
+    {
+     "name": "楼顶阳台排水与户外电源预留",
+     "plan": "01-02",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-bal"
+    },
+    {
+     "name": "种菜区给水与灌溉电源",
+     "plan": "01-05",
+     "owner": "赵师傅",
+     "weight": 1,
+     "floor": "rf",
+     "room": "rf-gar"
+    },
+    {
+     "name": "屋顶光伏线管预埋与并网预留",
+     "plan": "01-08",
+     "owner": "赵师傅",
+     "weight": 3,
+     "floor": "rf",
+     "room": "rf-pv"
+    },
+    {
+     "name": "中央空调 / 新风配管及冷凝水管",
+     "plan": "01-10",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "管道打压试水、线路绝缘测试",
+     "plan": "01-13",
+     "owner": "王工",
+     "weight": 3,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "隐蔽工程验收（全过程拍照存档）",
+     "plan": "01-15",
+     "owner": "王工",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "水电整改项复查与回路标识",
+     "plan": "01-18",
+     "owner": "赵师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  },
+  {
+   "code": "p3",
+   "name": "铺砖",
+   "start": "2026-12-19",
+   "end": "2027-03-18",
+   "team": "铺砖班 · 周师傅（7人）",
+   "weight": 18,
+   "scope": "各房间防水闭水试验、通体砖 / 墙地砖铺贴、石材、勾缝与成品保护",
+   "order": 2,
+   "tasks": [
+    {
+     "name": "基层清理、界面剂处理",
+     "plan": "12-19",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一楼卫生间防水及 48h 闭水试验",
+     "plan": "12-22",
+     "owner": "王工",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "负一楼车库地面找平与耐磨地坪",
+     "plan": "12-25",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一层大厅石材铺贴",
+     "plan": "12-27",
+     "owner": "周师傅",
+     "weight": 3,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "负一楼保姆间、衣帽间地砖铺贴",
+     "plan": "12-30",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-nan"
+    },
+    {
+     "name": "楼顶阳台防水及 48h 闭水试验",
+     "plan": "01-02",
+     "owner": "王工",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-bal"
+    },
+    {
+     "name": "种菜区防水与排水层施工",
+     "plan": "01-05",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-gar"
+    },
+    {
+     "name": "一楼客厅 800×800 通体砖铺贴",
+     "plan": "01-07",
+     "owner": "周师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-liv"
+    },
+    {
+     "name": "一楼餐厅通体砖铺贴",
+     "plan": "01-10",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-din"
+    },
+    {
+     "name": "一楼厨房墙地砖铺贴",
+     "plan": "01-13",
+     "owner": "周师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼电梯间石材门套与地面",
+     "plan": "01-16",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-lift"
+    },
+    {
+     "name": "一楼读书区地面与墙面收口",
+     "plan": "01-19",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "一楼佛堂石材地面（含地台）",
+     "plan": "01-21",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-alt"
+    },
+    {
+     "name": "二楼书房 A 地面砖铺贴",
+     "plan": "01-24",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sa"
+    },
+    {
+     "name": "二楼卧室 A 地面砖铺贴",
+     "plan": "01-27",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卫生间 A 墙地砖与防水",
+     "plan": "01-30",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼书房 B 地面砖铺贴",
+     "plan": "02-02",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sb"
+    },
+    {
+     "name": "二楼卧室 B 地面砖铺贴",
+     "plan": "02-04",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼卫生间 B 墙地砖与防水",
+     "plan": "02-07",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "二楼电梯间地面找平",
+     "plan": "02-10",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-lift"
+    },
+    {
+     "name": "三楼主卧室地面砖铺贴",
+     "plan": "02-13",
+     "owner": "周师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼主衣帽间地面与柜下基层",
+     "plan": "02-15",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mc"
+    },
+    {
+     "name": "三楼主卫墙地砖与防水",
+     "plan": "02-18",
+     "owner": "周师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mwc"
+    },
+    {
+     "name": "三楼多功能室地面砖铺贴",
+     "plan": "02-21",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "三楼多功能室洗手间墙地砖",
+     "plan": "02-24",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-mfwc"
+    },
+    {
+     "name": "三楼电梯间地面找平",
+     "plan": "02-27",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-lift"
+    },
+    {
+     "name": "夹层电梯间地面找平与地砖",
+     "plan": "03-01",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "夹层储藏室、设备间地面找平",
+     "plan": "03-04",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-st1"
+    },
+    {
+     "name": "夹层储藏室 2 地面与货架基层",
+     "plan": "03-07",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st2"
+    },
+    {
+     "name": "屋顶洗衣间防水与地砖",
+     "plan": "03-10",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-lau"
+    },
+    {
+     "name": "楼顶阳台地砖找坡与泼水试验",
+     "plan": "03-12",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-bal"
+    },
+    {
+     "name": "种菜区地面与排水沟",
+     "plan": "03-15",
+     "owner": "周师傅",
+     "weight": 1,
+     "floor": "rf",
+     "room": "rf-gar"
+    },
+    {
+     "name": "勾缝、清理、成品保护",
+     "plan": "03-18",
+     "owner": "周师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  },
+  {
+   "code": "p4",
+   "name": "木工",
+   "start": "2027-02-19",
+   "end": "2027-06-18",
+   "team": "木工班 · 吴师傅（8人）",
+   "weight": 22,
+   "scope": "各房间吊顶龙骨与石膏板、衣柜书柜柜体、木饰面、门套基层与收口",
+   "order": 3,
+   "tasks": [
+    {
+     "name": "木作材料进场、板材复尺",
+     "plan": "02-19",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一层大厅吊顶与吸音板基层",
+     "plan": "02-23",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "负一楼车库吊顶与门套基层",
+     "plan": "02-27",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一楼保姆间吊顶与柜体基层",
+     "plan": "03-03",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-nan"
+    },
+    {
+     "name": "负一楼衣帽间柜体基层与吊顶",
+     "plan": "03-07",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-clo"
+    },
+    {
+     "name": "负一楼卫生间吊顶基层",
+     "plan": "03-12",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "夹层设备间、储藏室柜体与基层",
+     "plan": "03-16",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-eq"
+    },
+    {
+     "name": "夹层储藏室 2 货架基层",
+     "plan": "03-20",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st2"
+    },
+    {
+     "name": "夹层电梯间门套基层",
+     "plan": "03-24",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "一楼客厅挑空区吊顶与造型",
+     "plan": "03-28",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-liv"
+    },
+    {
+     "name": "一楼餐厅吊顶与灯槽",
+     "plan": "04-01",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-din"
+    },
+    {
+     "name": "一楼厨房吊顶基层与吊柜背板",
+     "plan": "04-05",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼读书区书架与吊顶",
+     "plan": "04-09",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "一楼佛堂佛龛与吊顶造型",
+     "plan": "04-13",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-alt"
+    },
+    {
+     "name": "一楼电梯间门套基层",
+     "plan": "04-17",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f1",
+     "room": "f1-lift"
+    },
+    {
+     "name": "二楼卧室 A 吊顶及窗帘盒",
+     "plan": "04-22",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卧室 B 吊顶及窗帘盒",
+     "plan": "04-26",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼书房 A、书房 B 吊顶与书架柜体",
+     "plan": "04-30",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "f2",
+     "room": "f2-sa"
+    },
+    {
+     "name": "二楼卫生间 A 吊顶基层",
+     "plan": "05-04",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼卫生间 B 吊顶基层",
+     "plan": "05-08",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "二楼电梯间吊顶",
+     "plan": "05-12",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-lift"
+    },
+    {
+     "name": "三楼主卧室吊顶与灯槽",
+     "plan": "05-16",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼主衣帽间吊顶与柜体基层",
+     "plan": "05-20",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mc"
+    },
+    {
+     "name": "三楼多功能室吊顶与视听墙基层",
+     "plan": "05-24",
+     "owner": "吴师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "三楼多功能室洗手间吊顶基层",
+     "plan": "05-28",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-mfwc"
+    },
+    {
+     "name": "三楼电梯间门套与吊顶",
+     "plan": "06-02",
+     "owner": "吴师傅",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-lift"
+    },
+    {
+     "name": "屋顶洗衣间吊顶与柜体基层",
+     "plan": "06-06",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-lau"
+    },
+    {
+     "name": "全屋衣柜 / 书柜柜体制作安装",
+     "plan": "06-10",
+     "owner": "吴师傅",
+     "weight": 4,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "木作收口、门套基层",
+     "plan": "06-14",
+     "owner": "吴师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "木作分项验收（平整度 / 缝隙）",
+     "plan": "06-18",
+     "owner": "王工",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  },
+  {
+   "code": "p5",
+   "name": "油灰工",
+   "start": "2027-05-19",
+   "end": "2027-08-02",
+   "team": "油灰班 · 郑师傅（5人）",
+   "weight": 16,
+   "scope": "各房间石膏板接缝防裂、阴阳角找方、腻子批刮打磨、底漆面漆及艺术漆配合",
+   "order": 4,
+   "tasks": [
+    {
+     "name": "墙面石膏板接缝处理、防裂处理",
+     "plan": "05-19",
+     "owner": "郑师傅",
+     "weight": 3,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "阴阳角找方、护角条粘贴",
+     "plan": "05-23",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一层大厅墙面找平与防潮底涂",
+     "plan": "05-27",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "负一楼车库、保姆间墙面找平",
+     "plan": "05-30",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一楼卫生间防潮腻子",
+     "plan": "06-03",
+     "owner": "郑师傅",
+     "weight": 1,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "负一楼衣帽间墙面批刮",
+     "plan": "06-07",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-clo"
+    },
+    {
+     "name": "夹层设备间、储藏室墙面腻子",
+     "plan": "06-11",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "me",
+     "room": "me-eq"
+    },
+    {
+     "name": "夹层电梯间墙面腻子",
+     "plan": "06-14",
+     "owner": "郑师傅",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "一楼客厅、餐厅一遍腻子",
+     "plan": "06-18",
+     "owner": "郑师傅",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-liv"
+    },
+    {
+     "name": "一楼厨房、电梯间耐水腻子",
+     "plan": "06-22",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼读书区、佛堂腻子",
+     "plan": "06-26",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "二楼卧室 A、B 与书房 A、B 一遍腻子",
+     "plan": "06-29",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卧室 B 顶面腻子批刮",
+     "plan": "07-03",
+     "owner": "郑师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼卫生间 A 防水腻子",
+     "plan": "07-07",
+     "owner": "郑师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼卫生间 B 防水腻子",
+     "plan": "07-11",
+     "owner": "郑师傅",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "三楼主卧室、主衣帽间腻子",
+     "plan": "07-14",
+     "owner": "郑师傅",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼多功能室与洗手间腻子",
+     "plan": "07-18",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "屋顶洗衣间、楼顶阳台外墙腻子与防水涂料",
+     "plan": "07-22",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-bal"
+    },
+    {
+     "name": "二遍腻子及打磨、灯带照度检查（全屋）",
+     "plan": "07-26",
+     "owner": "郑师傅",
+     "weight": 3,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "底漆 + 两遍面漆涂刷（全屋）",
+     "plan": "07-29",
+     "owner": "郑师傅",
+     "weight": 4,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "木器漆 / 艺术漆配合与收口",
+     "plan": "08-02",
+     "owner": "郑师傅",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  },
+  {
+   "code": "p6",
+   "name": "安装收尾",
+   "start": "2027-07-19",
+   "end": "2027-08-30",
+   "team": "安装班（待进场 · 计划 8 人）",
+   "weight": 14,
+   "scope": "各房间灯具面板、洁具五金、橱柜卫浴柜、木门地板、空调风口、光伏与户外设施、保洁竣工",
+   "order": 5,
+   "tasks": [
+    {
+     "name": "灯具、开关插座面板安装",
+     "plan": "07-19",
+     "owner": "待定",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "洁具、五金件安装调试",
+     "plan": "07-20",
+     "owner": "待定",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "全屋木门、地板铺装",
+     "plan": "07-21",
+     "owner": "待定",
+     "weight": 3,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "中央空调风口、新风面板安装",
+     "plan": "07-23",
+     "owner": "待定",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "负一楼车库卷帘门与车位设施安装",
+     "plan": "07-24",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-car"
+    },
+    {
+     "name": "负一楼衣帽间五金与灯具安装",
+     "plan": "07-25",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "b1",
+     "room": "b1-clo"
+    },
+    {
+     "name": "负一楼保姆间家具与电器安装",
+     "plan": "07-26",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-nan"
+    },
+    {
+     "name": "负一楼卫生间洁具与浴霸安装",
+     "plan": "07-27",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-wc"
+    },
+    {
+     "name": "负一层大厅家具与灯具安装",
+     "plan": "07-29",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "b1",
+     "room": "b1-hall"
+    },
+    {
+     "name": "夹层电梯间呼梯面板与灯具安装",
+     "plan": "07-30",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-lift"
+    },
+    {
+     "name": "夹层储藏室货架与灯具安装",
+     "plan": "07-31",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st1"
+    },
+    {
+     "name": "夹层储藏室 2 货架与照明",
+     "plan": "08-01",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "me",
+     "room": "me-st2"
+    },
+    {
+     "name": "夹层设备间机组接线与联动调试",
+     "plan": "08-02",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "me",
+     "room": "me-eq"
+    },
+    {
+     "name": "一楼厨房橱柜、烟机灶具安装",
+     "plan": "08-04",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-kit"
+    },
+    {
+     "name": "一楼餐厅家具与灯具安装",
+     "plan": "08-05",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-din"
+    },
+    {
+     "name": "一楼电梯间轿厢装修与门套安装",
+     "plan": "08-06",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-lift"
+    },
+    {
+     "name": "一楼客厅家具与灯具安装",
+     "plan": "08-07",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "f1",
+     "room": "f1-liv"
+    },
+    {
+     "name": "一楼读书区书柜与灯具安装",
+     "plan": "08-08",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-read"
+    },
+    {
+     "name": "一楼佛堂佛龛灯光与陈设安装",
+     "plan": "08-10",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f1",
+     "room": "f1-alt"
+    },
+    {
+     "name": "二楼书房 A、B 家具与灯具安装",
+     "plan": "08-11",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f2",
+     "room": "f2-sa"
+    },
+    {
+     "name": "二楼卧室 A 家具与灯具安装",
+     "plan": "08-12",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-ba"
+    },
+    {
+     "name": "二楼卧室 B 家具与灯具安装",
+     "plan": "08-13",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-bb"
+    },
+    {
+     "name": "二楼卫生间 A 卫浴柜与五金安装",
+     "plan": "08-14",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wca"
+    },
+    {
+     "name": "二楼卫生间 B 卫浴柜与五金安装",
+     "plan": "08-16",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-wcb"
+    },
+    {
+     "name": "二楼电梯间灯具与面板安装",
+     "plan": "08-17",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f2",
+     "room": "f2-lift"
+    },
+    {
+     "name": "三楼主卧室家具与灯具安装",
+     "plan": "08-18",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mb"
+    },
+    {
+     "name": "三楼主衣帽间五金与灯具安装",
+     "plan": "08-19",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mc"
+    },
+    {
+     "name": "三楼主卫洁具与浴柜安装",
+     "plan": "08-20",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "f3",
+     "room": "f3-mwc"
+    },
+    {
+     "name": "三楼多功能室影音设备与灯具安装",
+     "plan": "08-22",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "f3",
+     "room": "f3-mf"
+    },
+    {
+     "name": "三楼多功能室洗手间洁具安装",
+     "plan": "08-23",
+     "owner": "待定",
+     "weight": 1,
+     "floor": "f3",
+     "room": "f3-mfwc"
+    },
+    {
+     "name": "屋顶洗衣间洗衣机与晾晒设施安装",
+     "plan": "08-24",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-lau"
+    },
+    {
+     "name": "楼顶阳台栏杆与户外设施安装",
+     "plan": "08-25",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "rf",
+     "room": "rf-bal"
+    },
+    {
+     "name": "种菜区灌溉系统与围栏安装",
+     "plan": "08-26",
+     "owner": "待定",
+     "weight": 2,
+     "floor": "rf",
+     "room": "rf-gar"
+    },
+    {
+     "name": "屋顶光伏组件安装与并网调试",
+     "plan": "08-28",
+     "owner": "待定",
+     "weight": 3,
+     "floor": "rf",
+     "room": "rf-pv"
+    },
+    {
+     "name": "全屋深度保洁、成品验收整改",
+     "plan": "08-29",
+     "owner": "张工",
+     "weight": 3,
+     "floor": null,
+     "room": null
+    },
+    {
+     "name": "竣工验收、资料移交、保修交底",
+     "plan": "08-30",
+     "owner": "张工",
+     "weight": 2,
+     "floor": null,
+     "room": null
+    }
+   ]
+  }
+ ],
+ "rules": [
+  {
+   "order": 1,
+   "pattern": "放线定位|材料进场验收",
+   "description": "按图纸在楼地面弹出墙体与门窗洞口线；砌块、水泥、砂、钢筋进场核对合格证与检测报告，砌块出釜静置 28 天以上，砂浆按 M5 配比机械搅拌。",
+   "criteria": "轴线位移 ≤10mm、弹线偏差 ≤3mm；材料合格证与检测报告齐全，砌块强度等级、砂浆配比符合设计；见证取样送检合格。"
+  },
+  {
+   "order": 2,
+   "pattern": "电梯间.*井道封堵",
+   "description": "电梯井道与楼板缝隙用 C20 细石混凝土分层封堵，钢筋头割除并做防腐；封堵前清理浮灰、湿润基面，外侧做防水砂浆收面。",
+   "criteria": "封堵密实无空洞、无渗漏；封堵面与楼板齐平，平整度 ≤3mm；防火封堵材料耐火极限符合设计。"
+  },
+  {
+   "order": 3,
+   "pattern": "管道井",
+   "description": "隔墙采用 120mm 加气混凝土砌块，管道井随砌随封；管根处细石混凝土封堵并做防水砂浆倒角，井壁内外双面抹灰。",
+   "criteria": "垂直度 ≤3mm、表面平整度 ≤3mm；管道井封堵密实无渗漏；井壁抹灰无空鼓、无开裂。"
+  },
+  {
+   "order": 4,
+   "pattern": "防潮处理",
+   "description": "隔墙底部浇筑 200mm 高 C20 混凝土导墙，砌块含水率控制 8%~12%；墙面抹 20mm 厚防水砂浆，与地面防水层搭接 ≥150mm。",
+   "criteria": "导墙高度 ≥200mm 且与楼板整体浇筑；防水砂浆厚度均匀、无空鼓；24h 淋水试验无渗漏。"
+  },
+  {
+   "order": 5,
+   "pattern": "地台基础",
+   "description": "地台基础采用 C25 混凝土浇筑，内配 φ8@200 双向钢筋，与结构楼板植筋连接；顶面标高按佛龛尺寸预留 50mm 石材厚度。",
+   "criteria": "地台标高偏差 ≤3mm、表面平整度 ≤3mm；植筋抗拔抽检合格；混凝土无蜂窝麻面。"
+  },
+  {
+   "order": 6,
+   "pattern": "设备基础",
+   "description": "洗衣设备基础用 C25 混凝土浇筑，高出屋面完成面 150mm，四周做 R50 圆弧防水收头；基础内预留地脚螺栓孔。",
+   "criteria": "基础标高偏差 ≤3mm；与屋面防水层收头圆弧顺直无开裂；蓄水 24h 无渗漏。"
+  },
+  {
+   "order": 7,
+   "pattern": "斜砌顶砖|塞缝|挂钢丝网",
+   "description": "墙体砌至梁底预留 15~20mm 缝隙，待砌体沉降 7 天后用膨胀砂浆斜砌顶紧；砌体与混凝土交接处满挂 300mm 宽镀锌钢丝网，搭接 ≥100mm。",
+   "criteria": "顶砖斜砌角度 45°~60°、灰缝饱满；钢丝网固定牢固、无翘边；交接缝抹灰后无开裂。"
+  },
+  {
+   "order": 8,
+   "pattern": "过梁",
+   "description": "门窗洞口设预制或现浇钢筋混凝土过梁，两端支承长度 ≥250mm；过梁底模按跨度 1‰~3‰ 起拱，混凝土 C25 浇筑并养护 7 天。",
+   "criteria": "过梁支承长度 ≥250mm；底面平整度 ≤2mm；混凝土强度达设计值后方可拆模，梁体无裂缝。"
+  },
+  {
+   "order": 9,
+   "pattern": "砌体验收|实测",
+   "description": "按《砌体结构工程施工质量验收规范》GB 50203 用 2m 靠尺、塞尺、线锤对已完砌体逐间实测实量，记录超差点位并整改后复测。",
+   "criteria": "垂直度 ≤3mm、表面平整度 ≤3mm、水平灰缝平直度 ≤7mm；实测实量合格率 100%，整改项复测合格。"
+  },
+  {
+   "order": 10,
+   "pattern": "隔墙|新砌|砌筑|砌体",
+   "description": "采用 240mm 加气混凝土砌块、M5 混合砂浆砌筑；砌筑前砌块浇水湿润，砂浆饱满、错缝搭接，每日砌筑高度 ≤1.8m，顶部预留 7 天沉降期。",
+   "criteria": "垂直度 ≤3mm、表面平整度 ≤3mm；水平灰缝厚度 8~12mm、饱满度 ≥80%；错缝搭接 ≥1/3 砌块长；砂浆试块强度合格。"
+  },
+  {
+   "order": 11,
+   "pattern": "水电点位.*交底|弹线定位",
+   "description": "与业主、设计师现场逐间核对点位并弹线确定管线走向；开关距地 1300mm、插座 300mm 或按设计，冷热水管左热右冷、平行间距 150mm。",
+   "criteria": "点位数量与位置经业主签字确认；弹线偏差 ≤10mm；交底记录与确认单齐全。"
+  },
+  {
+   "order": 12,
+   "pattern": "充电桩",
+   "description": "车库充电桩由配电箱单独回路供电（16A/32A 按桩型），采用 ZR-YJV 阻燃电缆穿镀锌钢管沿墙敷设；给排水预留 DN25 冷水接口。",
+   "criteria": "回路与空开容量满足充电桩额定功率并留 20% 余量；绝缘电阻 ≥0.5MΩ；预留接口位置与桩体安装图一致。"
+  },
+  {
+   "order": 13,
+   "pattern": "床头回路",
+   "description": "床头两侧各设双控开关与 USB 插座（距地 700mm），床头回路与主灯分路控制；线管沿墙暗敷，弯头用弯管弹簧煨弯，禁止死弯。",
+   "criteria": "双控动作正常、无闪动；插座左零右火上接地；管内穿线总截面 ≤管内径 40%；绝缘电阻 ≥0.5MΩ。"
+  },
+  {
+   "order": 14,
+   "pattern": "燃气报警",
+   "description": "厨房燃气报警器电源单独从配电箱引出；报警器安装距顶 300mm 内、距灶具水平距离 ≥1m，并与燃气电磁阀联动。",
+   "criteria": "报警器安装位置符合产品说明与规范；联动切断动作可靠；绝缘电阻 ≥0.5MΩ。"
+  },
+  {
+   "order": 15,
+   "pattern": "户外电源|并网预留|线管预埋",
+   "description": "户外电源采用 IP66 防水插座与 ZR-YJV 电缆穿 PVC 管埋地敷设，埋深 ≥300mm 并铺砂盖砖；光伏线管预留至逆变器安装位置。",
+   "criteria": "埋深 ≥300mm、套管完好无破损；防水插座 IP66 且接地可靠；绝缘电阻 ≥0.5MΩ。"
+  },
+  {
+   "order": 16,
+   "pattern": "灌溉电源|种菜区给水",
+   "description": "种菜区给水从屋面给水干管接出 DN20 PPR 管，沿女儿墙敷设至各灌溉点位，末端设快速取水阀；管路做保温防冻处理。",
+   "criteria": "通水试验无渗漏；取水阀操作灵活、出水通畅；保温层完整无破损。"
+  },
+  {
+   "order": 17,
+   "pattern": "独立给排水|热水管|给排水与排风管|给排水与电源|洗衣间给排水|洗手间给排水",
+   "description": "给水管采用 PPR 热熔连接、排水管采用 PVC-U 承插粘接；冷热水管平行间距 150mm，管卡间距 ≤600mm，穿墙处预埋钢套管并高出完成面 50mm。",
+   "criteria": "打压试验 0.8MPa、稳压 30min 压降 ≤0.05MPa；排水坡度 1%~2% 无倒坡；通水与通球试验合格、无渗漏。"
+  },
+  {
+   "order": 18,
+   "pattern": "电源与地漏排水",
+   "description": "设备电源由配电箱单独回路引出、穿镀锌钢管沿墙敷设；地漏排水管采用 PVC-U 管、坡度 ≥1%，地漏存水弯水封深度 ≥50mm。",
+   "criteria": "绝缘电阻 ≥0.5MΩ；排水坡度 ≥1%、无积水；地漏水封深度 ≥50mm、无返味。"
+  },
+  {
+   "order": 19,
+   "pattern": "影音线|音响线",
+   "description": "音响线、HDMI、网线等弱电线缆单独穿管预埋至设备点位，两端预留 1.5m 余量并做好标记；与强电交叉处加金属屏蔽。",
+   "criteria": "线缆规格符合设备要求、预留长度 ≥1.5m；两端标识清晰可追溯；通断测试合格。"
+  },
+  {
+   "order": 20,
+   "pattern": "新风配管|冷凝水管",
+   "description": "冷媒铜管按设计规格选用，弯管用弯管器、焊接充氮保护；冷凝水管采用 PVC-U 管，坡度 ≥1% 且不得与冷媒管共用管卡。",
+   "criteria": "氮气保压 4.0MPa、24h 压降 ≤0.01MPa；冷凝水排水通畅无积水；保温层闭合无冷桥。"
+  },
+  {
+   "order": 21,
+   "pattern": "打压试水|绝缘测试",
+   "description": "给水管打压至 0.8MPa 并稳压 30min 记录压降；电路逐回路摇测绝缘电阻并记录；排水管做灌水与通球试验。",
+   "criteria": "给水压降 ≤0.05MPa 且无渗漏；绝缘电阻 ≥0.5MΩ；排水通球率 100%、无堵塞。"
+  },
+  {
+   "order": 22,
+   "pattern": "隐蔽工程验收",
+   "description": "水电管线封闭前组织业主、监理、施工三方验收，对管线走向、点位、间距逐间拍照存档，形成隐蔽工程验收记录与影像资料。",
+   "criteria": "验收记录三方签字齐全；影像资料覆盖全部隐蔽部位且可追溯到房间；遗留问题整改闭环。"
+  },
+  {
+   "order": 23,
+   "pattern": "整改项复查|回路标识",
+   "description": "对验收提出的整改项逐条复查消项；配电箱内回路逐一粘贴标识牌，注明回路名称、容量与对应区域。",
+   "criteria": "整改项 100% 闭环；回路标识与箱内开关一一对应；标识牌字迹清晰、耐擦拭。"
+  },
+  {
+   "order": 24,
+   "pattern": "强弱电|电源与照明|照明与插座|照明回路与插座|灯位与插座|专用照明与插座|照明与井道电源",
+   "description": "强电采用 ZR-BV 铜芯线穿 PVC 阻燃管暗敷（照明 / 插座 2.5mm²、空调 4mm²）；弱电单独穿管，与强电间距 ≥300mm 或加屏蔽处理。",
+   "criteria": "绝缘电阻 ≥0.5MΩ；管内穿线总截面 ≤管内径 40%；强弱电分色分管、标识清晰；通电试亮全部合格。"
+  },
+  {
+   "order": 25,
+   "pattern": "基层清理|界面剂",
+   "description": "清除地面浮灰、油污与松动层，空鼓部位剔除重做；满涂界面剂一道，待表干后方可施工结合层。",
+   "criteria": "基层干净无浮灰、无空鼓；界面剂涂刷均匀无漏涂；基层含水率 ≤8%。"
+  },
+  {
+   "order": 26,
+   "pattern": "闭水试验|防水及|防水与排水层|防水与地砖|墙地砖与防水",
+   "description": "防水采用 JS 聚合物水泥基涂料，墙面上返 1800mm（淋浴区 2000mm）、其余 300mm，分两遍交叉涂刷、厚度 ≥1.5mm；地面蓄水 48h 观察楼下无渗漏。",
+   "criteria": "涂层厚度 ≥1.5mm、无起泡开裂；48h 闭水试验楼下无渗漏；保护层施工前涂层无破损。"
+  },
+  {
+   "order": 27,
+   "pattern": "厨房墙地砖|洗手间墙地砖",
+   "description": "墙面砖自下而上铺贴，底部留出地砖厚度；阳角做 45° 磨边碰角，阴角压向正确，缝宽 1.5mm 并勾缝密实。",
+   "criteria": "空鼓率 ≤5%；立面垂直度 ≤2mm、阴阳角方正 ≤3mm；45° 碰角顺直无爆边。"
+  },
+  {
+   "order": 28,
+   "pattern": "耐磨地坪",
+   "description": "车库耐磨地坪在混凝土初凝时撒布金刚砂耐磨骨料（用量 ≥5kg/m²），机械镘抹平压光；按 6m×6m 设切割缝、缝深 ≥1/3 板厚。",
+   "criteria": "表面平整度 ≤3mm、无起砂起壳；金刚砂撒布均匀；切割缝顺直、深度符合要求。"
+  },
+  {
+   "order": 29,
+   "pattern": "石材",
+   "description": "石材铺贴采用 1:3 干硬性水泥砂浆结合层（手握成团），石材背面涂素水泥浆；石材预排编号控制色差，缝宽按设计 1~2mm。",
+   "criteria": "空鼓率 ≤5%（单块 ≤1/4 面积）；表面平整度 ≤1mm、接缝高低差 ≤0.5mm；色差与纹路拼接自然。"
+  },
+  {
+   "order": 30,
+   "pattern": "找坡|泼水试验|排水沟",
+   "description": "按设计坡度（≥1%）找坡至地漏或排水沟，排水沟做 R30 圆弧收口；完工后泼水试验检查排水方向。",
+   "criteria": "坡度 ≥1% 且不积水；泼水试验 30min 内排空、无倒流；排水沟顺直无堵塞。"
+  },
+  {
+   "order": 31,
+   "pattern": "地面砖|地砖|通体砖|墙地砖",
+   "description": "地砖铺贴前预排编号、浸水晾干；结合层用 1:3 干硬性砂浆，背面满刮素水泥浆；缝宽 1.5~2mm，24h 后勾缝。",
+   "criteria": "空鼓率 ≤5%；表面平整度 ≤2mm、缝格平直度 ≤2mm、接缝高低差 ≤0.5mm；排水坡度顺直无积水。"
+  },
+  {
+   "order": 32,
+   "pattern": "地面与货架",
+   "description": "储藏室地面先按 1:3 水泥砂浆找平，再按货架立柱间距预埋钢板或加固木基层；地面与基层标高按货架底部调平螺栓需求预留。",
+   "criteria": "地面平整度 ≤3mm、无空鼓；预埋件位置偏差 ≤5mm；基层含水率 ≤8%。"
+  },
+  {
+   "order": 33,
+   "pattern": "柜下基层",
+   "description": "柜体下基层按柜体尺寸预留并做防潮处理，避免柜体直接接触水泥砂浆层；基层标高与柜体底部调平件匹配。",
+   "criteria": "基层标高与柜体尺寸匹配（偏差 ≤3mm）；防潮层完整无破损；表面平整度 ≤3mm。"
+  },
+  {
+   "order": 34,
+   "pattern": "地面与墙面收口",
+   "description": "地面与墙面、门槛石接口处收边顺直，相接部位留 2mm 工艺缝并打胶；收口线条与地砖缝对齐。",
+   "criteria": "收口线条顺直、无高低差；打胶饱满无断缝；与地砖缝对位偏差 ≤2mm。"
+  },
+  {
+   "order": 35,
+   "pattern": "地面找平",
+   "description": "水泥砂浆找平层配比 1:3，厚度按设计（一般 20~30mm），冲筋贴饼控制标高，表面拉毛；养护 ≥7 天。",
+   "criteria": "表面平整度 ≤3mm、标高偏差 ≤5mm；无空鼓、起砂、开裂；养护记录齐全。"
+  },
+  {
+   "order": 36,
+   "pattern": "勾缝|成品保护",
+   "description": "采用专用勾缝剂（颜色与砖体协调）填缝压实；铺贴完成后覆盖保护膜或密度板，阳角加护角条。",
+   "criteria": "勾缝饱满、宽窄一致、无断缝；成品保护覆盖完整；移交前无划伤与污染。"
+  },
+  {
+   "order": 37,
+   "pattern": "木作材料进场|板材复尺",
+   "description": "板材（E0 级多层板 / 阻燃板）、龙骨、五金进场核对品牌、环保等级与规格；现场复尺，按墙面垂直度与平整度调整深化尺寸。",
+   "criteria": "材料品牌规格与合同一致并提供 E0 级检测报告；复尺偏差记录完整；防火防腐处理到位。"
+  },
+  {
+   "order": 38,
+   "pattern": "佛龛与吊顶|视听墙",
+   "description": "佛龛与视听墙基层按设备尺寸与图样放样，内嵌部位用 18mm 多层板双层叠合加固，并预埋线管与设备支架加固点。",
+   "criteria": "放样尺寸偏差 ≤2mm；基层承重满足设备荷载（≥30kg）；预埋点位与设备安装孔一致。"
+  },
+  {
+   "order": 39,
+   "pattern": "挑空|造型",
+   "description": "挑空区吊顶设反支撑与转换层，造型按深化图放样并样板先行确认；弧形部位用双层石膏板错缝弯曲。",
+   "criteria": "造型与深化图一致并经业主确认；弧线顺滑无折角；吊顶承载力满足检修马道要求。"
+  },
+  {
+   "order": 40,
+   "pattern": "灯槽",
+   "description": "灯槽净宽 ≥120mm、槽深 ≥100mm，内壁做反光处理；灯槽下沿做遮盖边防止直射见光，并预留 LED 灯带电源。",
+   "criteria": "灯槽尺寸一致、边线顺直（直线度 ≤2mm/2m）；灯带试亮无明显暗区。"
+  },
+  {
+   "order": 41,
+   "pattern": "木作收口|分项验收|缝隙",
+   "description": "门套、柜体与墙面收口打胶顺直；按《建筑装饰装修工程质量验收标准》GB 50210 用 2m 靠尺、塞尺对木作分项逐项实测并形成记录。",
+   "criteria": "表面平整度 ≤2mm、立面垂直度 ≤2mm、接缝直线度 ≤2mm；验收记录齐全、整改闭环。"
+  },
+  {
+   "order": 42,
+   "pattern": "门套基层|门套与吊顶",
+   "description": "门套基层采用 18mm 阻燃板，与墙体交接处打胶密封；门洞净宽按门扇尺寸加 8mm 安装缝，垂直度用线锤校正后固定。",
+   "criteria": "门套垂直度 ≤2mm、对角线偏差 ≤3mm；门洞净宽偏差 ≤3mm；基层无空鼓。"
+  },
+  {
+   "order": 43,
+   "pattern": "货架",
+   "description": "储物货架采用镀锌角钢立柱与层板，立柱用膨胀螺栓与墙体固定（间距 ≤800mm）；层板按使用荷载配置。",
+   "criteria": "货架垂直度 ≤3mm、摇动无位移；层板经 1.5 倍设计荷载试验无变形。"
+  },
+  {
+   "order": 44,
+   "pattern": "柜体与基层|柜体基层|吊柜背板",
+   "description": "柜体基层采用 18mm E0 级多层板，靠墙做防潮处理；柜体与墙体用膨胀螺栓固定（间距 ≤600mm），柜下加防潮垫条。",
+   "criteria": "柜体垂直度 ≤2mm、对角线偏差 ≤3mm；固定牢固无晃动；封边严密无崩边。"
+  },
+  {
+   "order": 45,
+   "pattern": "衣柜|书柜柜体",
+   "description": "柜体采用 18mm E0 级多层板 + 2mm PVC 封边；层板跨度 >900mm 加背拉条；柜体与吊顶、墙面交接处留 5mm 伸缩缝打胶。",
+   "criteria": "层板挠度 ≤L/250；门缝均匀 2~3mm、开合顺畅；封边无崩边、无胶线。"
+  },
+  {
+   "order": 46,
+   "pattern": "吊顶|龙骨",
+   "description": "采用轻钢龙骨（主龙骨间距 ≤1000mm、副龙骨 ≤400mm），吊杆 φ8、间距 ≤1000mm；石膏板错缝安装，自攻钉间距 150~170mm 并沉入 1mm。",
+   "criteria": "吊顶水平度 ≤5mm、表面平整度 ≤3mm；龙骨间距符合设计；石膏板接缝落在龙骨上、无通缝。"
+  },
+  {
+   "order": 47,
+   "pattern": "接缝处理|防裂",
+   "description": "石膏板接缝先嵌缝石膏填实，再贴 50mm 宽玻纤网格带（转角用阴阳角条），刮平压实后满批一遍。",
+   "criteria": "接缝平直无凹陷；网格带无起鼓、无外露；打磨后无接缝痕迹。"
+  },
+  {
+   "order": 48,
+   "pattern": "阴阳角|护角条",
+   "description": "采用成品 PVC 或金属护角条，用粘结石膏点粘找直；阴阳角用 2m 靠尺校正至方正顺直。",
+   "criteria": "阴阳角方正度 ≤3mm、直线度 ≤3mm；护角条无脱空、无露边。"
+  },
+  {
+   "order": 49,
+   "pattern": "外墙腻子|防水涂料",
+   "description": "外墙采用柔性耐水腻子，配套丙烯酸外墙防水涂料两遍，阴阳角与管根做增强层；施工避开雨天，气温 ≥5℃。",
+   "criteria": "涂层无漏涂、无流坠；附着力拉拔 ≥0.5MPa；24h 淋水无渗漏。"
+  },
+  {
+   "order": 50,
+   "pattern": "防潮腻子|防水腻子|耐水腻子",
+   "description": "卫生间、厨房等潮湿区采用 N 型耐水防潮腻子，批刮前基面刷防潮底涂；腻子分两遍批刮，每遍厚度 ≤1mm。",
+   "criteria": "耐水性符合 N 型要求（浸水 48h 无起泡脱落）；基层含水率 ≤8% 方可批刮。"
+  },
+  {
+   "order": 51,
+   "pattern": "二遍腻子|打磨|照度",
+   "description": "二遍腻子压实刮平，干后用 400# 砂纸打磨并清扫粉尘；用 200W 侧光灯逐墙照射检查平整度与接茬。",
+   "criteria": "打磨后无砂痕、无接茬；侧光照射无波浪、无明暗差；基层平整度 ≤2mm。"
+  },
+  {
+   "order": 52,
+   "pattern": "底漆|面漆",
+   "description": "底漆一遍、面漆两遍（乳胶漆按设计色号），每遍间隔 ≥4h；喷涂或滚涂均匀，边角用小刷补涂到位。",
+   "criteria": "漆膜饱满均匀、无流挂、无漏刷、无刷痕；色差目视一致；漆膜厚度符合产品说明。"
+  },
+  {
+   "order": 53,
+   "pattern": "木器漆|艺术漆",
+   "description": "木器漆按设计做开放或封闭效果，底漆封闭后打磨、面漆两遍；艺术漆按确认样板施工，与周边收口贴美纹纸保护。",
+   "criteria": "以确认样板为准、色差目视无差异；漆面光滑无颗粒；收口线顺直无污染。"
+  },
+  {
+   "order": 54,
+   "pattern": "防潮底涂",
+   "description": "墙面清理后涂刷防潮底涂一道，重点处理返潮部位与墙脚 300mm 范围；待表干后再批刮找平层。",
+   "criteria": "底涂涂刷均匀无漏涂；返潮部位无渗水痕迹；基层含水率 ≤8%。"
+  },
+  {
+   "order": 55,
+   "pattern": "腻子|找平|批刮",
+   "description": "墙面满批耐水腻子两至三遍，每遍厚度 ≤1mm、干后打磨；批刮前清理基面浮灰并涂刷界面剂。",
+   "criteria": "表面平整度 ≤2mm、立面垂直度 ≤2mm；无空鼓、开裂、掉粉；阴阳角顺直。"
+  },
+  {
+   "order": 56,
+   "pattern": "呼梯面板",
+   "description": "呼梯面板与电梯厂家配合安装，接线由持证人员操作；面板与墙面间隙均匀并用密封胶收口。",
+   "criteria": "呼梯动作灵敏可靠、与轿厢联动正常；面板平整度 ≤1mm、无缝隙。"
+  },
+  {
+   "order": 57,
+   "pattern": "机组接线|联动调试",
+   "description": "设备机组按电气图接线、相序正确，接地电阻 ≤4Ω；与楼宇控制及联动系统逐点调试并记录参数。",
+   "criteria": "相序正确、接地电阻 ≤4Ω；联动点位 100% 动作正确；调试记录完整。"
+  },
+  {
+   "order": 58,
+   "pattern": "光伏组件",
+   "description": "光伏支架与屋面结构可靠连接并做防水处理，组件按设计倾角安装；直流侧接线防反接、逆变器可靠接地，联系电网完成并网调试。",
+   "criteria": "支架抗风压符合设计、屋面连接处无渗漏；绝缘电阻 ≥1MΩ；并网发电正常、发电量记录完整。"
+  },
+  {
+   "order": 59,
+   "pattern": "灌溉系统|围栏",
+   "description": "灌溉主管沿女儿墙敷设、支管接入各菜畦，按覆盖半径布置滴灌或喷头；围栏立柱用混凝土固定、间距 ≤1500mm。",
+   "criteria": "通水试验各出水点出水均匀、无渗漏；围栏立柱垂直度 ≤3mm、摇动无松动。"
+  },
+  {
+   "order": 60,
+   "pattern": "卷帘门|车位设施",
+   "description": "车库卷帘门轨道垂直安装并与墙体牢固固定；车位设施（挡车器、车位标线）按车位尺寸定位放线。",
+   "criteria": "卷帘门升降顺畅、限位准确；轨道垂直度 ≤2mm/m；车位标线尺寸偏差 ≤10mm。"
+  },
+  {
+   "order": 61,
+   "pattern": "轿厢装修",
+   "description": "电梯轿厢装修选用轻质不燃材料，与厂家确认附加荷载；门套安装垂直、与电梯门套尺寸匹配。",
+   "criteria": "轿厢装修后荷载不超过厂家限值；门套垂直度 ≤2mm；电梯运行无异常噪音。"
+  },
+  {
+   "order": 62,
+   "pattern": "橱柜|烟机灶具",
+   "description": "橱柜台面开孔位置与灶具、水槽尺寸匹配，台面接缝用同色胶填缝；烟机排烟管接至公共烟道并加装止逆阀。",
+   "criteria": "柜门缝隙均匀、开合顺畅；台面水平度 ≤2mm；烟道连接密封无漏烟。"
+  },
+  {
+   "order": 63,
+   "pattern": "空调风口|新风面板",
+   "description": "风口与吊顶开孔尺寸匹配、四边留缝均匀；风口内侧做防结露保温；面板安装后与吊顶面齐平。",
+   "criteria": "风口气密无漏风、四边缝隙 ≤2mm；送风风速与设计偏差 ≤15%；面板与吊顶齐平无凸凹。"
+  },
+  {
+   "order": 64,
+   "pattern": "家具与电器|家具与灯具|陈设",
+   "description": "按深化图定位安装家具与灯具，与墙面交接处打胶收口；灯具与家具照明同步调试，通电设备逐台试运行。",
+   "criteria": "家具安装牢固、位置与图纸偏差 ≤5mm；灯具通电正常、无频闪；成品无划伤与污损。"
+  },
+  {
+   "order": 65,
+   "pattern": "洁具|五金件|卫浴柜|浴柜|浴霸|五金与灯具",
+   "description": "洁具安装前核对给排水接口与水平；马桶用硅酮胶密封底座并以地脚螺栓固定；花洒出水口中心距地 1100mm（按设计）；五金件与柜门同步调校。",
+   "criteria": "洁具水平、无渗漏、排水顺畅；五金件安装牢固、开合顺滑；24h 通水无渗漏。"
+  },
+  {
+   "order": 66,
+   "pattern": "影音设备|视听",
+   "description": "影音设备按点位安装，音箱定位与沙发听音位对称；线缆隐蔽走线、标识清晰，完成后做声场与画面调试。",
+   "criteria": "设备安装牢固、位置对称偏差 ≤10mm；画面与声音调试合格；线缆隐蔽无外露。"
+  },
+  {
+   "order": 67,
+   "pattern": "灯具|开关插座|面板安装",
+   "description": "灯具与面板安装前断电并验电；灯具用膨胀螺栓固定、承载 ≥4 倍灯重；面板安装水平、与墙面贴合无缝。",
+   "criteria": "灯具安装牢固（承载 ≥4 倍自重）、无晃动；面板水平度 ≤1mm、与墙面缝隙 ≤0.5mm；通电试亮全部正常。"
+  },
+  {
+   "order": 68,
+   "pattern": "木门|地板铺装",
+   "description": "木门按门洞尺寸调整后安装，合页上二下三、门缝均匀 2~3mm；地板铺装前基层平整度 ≤2mm，四周预留 8~10mm 伸缩缝。",
+   "criteria": "门扇开合顺畅无自开自闭、门缝 2~3mm；地板无空响、接缝高低差 ≤0.5mm；伸缩缝顺直。"
+  },
+  {
+   "order": 69,
+   "pattern": "洗衣机|晾晒|栏杆|户外设施",
+   "description": "洗衣机就位后调平并做防跳固定，排水接至地漏；栏杆与户外设施按规范固定，不锈钢件做防锈处理。",
+   "criteria": "洗衣机运转无异常震动、排水无渗漏；栏杆高度 ≥1100mm、垂直度 ≤3mm，抗水平推力 ≥1.0kN/m。"
+  },
+  {
+   "order": 70,
+   "pattern": "深度保洁|成品验收",
+   "description": "开荒保洁按从上到下、从内到外顺序进行，重点清理水泥浆点、胶痕与油漆污染；整改项逐一列单并复查销项。",
+   "criteria": "目视无灰尘、无污渍、无胶痕；玻璃与石材无划痕；整改项 100% 闭环并经业主确认。"
+  },
+  {
+   "order": 71,
+   "pattern": "竣工验收|资料移交|保修交底",
+   "description": "组织业主、监理、施工方三方竣工验收，移交竣工图、隐蔽工程记录、材料合格证与检测报告、设备说明书与保修卡。",
+   "criteria": "验收结论为合格并三方签字；资料移交清单齐全；保修范围与期限已向业主书面交底。"
+  }
+ ]
+}

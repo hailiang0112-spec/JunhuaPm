@@ -1,0 +1,495 @@
+{
+ "passed": 71,
+ "total": 71,
+ "failed": [],
+ "byFlow": {
+  "FLOW-17": {
+   "passed": 18,
+   "total": 18
+  },
+  "FLOW-18": {
+   "passed": 27,
+   "total": 27
+  },
+  "FLOW-20": {
+   "passed": 10,
+   "total": 10
+  },
+  "FLOW-22": {
+   "passed": 16,
+   "total": 16
+  }
+ },
+ "consoleErrors": [],
+ "expectedBusiness4xx": [
+  "[owner@1440] http://127.0.0.1:5206/api/projects/1/notices/2 Failed to load resource: the server responded with a status of 403 (Forbidden)",
+  "[pm@1440] http://127.0.0.1:5206/api/projects/1/evidence-exports Failed to load resource: the server responded with a status of 403 (Forbidden)"
+ ],
+ "hscroll375": [
+  {
+   "label": "PAGE-F12-01 档案资料",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F13-01 补充事项",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F13-02 公告栏",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F15-01 付款节点",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  },
+  {
+   "label": "PAGE-F17-01 审计与证据包",
+   "width": 375,
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "overflow": false
+  }
+ ],
+ "hscrollOverflow": [],
+ "seconds": 70.1,
+ "checks": [
+  {
+   "flow": "FLOW-17",
+   "name": "1440 档案资料页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "一楼分类 3 个文件，引用标注可见",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "新建分类名称必填",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "新建空分类成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "空分类可删",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "被变更单引用的文件作废被拒",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "普通资料作废成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "作废后从默认列表隐藏",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "显示已作废后可见并留痕",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "非空分类删除提示先移出文件",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "1440 项目经理可见合同专区",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "375 档案资料页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "375 项目经理可见合同专区",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "dm 打开合同专区被拒「无权查看合同资料」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "qc 打开合同专区被拒「无权查看合同资料」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "owner 可见合同资料",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "budget 可见合同资料",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-17",
+   "name": "admin 可见合同资料",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "登记必填校验（标题、约定完成日期、责任人）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "登记补充事项成功（状态：待处理）",
+   "ok": true,
+   "detail": "['已登记 BC-003，状态：待处理']"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "新事项状态「待处理」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "状态切换为处理中",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "转为变更单生成预填内容的草稿",
+   "ok": true,
+   "detail": "君\n君华 · 项目管理\n君华新城 · 联排别墅\n我的待办\n1\n总览\n项目总览\n楼层 / 房间\n施工阶段\n砌墙\n水电\n铺砖\n木工\n油灰工\n安装收尾\n证据链\n图纸\n基线签认\n检查点\n变更单\n问题\n房屋档案\n档案资料\n补充事项\n公告栏\n付款节点\n项目设置\n成员与项目\n项目结构\n数据导入导出\n审计与证据包\n公司\n公司经验库\n个人设置\n变更单 BG-002\n君华新城 · 联排别墅 · 发起、定价、签认全程留"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "草稿带上补充事项附件",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "补充事项上显示变更单编号",
+   "ok": true,
+   "detail": "BC-003\n三楼卫生间增加浴缸\n处理中\n\n业主 10 月 26 日现场提出三楼主卫增加 1.5m 嵌入式浴缸，需复核排水与楼板荷载。\n\n提出 2026-10-27\n约定完成 2026-11-15\n责任人 张工\n已转变更单 BG-002\n三楼主卫浴缸位置示意.jpg\n待处理\n处理中\n已完成"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "状态切换为已完成",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "未完成排前（已完成在后）",
+   "ok": true,
+   "detail": "[('BC-002', True), ('BC-001', True), ('BC-003', True)]"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "375 补充事项页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "owner 发帖以账号姓名并按角色进入「业主」板块",
+   "ok": true,
+   "detail": "将以刘先生（业主）的身份发布到「业主」板块（按角色自动归入）"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "owner 发布成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "owner 新留言倒序排在板块首位",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "pm 发帖以账号姓名并按角色进入「工地经理」板块",
+   "ok": true,
+   "detail": "将以张工（项目经理）的身份发布到「工地经理」板块（按角色自动归入）"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "pm 发布成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "pm 新留言倒序排在板块首位",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "qc 发帖以账号姓名并按角色进入「工地经理」板块",
+   "ok": true,
+   "detail": "将以王工（质检）的身份发布到「工地经理」板块（按角色自动归入）"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "qc 发布成功",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "qc 新留言倒序排在板块首位",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "设计经理回复业主留言",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "回复挂在原留言下且正序（李工在前、张工在后）",
+   "ok": true,
+   "detail": "刘\n刘先生\n业主\n2026-10-27 16:26\n\n请张工明天上午到三楼露台确认洗手池位置\n\n回复\n删除\n李\n李工\n设计经理\n2026-10-27 16:26\n\n洗手池位置建议放在东北角，离雨水立管近，排水好接。\n\n张\n张工\n项目经理\n2026-10-27 16:26\n\n收到，明早 9 点现场确认。"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "业主删除自己的留言",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "显示「该留言已删除」并留记录",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "他人留言无删除入口",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "删除他人留言被拒（403）",
+   "ok": true,
+   "detail": "403"
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "项目经理与质检留言在工地经理板块",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-18",
+   "name": "375 公告栏无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "录入必填校验",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "录入付款节点成功（状态：未付）",
+   "ok": true,
+   "detail": "['已保存付款节点，状态：未付']"
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "节点状态「未付」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "节点显示未放行 5、未闭环不一致 2",
+   "ok": true,
+   "detail": "水电完工款\n\t253,600\t2027-01-15\t\n水电\t5\t2\t未付\t标记已付"
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "标记已付弹出「还有 5 个检查点未放行，确认标记已付？」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "提示不拦截并留痕",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "取消后状态不变（未付）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "确认后标记已付",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "状态「已付」并留痕（确认时未放行 5 个）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-20",
+   "name": "375 付款节点页无横向滚动",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "证据包生成提示",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "下载文件名含范围（水电）",
+   "ok": true,
+   "detail": "君华新城联排别墅-证据包-水电-20261027.zip"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "ZIP 含记录清单 .xlsx",
+   "ok": true,
+   "detail": "['记录清单.xlsx', '照片原件/CK-001-KR-000012-水电现场照片-1.jpg', '照片原件/CK-002-KR-000014-水电现场照片-2.jpg', '照片原件/CK-003-KR-000016-水电现场照片-3.jpg', '照片原件/CK-004-KR-000020-水电现场照片-4.jpg']"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "含范围内照片原件（水电 5 次核对共 5 张）",
+   "ok": true,
+   "detail": "['照片原件/CK-001-KR-000012-水电现场照片-1.jpg', '照片原件/CK-002-KR-000014-水电现场照片-2.jpg', '照片原件/CK-003-KR-000016-水电现场照片-3.jpg', '照片原件/CK-004-KR-000020-水电现场照片-4.jpg', '照片原件/CK-005-KR-000023-水电现场照片-5.jpg']"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "照片为原件（JPEG 文件头）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "含相关图纸版本文件",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "含签认内容快照（图纸签认 1 + 基线签认 4）",
+   "ok": true,
+   "detail": "['签认快照/图纸签认-KR-000002.json', '签认快照/基线签认-KR-000004.json', '签认快照/基线签认-KR-000006.json', '签认快照/基线签认-KR-000008.json', '签认快照/基线签认-KR-000010.json']"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "摘要清单含导出时链尾摘要",
+   "ok": true,
+   "detail": "导出时链尾摘要,49575ac4fc3cfb878c63af531c0e5eb79dc7aa52ecedd867cbee2c0e992fbba1"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "清单条数与范围内记录数一致",
+   "ok": true,
+   "detail": "(24, 24, 24)"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "链尾摘要与导出任务结果一致",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "按对象（付款节点）筛选操作日志（条数与该类对象日志一致）",
+   "ok": true,
+   "detail": "(4, 4, '2026-10-27 16:26\\t赵会计\\n预算专员\\n\\t状态变更\\t付款节点 水电完工款\\t未付\\t状态：已付；确认时未放行检查点：5；确认时未闭环不一致：2\\n2026-10-27 16:26\\t赵会计\\n预算专员\\n\\t新增\\t付款节点 水电完工款\\t—\\t名称：水电完工款；金额：253600；工段：水电；状态：未付；计划日期：2027-01-15\\n2026-10-27 16:25\\t赵会计\\n预算专员\\n\\t状态变更\\t付款')"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "日志显示操作人、时间与前后值",
+   "ok": true,
+   "detail": "2026-10-27 16:26\t赵会计\n预算专员\n\t状态变更\t付款节点 水电完工款\t未付\t状态：已付；确认时未放行检查点：5；确认时未闭环不一致：2\n2026-10-27 16:26\t赵会计\n预算专员\n\t新增\t付款节点 水电完工款\t—\t名称：水电完工款；金额：253600；工段：水电；状态：未付；计划日期：2027-01-15\n2026-10-27 16:25\t赵会计\n预算专员\n\t状态变更\t付款节点 开工预付款\t未付\t状态：已付；确认时未放行检查点：0；确认时未闭环不一致：0\n2026-10-27 16:25\t赵会计\n预算专员\n\t新增\t付款节点 开工预付款\t—\t名称：开工预付款；金额：380"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "按时间筛选（之后日期无记录）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "项目经理导出被拒「仅业主和公司管理员可导出证据包」",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "项目经理导出接口被拒（403 + 原文提示）",
+   "ok": true,
+   "detail": "[403, '仅业主和公司管理员可导出证据包']"
+  },
+  {
+   "flow": "FLOW-22",
+   "name": "375 审计与证据包页无横向滚动",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+/* PAGE-F01-01 项目管理 */
+.pg-projects .toolbar{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-soft)}
+.pg-projects .search{position:relative;margin-left:auto;width:240px;max-width:100%}
+.pg-projects .pname{font-weight:600;color:var(--fg)}
+.pg-projects .paddr{font-size:var(--text-xs);color:var(--muted)}
+.pg-projects .ptable td{vertical-align:middle;white-space:nowrap}
+.pg-projects .ptable th{white-space:nowrap}
+.pg-projects .ptable td.wrap{white-space:normal;min-width:220px}
+.pg-projects .pct{display:flex;align-items:center;gap:var(--space-2);min-width:120px}
+.pg-projects .pct .pbar{flex:1}
+.pg-projects .seal.plain{color:var(--fg-2)}
+.pg-projects .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.pg-projects .state h3{font-size:var(--text-lg);color:var(--fg);margin-bottom:var(--space-1)}
+.pg-projects .state p{margin-bottom:var(--space-4)}
+.new-project .tpl{display:grid;gap:var(--space-2)}
+.new-project .tpl label{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:border-color var(--motion-fast) var(--ease-standard)}
+.new-project .tpl label:hover{border-color:var(--accent)}
+.new-project .tpl input{margin-top:4px;accent-color:var(--accent)}
+.new-project .tpl label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.new-project .tpl b{display:block}
+.new-project .tpl small{color:var(--muted);font-size:var(--text-xs)}
+.new-project .row2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.new-project fieldset{border:0}
+@media (max-width:767px){.pg-projects .search{margin-left:0;width:100%}.new-project .row2{grid-template-columns:1fr}.pg-projects .btn.sm,.pg-projects .chip{height:40px}}

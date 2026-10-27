@@ -1,0 +1,34 @@
+/* PAGE-F06-01 检查点列表：页面特有样式（取自原型 <style>，只用 var(--xxx)） */
+.ck-list .chip.on .n{color:inherit}
+.ck-list .selrow{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.ck-list .selrow .field{flex:1 1 160px;max-width:220px}
+.ck-list .sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4);margin-bottom:var(--space-4)}
+.ck-list .sum .kpi .vl{font-size:var(--text-2xl)}
+.ck-list .sum .kpi .vl.bad{color:var(--danger)}
+.ck-list .sum .kpi .vl.warn{color:var(--warn)}
+.ck-list .sum .kpi .vl.ok{color:var(--success)}
+.ck-list td.seal-cell{width:150px}
+.ck-list td .nm{font-weight:600;color:var(--fg)}
+.ck-list td.sub{font-size:var(--text-xs);color:var(--muted)}
+.ck-list .idc{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted);white-space:nowrap}
+.ck-list .cards{display:none;flex-direction:column;gap:var(--space-3);padding:var(--space-3)}
+.ck-list .ckcard{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--border-soft);border-radius:var(--radius-md);background:var(--surface);text-decoration:none;color:inherit;min-height:44px;transition:border-color var(--motion-fast) var(--ease-standard)}
+.ck-list .ckcard:hover{border-color:var(--accent)}
+.ck-list .ckcard:active{background:var(--surface-warm)}
+.ck-list .ckcard:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.ck-list .ckcard .top{display:flex;align-items:flex-start;gap:var(--space-2)}
+.ck-list .ckcard .top .nm{flex:1;font-weight:600;min-width:0}
+.ck-list .ckcard .meta{font-size:var(--text-xs);color:var(--muted)}
+.ck-list .ckcard .info{font-size:var(--text-sm);color:var(--fg-2)}
+.ck-list .pager{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);font-size:var(--text-sm);color:var(--muted)}
+.ck-list .phase-tag{display:inline-flex;align-items:center;gap:var(--space-1);white-space:nowrap}
+.ck-list .hid{font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+@media (max-width:1199px){.ck-list .sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){
+  .ck-list .tablewrap{display:none}
+  .ck-list .cards{display:flex}
+  .ck-list .selrow .field{max-width:none}
+  .ck-list .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:var(--space-1);-webkit-overflow-scrolling:touch}
+  .ck-list .chip{flex:none;height:36px}
+  .ck-list .sum{gap:var(--space-2)}
+}

@@ -1,0 +1,12 @@
+/* PAGE-F02-02 邀请落地（原型 .kv / .invite-hd / .dead） */
+.pg-invite .kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-2) var(--space-4);font-size:var(--text-sm);background:var(--surface-warm);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-6)}
+.pg-invite .kv dt{color:var(--muted)}
+.pg-invite .kv dd{color:var(--fg);font-weight:500;margin:0}
+.pg-invite .invite-hd{font-size:var(--text-base);color:var(--fg-2);margin-bottom:var(--space-4)}
+.pg-invite .invite-hd b{color:var(--fg)}
+.pg-invite .form{display:grid;gap:var(--space-4)}
+.pg-invite .dead{text-align:center;padding:var(--space-6) 0 var(--space-2)}
+.pg-invite .dead .ic{display:flex;justify-content:center;color:var(--danger);margin-bottom:var(--space-3)}
+.pg-invite .dead .ic .icon{width:40px;height:40px}
+.pg-invite .dead h2{font-size:var(--text-xl);margin-bottom:var(--space-2)}
+@media (max-width:767px){.pg-invite.auth{justify-content:flex-start;padding-top:var(--space-6)}.pg-invite .auth-card{padding:var(--space-6) var(--space-4)}.pg-invite .kv{grid-template-columns:auto minmax(0,1fr)}}

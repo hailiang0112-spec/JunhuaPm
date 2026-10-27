@@ -1,0 +1,73 @@
+/* PAGE-F08-01 问题（样式取自原型 <style>，只用 var(--xxx)，限定在 .pg-f0801 内） */
+.pg-f0801 .is-filters{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.pg-f0801 .is-filters .select{width:auto;min-height:32px;height:32px;padding:0 var(--space-2);font-size:var(--text-sm)}
+.pg-f0801 .sortnote{font-size:var(--text-xs);color:var(--muted);margin-left:auto;display:inline-flex;align-items:center;gap:var(--space-1)}
+.pg-f0801 .t-title{font-weight:600;color:var(--fg);overflow-wrap:anywhere}
+.pg-f0801 .t-sub{font-size:var(--text-xs);color:var(--muted)}
+.pg-f0801 .over{color:var(--danger);font-weight:700}
+.pg-f0801 .lv-严重{background:var(--danger-soft);color:var(--danger)}
+.pg-f0801 .lv-重要{background:var(--warn-soft);color:var(--warn)}
+.pg-f0801 .pending-txt{color:var(--warn);font-weight:600}
+.pg-f0801 .seal.void{color:var(--muted)}
+.pg-f0801 .is-cards{display:none}
+.pg-f0801 .is-card{display:block;width:100%;text-align:left;padding:var(--space-3) var(--space-4);border:0;border-top:1px solid var(--border-soft);background:var(--surface);font:inherit;color:inherit;cursor:pointer}
+.pg-f0801 .is-card:first-child{border-top:0}
+.pg-f0801 .is-card:hover{background:var(--surface-warm)}
+.pg-f0801 .is-card:active{background:var(--border-soft)}
+.pg-f0801 .is-card:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+.pg-f0801 .is-card .l1{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-start}
+.pg-f0801 .is-card .l3{display:flex;gap:var(--space-3);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);margin-top:var(--space-2)}
+.pg-f0801 .state h3{color:var(--fg);font-size:var(--text-base);margin-bottom:var(--space-1)}
+.pg-f0801 .state p{font-size:var(--text-sm);margin-bottom:var(--space-3)}
+.pg-f0801 .is-pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.pg-f0801 .note{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);background:var(--surface-warm);color:var(--fg-2)}
+.pg-f0801 .note.bad{background:var(--danger-soft);color:var(--danger)}
+.pg-f0801 .note.info{background:var(--info-soft);color:var(--info)}
+/* 详情抽屉 */
+.pg-f0801 .dw-wrap{position:fixed;inset:0;z-index:45;background:color-mix(in oklab,var(--fg),transparent 55%);animation:fadeIn var(--motion-base) var(--ease-standard)}
+.pg-f0801 .drawer{position:absolute;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--surface);box-shadow:var(--elev-float);display:flex;flex-direction:column}
+.pg-f0801 .dw-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-soft)}
+.pg-f0801 .dw-bd{flex:1;overflow:auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4)}
+.pg-f0801 .dw-ft{display:flex;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft)}
+.pg-f0801 .sec h3{font-size:var(--text-sm);color:var(--fg-2);margin-bottom:var(--space-2);font-weight:600}
+.pg-f0801 .is-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2) var(--space-3)}
+.pg-f0801 .is-kv dt{font-size:var(--text-xs);color:var(--muted)}
+.pg-f0801 .is-kv dd{font-size:var(--text-sm);overflow-wrap:anywhere}
+.pg-f0801 .photos{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.pg-f0801 .photo{width:96px;height:72px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--border-soft),var(--surface-warm));display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);border:1px solid var(--border-soft);overflow:hidden}
+.pg-f0801 .photo img{width:100%;height:100%;object-fit:cover}
+.pg-f0801 .causes{display:flex;flex-direction:column;gap:var(--space-2)}
+.pg-f0801 .cause{display:flex;align-items:center;gap:var(--space-2);min-height:40px;padding:var(--space-2) var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer}
+.pg-f0801 .cause:hover{border-color:var(--accent)}
+.pg-f0801 .cause:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.pg-f0801 .cause:has(input:focus-visible){box-shadow:var(--focus-ring)}
+.pg-f0801 .cause:has(input:disabled){cursor:default}
+.pg-f0801 .cause input{accent-color:var(--accent)}
+.pg-f0801 .sugg{border:1px solid var(--border-soft);border-left:3px solid var(--info);border-radius:var(--radius-sm);padding:var(--space-3);background:var(--info-soft);font-size:var(--text-sm);display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-2)}
+.pg-f0801 .sugg b{color:var(--info)}
+.pg-f0801 .tl{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);padding:0;margin:0}
+.pg-f0801 .tl li{font-size:var(--text-sm);padding-left:var(--space-3);border-left:2px solid var(--border-soft);overflow-wrap:anywhere}
+.pg-f0801 .tl .m{font-size:var(--text-xs);color:var(--muted)}
+.pg-f0801 .is-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+.pg-f0801 .is-form .full{grid-column:1/-1}
+.pg-f0801 .field.invalid .select,.pg-f0801 .field.invalid .textarea,.pg-f0801 .field.invalid .radios .radio{border-color:var(--danger)}
+.pg-f0801 .radios{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.pg-f0801 .radio{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer}
+.pg-f0801 .radio:hover{border-color:var(--accent)}
+.pg-f0801 .radio:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.pg-f0801 .radio input{accent-color:var(--accent)}
+.pg-f0801 .chk{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);min-height:40px;cursor:pointer}
+.pg-f0801 .chk input{accent-color:var(--accent);width:16px;height:16px}
+@media (max-width:767px){
+  .pg-f0801 .is-table{display:none}
+  .pg-f0801 .is-cards{display:block}
+  .pg-f0801 .chip-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .pg-f0801 .chip-row .chip{flex:none}
+  .pg-f0801 .sortnote{margin-left:0;width:100%}
+  .pg-f0801 .is-form{grid-template-columns:1fr}
+  .pg-f0801 .dw-ft .btn{flex:1;justify-content:center;height:44px}
+  .pg-f0801 .is-filters .select{flex:1;min-width:0}
+}
+/* 台账表：除「问题」列外单行显示，问题列吸收剩余宽度（与原型一致，避免等级、日期等被挤成竖排） */
+.pg-f0801 table th,.pg-f0801 table td:not(:nth-child(2)){white-space:nowrap}
+.pg-f0801 table td:nth-child(2){width:100%;min-width:220px}

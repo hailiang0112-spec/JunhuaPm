@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F05-01">
+  <meta name="description" content="工作项基线、签认状态与修订历史、检查点与资料。">
+  <title>工作项详情 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+[hidden]{display:none!important}
+a.btn{text-decoration:none;color:var(--fg)}
+a.btn.primary{color:var(--accent-on)}
+.tabbar{z-index:40}.mask{z-index:50}.toast{z-index:60}
+.topbar{flex-wrap:wrap}
+.topbar .ttl{min-width:0}
+.demo{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted);white-space:nowrap}
+.demo .select{min-height:32px;width:auto;font-size:var(--text-sm);padding:0 var(--space-2)}
+.side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer;overflow:hidden}
+.side .sitepick:hover{border-color:var(--accent)}
+.side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.navitem .badge{margin-left:auto}
+.tab{border:0;background:none;font-family:inherit;cursor:pointer;min-height:44px}
+.tab-ic{position:relative;display:inline-flex}
+.tab-badge{position:absolute;top:-6px;right:-12px;min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.crumb{font-size:var(--text-sm);color:var(--muted);display:flex;gap:var(--space-1);flex-wrap:wrap;align-items:center;margin-bottom:var(--space-2)}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.crumb .icon{width:14px;height:14px}
+.banner{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--warn-soft);color:var(--fg);border:1px solid color-mix(in oklab,var(--warn),transparent 70%);margin-bottom:var(--space-4);font-size:var(--text-sm)}
+.banner>.icon{color:var(--warn);margin-top:1px}
+.banner b{font-weight:600}
+.banner.bad{background:var(--danger-soft);border-color:color-mix(in oklab,var(--danger),transparent 70%)}
+.banner.bad>.icon{color:var(--danger)}
+.banner.note{background:var(--info-soft);border-color:color-mix(in oklab,var(--info),transparent 70%)}
+.banner.note>.icon{color:var(--info)}
+.banner .act{margin-left:auto;flex:none}
+.dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border-bottom:1px solid var(--border-soft)}
+.dlg-hd h2{font-size:var(--text-lg);font-weight:600;line-height:var(--leading-tight)}
+.dlg-bd{padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)}
+.dlg-ft{display:flex;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);position:sticky;bottom:0;background:var(--surface-overlay)}
+.icon-btn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg-2);cursor:pointer;transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard)}
+.icon-btn:hover{border-color:var(--accent);background:var(--surface-warm)}
+.icon-btn:active{background:var(--border-soft)}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.icon-btn.ghost{border-color:transparent;background:none}
+.confirm-summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-1) var(--space-3)}
+.confirm-summary dd{margin-bottom:0}
+.cf-warn{font-size:var(--text-sm);color:var(--danger);display:flex;gap:var(--space-2)}
+.kv{display:grid;grid-template-columns:128px minmax(0,1fr);gap:var(--space-2) var(--space-4);font-size:var(--text-sm)}
+.kv dt{color:var(--muted)}
+.kv dd{color:var(--fg)}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--font-mono);font-size:var(--text-xs)}
+.sheet-nav{padding:var(--space-2)}
+.more-dialog{align-self:flex-end;width:100%;max-height:80vh}
+.err-list{margin:var(--space-1) 0 0 var(--space-4);font-size:var(--text-sm)}
+@media (max-width:767px){
+  .kv{grid-template-columns:1fr;gap:0}
+  .kv dd{margin-bottom:var(--space-2)}
+  .topbar{gap:var(--space-2)}
+  .topbar .demo{order:-1;width:100%;justify-content:flex-end}
+  .mask{padding:0;align-items:flex-end}
+  .dialog{border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh}
+}
+
+.plan .wall{fill:none;stroke:var(--fg-2);stroke-width:6;stroke-linejoin:miter}
+.plan .iwall{fill:none;stroke:var(--fg-2);stroke-width:3}
+.plan .room{font:600 22px var(--font-body);fill:var(--muted);text-anchor:middle}
+.plan .dim{font:15px var(--font-mono);fill:var(--muted);text-anchor:middle}
+.plan .pipe{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:6 4}
+.plan .wire{fill:none;stroke:var(--muted);stroke-width:1.2}
+.plan .sock{fill:var(--surface);stroke:var(--fg-2);stroke-width:1.4}
+.plan .door{fill:none;stroke:var(--muted);stroke-width:1.2}
+.plan .gap{stroke:var(--surface);stroke-width:8}
+.plan .bg{fill:var(--surface)}
+.plan .chg{fill:color-mix(in oklab,var(--warn),transparent 82%);stroke:var(--warn);stroke-width:1.5;stroke-dasharray:4 3}
+.pinmark{cursor:pointer}
+.pinmark circle.o{stroke:var(--surface);stroke-width:3}
+.pinmark text{font:700 12px var(--font-body);fill:var(--accent-on);text-anchor:middle;pointer-events:none}
+.pinmark.s-none circle.o{fill:var(--muted)}
+.pinmark.s-pend circle.o{fill:var(--warn)}
+.pinmark.s-pass circle.o{fill:var(--success)}
+.pinmark.s-stop circle.o{fill:var(--danger)}
+.pinmark.s-proxy circle.o{fill:var(--info)}
+.pinmark .halo{fill:none;stroke:var(--accent);stroke-width:3;opacity:0}
+.pinmark.cur .halo{opacity:1}
+.pinmark:hover circle.o{stroke:var(--fg)}
+.pinmark:focus-visible{outline:none}
+.pinmark:focus-visible .halo{opacity:1}
+
+.wgrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:var(--space-4);align-items:start}
+.wgrid>div{min-width:0}
+.lk{display:flex;gap:var(--space-2);align-items:flex-start;justify-content:space-between}
+.sm-ic{width:32px;height:32px;flex:none;color:var(--muted)}
+.sm-ic .icon{width:16px;height:16px}
+.cur-rev{font-size:var(--text-xs);color:var(--muted)}
+.cklist{display:flex;flex-direction:column}
+.ckrow{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;border-top:1px solid var(--border-soft);text-decoration:none;color:inherit;min-height:44px;transition:background var(--motion-fast) var(--ease-standard)}
+.ckrow:first-child{border-top:0}
+.ckrow:hover{background:var(--surface-warm)}
+.ckrow:active{background:var(--border-soft)}
+.ckrow:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.ckrow .idc{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted)}
+.ckrow .t{flex:1;min-width:0}
+.ckrow .t b{font-weight:600;display:block}
+.ckrow .t span{font-size:var(--text-xs);color:var(--muted)}
+.prog{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.files{display:flex;flex-direction:column}
+.frow{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;border-top:1px solid var(--border-soft);font-size:var(--text-sm)}
+.frow:first-child{border-top:0}
+.frow .fi{width:56px;height:42px;border-radius:var(--radius-sm);border:1px solid var(--border-soft);background:var(--surface-warm);display:flex;align-items:center;justify-content:center;color:var(--muted);flex:none;overflow:hidden;cursor:pointer;padding:0}
+.frow .fi:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.frow .fi svg.ph{width:100%;height:100%}
+.frow .fn{flex:1;min-width:0}
+.frow .fn b{display:block;font-weight:500;overflow-wrap:anywhere}
+.frow .fn span{font-size:var(--text-xs);color:var(--muted)}
+.frow.void{opacity:.6}
+.frow.void b{text-decoration:line-through}
+.ph-bg{fill:var(--surface-warm)}.ph-brick{fill:none;stroke:var(--border);stroke-width:1.2}.ph-pipe{fill:none;stroke:var(--fg-2);stroke-width:3.5;stroke-linecap:round}.ph-box{fill:var(--surface);stroke:var(--fg-2);stroke-width:1.5}
+.uprej{background:var(--danger-soft);color:var(--danger);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);margin-bottom:var(--space-3)}
+.upok{font-size:var(--text-sm);color:var(--success);margin-bottom:var(--space-2)}
+.revs{list-style:none;display:flex;flex-direction:column}
+.revs li{display:flex;gap:var(--space-3);padding:var(--space-3) 0;border-top:1px solid var(--border-soft);font-size:var(--text-sm)}
+.revs li:first-child{border-top:0;padding-top:0}
+.revs .d{font-size:var(--text-xs);color:var(--muted);white-space:nowrap;min-width:92px;font-variant-numeric:tabular-nums}
+.revs b{font-weight:600}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.fgrid .full{grid-column:1/-1}
+.field.invalid .textarea,.field.invalid .select{border-color:var(--danger)}
+.formerr{background:var(--danger-soft);color:var(--danger);border-radius:var(--radius-sm);padding:var(--space-3);font-size:var(--text-sm)}
+.ckdraft{list-style:none;display:flex;flex-direction:column;gap:var(--space-1);font-size:var(--text-sm)}
+.ckdraft li{display:flex;gap:var(--space-2);align-items:center;padding:var(--space-2) var(--space-3);background:var(--surface-warm);border-radius:var(--radius-sm)}
+.ckdraft .idc{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted)}
+.pickmap{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;cursor:crosshair}
+.pickmap svg{display:block;width:100%;height:auto}
+.field.invalid .pickmap{border-color:var(--danger)}
+.exp{list-style:none;display:flex;flex-direction:column;gap:var(--space-2)}
+.exp li{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-2) var(--space-3);border:1px solid var(--border-soft);border-radius:var(--radius-sm);font-size:var(--text-sm)}
+.exp li p{flex:1}
+.rad{display:flex;gap:var(--space-4)}
+.rad label{display:flex;align-items:center;gap:var(--space-2);min-height:40px;font-size:var(--text-base);cursor:pointer}
+.rad input{width:18px;height:18px;accent-color:var(--accent)}
+.bigph{display:block;width:100%;height:auto;border-radius:var(--radius-sm)}
+@media (max-width:1199px){.wgrid{grid-template-columns:1fr}}
+@media (max-width:767px){.fgrid,.prog{grid-template-columns:1fr}.banner{flex-wrap:wrap}.banner .act{margin-left:0}}
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+    <button type="button" class="sitepick" aria-label="切换工地，当前君华新城 · 联排别墅"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer"></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <nav aria-label="工地导航">
+<a class="navitem" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="nm">我的待办</span><span class="badge" aria-label="7 项">7</span></a>
+<div class="navgroup">总览</div>
+<a class="navitem" href="PAGE-F10-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+<a class="navitem" href="PAGE-F10-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="m2 16 10 5 10-5"/></svg><span class="nm">楼层 / 房间</span></a>
+<div class="navgroup">施工阶段</div>
+<a class="navitem on" href="PAGE-F10-03.html?phase=p1" aria-current="page"><span class="phase-dot" style="background:var(--phase-1)" aria-hidden="true"></span><span class="nm">砌墙</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p2"><span class="phase-dot" style="background:var(--phase-2)" aria-hidden="true"></span><span class="nm">水电</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p3"><span class="phase-dot" style="background:var(--phase-3)" aria-hidden="true"></span><span class="nm">铺砖</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p4"><span class="phase-dot" style="background:var(--phase-4)" aria-hidden="true"></span><span class="nm">木工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p5"><span class="phase-dot" style="background:var(--phase-5)" aria-hidden="true"></span><span class="nm">油灰工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p6"><span class="phase-dot" style="background:var(--phase-6)" aria-hidden="true"></span><span class="nm">安装收尾</span></a>
+<div class="navgroup">证据链</div>
+<a class="navitem" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg><span class="nm">图纸</span></a>
+<a class="navitem" href="PAGE-F05-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 7h-4L9 3Z"/><path d="M5 14h14v4H5z"/><path d="M4 21h16"/></svg><span class="nm">基线签认</span></a>
+<a class="navitem" href="PAGE-F06-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="nm">检查点</span><span class="badge" aria-label="5 项">5</span></a>
+<a class="navitem" href="PAGE-F07-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M9 15h6M12 12v6"/></svg><span class="nm">变更单</span></a>
+<a class="navitem" href="PAGE-F08-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg><span class="nm">问题</span></a>
+<div class="navgroup">房屋档案</div>
+<a class="navitem" href="PAGE-F12-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg><span class="nm">档案资料</span></a>
+<a class="navitem" href="PAGE-F13-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+<a class="navitem" href="PAGE-F13-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg><span class="nm">公告栏</span></a>
+<a class="navitem" href="PAGE-F15-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span class="nm">付款节点</span></a>
+<div class="navgroup">项目设置</div>
+<a class="navitem" href="PAGE-F01-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+<a class="navitem" href="PAGE-F03-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">项目结构</span></a>
+<a class="navitem" href="PAGE-F03-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span class="nm">数据导入导出</span></a>
+<a class="navitem" href="PAGE-F17-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+<div data-roles="公司管理员"><div class="navgroup">公司</div>
+<a class="navitem" href="PAGE-F01-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span class="nm">项目管理</span></a>
+<a class="navitem" href="PAGE-F03-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="nm">公司模板</span></a>
+<a class="navitem" href="PAGE-F09-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4V4Z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7V4Z"/></svg><span class="nm">公司经验库</span></a></div>
+<div class="navgroup"></div>
+<a class="navitem" href="PAGE-F02-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a>
+    </nav>
+  </aside>
+  <main class="main" id="main">
+
+<nav class="crumb" aria-label="位置"><a href="PAGE-F10-03.html?phase=p1">砌墙</a><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg><a href="PAGE-F10-02.html">二楼</a><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg><span>书房 B</span></nav>
+<header class="topbar">
+  <div class="ttl"><h1>二楼书房 B 墙内线管预埋</h1><div class="sub">砌墙 · 二楼 · 书房 B · 权重 2 · 质检人 王工</div></div>
+  <span class="spacer"></span>
+  <a class="btn" href="#files" id="docBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>资料 <b class="num" id="docCount">4</b></a>
+  <label class="demo">演示身份<select class="select" id="demoRole"><option>业主</option><option>业主代理人</option><option>业主方成员</option><option selected>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+  <label class="demo">基线状态<select class="select" id="demoState"><option selected>待重签</option><option>已签认</option><option>待签认</option></select></label>
+</header>
+
+<div class="banner" role="note" id="reBanner"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><div><b>基线待重签。</b>水电点位图 V2 已于 2026-10-16 签认，本工作项受影响。重签前现场仍按原签认版 V1 施工与核对。</div>
+  <span class="act" style="display:flex;gap:var(--space-2);flex-wrap:wrap"><a class="btn sm" href="PAGE-F04-02.html">对比 V1 / V2</a><span id="reWrap"><button type="button" class="btn sm primary" data-roles="项目经理" id="reBtn">更新图纸版本并重新提交</button></span></span></div>
+
+<div class="wgrid">
+  <div>
+    <section class="card" aria-labelledby="hBase">
+      <div class="card-hd"><h2 id="hBase">基线</h2><span class="cur-rev" id="curRev">当前生效 r2 · 2026-10-14</span><span class="spacer"></span><span class="seal pend" id="baseSeal">待重签</span></div>
+      <div class="card-bd">
+        <dl class="kv" id="baseKv">
+          <dt>图纸分册与版本</dt><dd class="lk"><span id="dwText">水电点位图 V1（原签认版）</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="dw" aria-label="修改图纸分册与版本"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>工作说明</dt><dd class="lk"><span>随砌筑在东墙与南墙预埋 PVC 线管及 4 个插座底盒（含变更单 BG-001 新增的 2 个）。</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="desc" aria-label="修改工作说明"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>验收标准</dt><dd class="lk"><span>管中距门洞边 ≥ 150mm；底盒中心距地 300mm，偏差 ±5mm；线管走向与水电点位图一致。</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="acc" aria-label="修改验收标准"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>费用</dt><dd class="lk"><span>1,640 元</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="cost" aria-label="修改费用"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>计划完成日期</dt><dd class="lk"><span>2026-11-03</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="due" aria-label="修改计划完成日期"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>质检人</dt><dd class="lk"><span>王工</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="qc" aria-label="修改质检人"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+          <dt>检查点</dt><dd class="lk"><span id="ckCount">2 个（见下方）</span><button type="button" class="icon-btn ghost sm-ic" data-roles="项目经理 预算专员" data-lock="ck" aria-label="修改检查点"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></dd>
+        </dl>
+        <p class="fhint" style="margin-top:var(--space-3);font-size:var(--text-xs);color:var(--muted)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> <span id="lockHint">已签认内容锁定，修订只能通过变更单或新版图纸重签；进度字段不受影响。</span></p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="hCk">
+      <div class="card-hd"><h2 id="hCk">检查点</h2><span class="spacer"></span><button type="button" class="btn" data-roles="项目经理 质检" id="newCkBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新建检查点</button></div>
+      <div class="card-bd cklist" id="ckList">
+        <a class="ckrow" href="PAGE-F06-02.html"><span class="idc">CK-033</span><span class="t"><b>墙内线管预埋走向</b><span>隐蔽 · 结论一致 · 待放行已等 30 小时</span></span><span class="seal stop">超时</span></a>
+        <a class="ckrow" href="PAGE-F06-02.html"><span class="idc">CK-043</span><span class="t"><b>强电底盒高度</b><span>隐蔽 · 待质检核对</span></span><span class="seal stop">不得覆盖</span></a>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="hRev">
+      <div class="card-hd"><h2 id="hRev">修订与签认历史</h2><span class="spacer"></span><span class="muted" style="font-size:var(--text-xs)">只追加，旧签认记录保留</span></div>
+      <div class="card-bd"><ol class="revs" id="revs">
+        <li><span class="d">2026-10-16 14:20</span><span>水电点位图 V2 由刘先生签认，本项被设计经理标为受影响 → <b>待重签</b></span></li>
+        <li><span class="d">2026-10-14 10:05</span><span>变更单 <a href="PAGE-F07-02.html">BG-001</a> 生效，追加修订 <b>r2</b>：新增 2 个五孔插座底盒；费用 1,280 → 1,640 元</span></li>
+        <li><span class="d">2026-10-08 19:32</span><span>刘先生签认 <b>r1</b>（水电点位图 V1，费用 1,280 元）· 签认记录含完整内容快照</span></li>
+        <li><span class="d">2026-10-06 09:40</span><span>张工提交基线待签</span></li>
+      </ol></div>
+    </section>
+  </div>
+
+  <div>
+    <section class="card" aria-labelledby="hProg">
+      <div class="card-hd"><h2 id="hProg">进度</h2></div>
+      <div class="card-bd">
+        <div class="prog">
+          <div class="field"><label for="pct">完成度（%）</label><input class="input num" id="pct" type="number" min="0" max="100" value="60"></div>
+          <div class="field"><label for="actual">实际完成日期</label><input class="input" id="actual" type="date"></div>
+        </div>
+        <div class="pbar" style="margin:var(--space-3) 0" aria-hidden="true"><i id="pbar" style="width:60%"></i></div>
+        <button type="button" class="btn" data-roles="项目经理" id="saveProg">保存进度</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="hFiles" id="files">
+      <div class="card-hd"><h2 id="hFiles">资料</h2><span class="spacer"></span>
+        <label class="btn" data-roles="项目经理 设计经理 质检 预算专员 业主"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>上传<input type="file" multiple id="upIn" style="position:absolute;width:1px;height:1px;opacity:0"></label></div>
+      <div class="card-bd">
+        <div id="upRes"></div>
+        <div class="files" id="fileList"></div>
+        <label class="rad" style="margin-top:var(--space-2);font-size:var(--text-sm)"><input type="checkbox" id="showVoid" style="width:18px;height:18px;accent-color:var(--accent)">显示已作废（<span id="voidCount">1</span>）</label>
+        <p class="fhint" style="font-size:var(--text-xs);color:var(--muted)">图片、PDF、Word、Excel，单个不超过 50MB，可一次选择多个。</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="mask" id="baseMask" role="dialog" aria-modal="true" aria-labelledby="bH">
+  <div class="dialog" style="width:min(720px,100%)">
+    <div class="dlg-hd"><h2 id="bH">更新基线并提交重签</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <div class="formerr" id="bErr" role="alert" hidden></div>
+      <div class="fgrid">
+        <div class="field full" id="f-dw"><label for="bDw">签认版图纸分册与版本 <span class="req">*</span></label>
+          <select class="select" id="bDw"><option value="">请选择</option><option value="水电点位图 V2">水电点位图 V2 · 已签认（当前签认版）</option><option value="水电点位图 V3" data-pending>水电点位图 V3 · 待业主签认</option><option value="水电点位图 V1">水电点位图 V1 · 已签认（原签认版）</option></select>
+          <span class="err" hidden>该版本尚未签认</span></div>
+        <div class="field full" id="f-desc"><label for="bDesc">工作说明 <span class="req">*</span></label><textarea class="textarea" id="bDesc" rows="2">随砌筑在东墙与南墙预埋 PVC 线管及 4 个插座底盒（含变更单 BG-001 新增的 2 个）。</textarea></div>
+        <div class="field full" id="f-acc"><label for="bAcc">验收标准 <span class="req">*</span></label><textarea class="textarea" id="bAcc" rows="2">管中距门洞边 ≥ 150mm；底盒中心距地 300mm，偏差 ±5mm；线管走向与水电点位图一致。</textarea></div>
+        <div class="field" id="f-cost"><label for="bCost">费用（元）<span class="req">*</span></label><input class="input num" id="bCost" type="number" min="0" value="1640"></div>
+        <div class="field" id="f-due"><label for="bDue">计划完成日期 <span class="req">*</span></label><input class="input" id="bDue" type="date" value="2026-11-03"></div>
+        <div class="field" id="f-qc"><label for="bQc">质检人 <span class="req">*</span></label><select class="select" id="bQc"><option value="">请选择</option><option selected>王工</option></select></div>
+        <div class="field full" id="f-ck"><label>检查点 <span class="req">*</span>（至少 1 个）</label>
+          <ul class="ckdraft" id="ckDraft"><li><span class="idc">CK-033</span>墙内线管预埋走向 · 隐蔽</li><li><span class="idc">CK-043</span>强电底盒高度 · 隐蔽</li></ul></div>
+      </div>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>取消</button><button type="button" class="btn primary" id="bSubmit">提交业主签认</button></div>
+  </div>
+</div>
+
+<div class="mask" id="ckMask" role="dialog" aria-modal="true" aria-labelledby="cH">
+  <div class="dialog" style="width:min(720px,100%)">
+    <div class="dlg-hd"><h2 id="cH">新建检查点</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <div class="formerr" id="cErr" role="alert" hidden></div>
+      <div class="field" id="f-pt"><label for="cPt">检查要点 <span class="req">*</span></label><textarea class="textarea" id="cPt" rows="2" placeholder="例如：南墙新增插座底盒与原底盒水平间距、标高一致"></textarea></div>
+      <div class="field" id="f-hid"><label>是否隐蔽 <span class="req">*</span></label>
+        <div class="rad"><label><input type="radio" name="hid" value="是">是（未放行不得覆盖）</label><label><input type="radio" name="hid" value="否">否</label></div></div>
+      <div class="field" id="f-pos"><label>在图纸上点选位置 <span class="req">*</span> <span class="muted" id="posInfo" style="font-size:var(--text-xs)">底图：水电点位图 V1（基线引用的签认版）· 基线已签认，新检查点保存后立即生效，不改变签认状态，并通知业主</span></label>
+        <div class="pickmap" id="pickmap"><svg class="plan" viewBox="0 0 800 520" role="img" aria-label="点选检查点位置：水电点位图二楼平面" >
+  <rect class="bg" x="0" y="0" width="800" height="520"/>
+  <rect class="wall" x="40" y="40" width="720" height="440"/>
+  <path class="iwall" d="M150 40 V240 M380 40 V240 M460 40 V240 M640 40 V240 M40 240 H760 M40 300 H760 M160 300 V480 M400 300 V480 M580 300 V480"/>
+  <path class="gap" d="M620 300 H690 M440 300 H500 M240 300 H310 M230 240 H290 M520 240 H580 M80 300 H130"/>
+  <path class="door" d="M620 300 A70 70 0 0 1 690 370 M620 300 V370"/>
+  <text class="dim" x="655" y="292">门洞 900</text>
+  <text class="room" x="95" y="150">主卫</text>
+  <text class="room" x="265" y="150">主卧</text>
+  <text class="room" x="420" y="150">衣帽间</text>
+  <text class="room" x="550" y="150">次卧</text>
+  <text class="room" x="700" y="150">次卫</text>
+  <text class="room" x="400" y="276">走廊</text>
+  <text class="room" x="100" y="400">楼梯间</text>
+  <text class="room" x="280" y="400">家庭厅</text>
+  <text class="room" x="490" y="400">书房 A</text>
+  <text class="room" x="670" y="420">书房 B</text>
+  <path class="pipe" d="M100 150 V228 H690 V150"/>
+  <path class="wire" d="M752 330 V460 H700"/>
+  <rect class="sock" x="196" y="44" width="14" height="8"/><rect class="sock" x="300" y="44" width="14" height="8"/>
+  <rect class="sock" x="590" y="44" width="14" height="8"/><rect class="sock" x="744" y="390" width="8" height="14"/>
+  <rect class="sock" x="300" y="472" width="14" height="8"/><rect class="sock" x="470" y="472" width="14" height="8"/>
+  
+  <circle class="sock" cx="600" cy="62" r="7"/>
+  <g class="pinmark s-pend" tabindex="0" role="button" data-ck="CK-033" aria-label="CK-033 墙内线管预埋走向" transform="translate(740 390)"><circle class="halo" r="24"/><circle class="o" r="17"/><text y="4">033</text></g><g class="pinmark s-none" tabindex="0" role="button" data-ck="CK-043" aria-label="CK-043 强电底盒高度" transform="translate(650 452)"><circle class="halo" r="24"/><circle class="o" r="17"/><text y="4">043</text></g><g id="newPin"></g>
+</svg></div></div>
+      <div class="field"><label>砌墙工段经验推荐（已审核）</label>
+        <ul class="exp">
+          <li><span class="tag ok">已验证</span><p>随砌预埋线管时，管中距门洞边不小于 150mm，避免安装门套时打穿线管。</p><button type="button" class="btn sm" data-exp>加入要点</button></li>
+          <li><span class="tag brand">历史观察</span><p>轻质砖墙内底盒四周需用砂浆填实，否则后期面板容易松动。</p><button type="button" class="btn sm" data-exp>加入要点</button></li>
+          <li><span class="tag">未验证经验</span><p>线管弯头处拍照时带卷尺刻度入镜，便于复核弯曲半径。</p><button type="button" class="btn sm" data-exp>加入要点</button></li>
+        </ul></div>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>取消</button><button type="button" class="btn primary" id="cSave">保存检查点</button></div>
+  </div>
+</div>
+
+<div class="mask" id="phMask" role="dialog" aria-modal="true" aria-labelledby="phH">
+  <div class="dialog" style="width:min(720px,100%)">
+    <div class="dlg-hd"><h2 id="phH">图片</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd" id="phBody"></div>
+  </div>
+</div>
+<template id="phTpl"><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M30 12 V60 Q30 70 40 70 H96"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg></template><template id="phTpl1"><svg class="ph" viewBox="0 0 120 90" aria-hidden="true"><rect class="ph-bg" width="120" height="90"/><path class="ph-brick" d="M0 18 H120 M0 36 H120 M0 54 H120 M0 72 H120 M20 0 V18 M60 18 V36 M30 36 V54 M80 54 V72 M45 72 V90"/><path class="ph-pipe" d="M70 8 V50 H104"/><rect class="ph-box" x="88" y="62" width="14" height="16" rx="2"/></svg></template>
+
+  </main>
+</div>
+<nav class="tabbar" aria-label="手机底部导航"><a class="tab" href="PAGE-F16-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="tab-badge" aria-label="7 项">7</span></span>待办</a><a class="tab" href="PAGE-F06-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="tab-badge" aria-label="5 项">5</span></span>检查点</a><a class="tab" href="PAGE-F04-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg></span>图纸</a><button type="button" class="tab" id="moreBtn" aria-haspopup="dialog"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>更多</button></nav>
+
+<div class="mask" id="confirmMask" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="dialog">
+    <div class="dlg-hd"><h2 id="cfTitle">确认</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <p id="cfLead" class="muted"></p>
+      <dl class="confirm-summary" id="cfList"></dl>
+      <p class="cf-warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span></span></p>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>返回修改</button><button type="button" class="btn primary" id="cfOk">确认</button></div>
+  </div>
+</div>
+<div class="mask" id="moreMask" role="dialog" aria-modal="true" aria-label="全部导航">
+  <div class="dialog more-dialog">
+    <div class="dlg-hd"><h2>全部导航</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <nav class="sheet-nav" id="moreNav" aria-label="全部导航"></nav>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sel=document.getElementById('demoRole');
+  var NAMES={'业主':'刘先生','业主代理人':'刘太太','业主方成员':'钱工','项目经理':'张工','设计经理':'李工','质检':'王工','预算专员':'赵会计','公司管理员':'周经理'};
+  window.demoRole=function(){return sel.value};
+  window.demoName=function(){return NAMES[sel.value]};
+  window.applyRoles=function(root){
+    var r=sel.value;
+    (root||document).querySelectorAll('[data-roles]').forEach(function(el){el.hidden=el.dataset.roles.split(' ').indexOf(r)<0});
+  };
+  sel.addEventListener('change',function(){applyRoles();document.dispatchEvent(new CustomEvent('rolechange',{detail:sel.value}))});
+  window.toast=function(msg){
+    document.querySelectorAll('.toast').forEach(function(t){t.remove()});
+    var t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;
+    document.body.appendChild(t);setTimeout(function(){t.remove()},3200);
+  };
+  var lastFocus=null;
+  window.openMask=function(id){var m=document.getElementById(id);lastFocus=document.activeElement;m.classList.add('show');var f=m.querySelector('[autofocus],button,input,select,textarea');if(f)f.focus();};
+  window.closeMask=function(id){document.getElementById(id).classList.remove('show');if(lastFocus&&lastFocus.focus)lastFocus.focus();};
+  document.addEventListener('click',function(e){
+    var c=e.target.closest('[data-close]');if(c){closeMask(c.closest('.mask').id);return}
+    var o=e.target.closest('[data-open]');if(o){openMask(o.dataset.open)}
+    if(e.target.classList&&e.target.classList.contains('mask'))closeMask(e.target.id);
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.querySelector('.mask.show');if(m)closeMask(m.id)}});
+  var cfOk=document.getElementById('cfOk'),cfCb=null;
+  window.confirmAct=function(o){
+    document.getElementById('cfTitle').textContent=o.title;
+    document.getElementById('cfLead').textContent=o.lead||'';
+    var dl=document.getElementById('cfList');dl.innerHTML='';
+    (o.items||[]).forEach(function(kv){var dt=document.createElement('dt');dt.textContent=kv[0];var dd=document.createElement('dd');dd.textContent=kv[1];dl.appendChild(dt);dl.appendChild(dd)});
+    var w=document.getElementById('cfWarn');w.hidden=!o.warn;w.lastChild.textContent=o.warn||'';
+    cfOk.textContent=o.ok||'确认';cfOk.className='btn '+(o.danger?'danger':'primary');
+    cfCb=o.onOk;openMask('confirmMask');
+  };
+  cfOk.addEventListener('click',function(){closeMask('confirmMask');if(cfCb)cfCb()});
+  window.stamp=function(el,cls,text){el.className='seal '+cls;el.textContent=text;void el.offsetWidth;el.classList.add('just')};
+  var mb=document.getElementById('moreBtn');
+  mb.addEventListener('click',function(){
+    var box=document.getElementById('moreNav');
+    if(!box.childElementCount){box.innerHTML=document.querySelector('.side nav').innerHTML;applyRoles(box)}
+    openMask('moreMask');
+  });
+  applyRoles();
+})();
+</script>
+<script>var IC={file:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6"/></svg>',dl:'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0-4-4m4 4 4-4"/><path d="M4 20h16"/></svg>'};
+var STATE='待重签',ckSeq=48;
+var F=[
+ {n:'书房B线管走向-01.jpg',t:'img',by:'王工',at:'2026-10-26 09:12',sz:'3.1MB'},
+ {n:'书房B线管走向-02.jpg',t:'img',by:'张工',at:'2026-10-25 17:40',sz:'2.8MB'},
+ {n:'PVC线管合格证.pdf',t:'doc',by:'张工',at:'2026-10-20 11:05',sz:'0.6MB',ref:'核对 #2'},
+ {n:'预埋点位交底记录.docx',t:'doc',by:'张工',at:'2026-10-19 16:22',sz:'0.2MB'},
+ {n:'旧版点位草图.jpg',t:'img',by:'张工',at:'2026-10-12 10:00',sz:'1.4MB',voided:'张工 · 2026-10-20 08:55'}
+];
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function renderFiles(){
+  var sv=document.getElementById('showVoid').checked,me=demoName();
+  document.getElementById('fileList').innerHTML=F.map(function(f,i){
+    if(f.voided&&!sv)return '';
+    var th=f.t==='img'?'<button type="button" class="fi" data-big="'+i+'" aria-label="放大 '+esc(f.n)+'">'+document.getElementById(i%2?'phTpl1':'phTpl').innerHTML+'</button>':'<span class="fi">'+IC.file+'</span>';
+    var act=f.voided?'<span class="tag">已作废 · '+f.voided+'</span>':
+      (f.t!=='img'?'<button type="button" class="btn sm" data-dl="'+i+'">'+IC.dl+'下载</button>':'')+(f.by===me?'<button type="button" class="btn sm danger" data-void="'+i+'">作废</button>':'');
+    return '<div class="frow'+(f.voided?' void':'')+'">'+th+'<div class="fn"><b>'+esc(f.n)+'</b><span>'+f.by+' · '+f.at+' · '+f.sz+(f.ref?' · 被'+f.ref+'引用':'')+'</span></div>'+act+'</div>';
+  }).join('');
+  var live=F.filter(function(f){return !f.voided}).length;
+  document.getElementById('docCount').textContent=live;
+  document.getElementById('voidCount').textContent=F.length-live;
+}
+document.getElementById('showVoid').addEventListener('change',renderFiles);
+document.getElementById('fileList').addEventListener('click',function(e){
+  var b=e.target.closest('[data-big]');if(b){var f=F[+b.dataset.big];document.getElementById('phH').textContent=f.n;document.getElementById('phBody').innerHTML=document.getElementById(+b.dataset.big%2?'phTpl1':'phTpl').innerHTML.replace('class="ph"','class="ph bigph"')+'<p class="muted" style="font-size:var(--text-xs)">'+f.by+' · '+f.at+'</p>';openMask('phMask');return}
+  var d=e.target.closest('[data-dl]');if(d){toast('开始下载 '+F[+d.dataset.dl].n);return}
+  var v=e.target.closest('[data-void]');if(v){var f=F[+v.dataset.void];
+    if(f.ref){toast('「'+f.n+'」被'+f.ref+'引用，不能作废');return}
+    confirmAct({title:'作废资料',lead:'作废后文件从默认列表隐藏，记录作废人与时间，不可恢复为正常状态。',danger:true,ok:'确认作废',
+      items:[['文件',f.n],['上传','  '+f.by+' · '+f.at],['作废人',demoName()]],
+      onOk:function(){f.voided=demoName()+' · 2026-10-27 15:30';renderFiles();toast('已作废')}});}
+});
+var OK=/\.(jpe?g|png|gif|webp|heic|pdf|docx?|xlsx?)$/i;
+document.getElementById('upIn').addEventListener('change',function(){
+  var ok=[],bad=[];
+  [].forEach.call(this.files,function(f){
+    if(!OK.test(f.name))bad.push(f.name+'：格式不在允许范围内（图片、PDF、Word、Excel）');
+    else if(f.size>50*1024*1024)bad.push(f.name+'：超过 50MB');
+    else{ok.push(f.name);F.unshift({n:f.name,t:/\.(jpe?g|png|gif|webp|heic)$/i.test(f.name)?'img':'doc',by:demoName(),at:'2026-10-27 15:28',sz:(f.size/1048576).toFixed(1)+'MB'})}
+  });
+  document.getElementById('upRes').innerHTML=(ok.length?'<p class="upok">已上传 '+ok.length+' 个文件</p>':'')+(bad.length?'<div class="uprej">以下文件未上传：<ul class="err-list">'+bad.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>':'');
+  this.value='';renderFiles();
+});
+// 锁定字段
+var LOCK_PENDING='基线待业主签认，需业主退回后才能修改';
+document.getElementById('baseKv').addEventListener('click',function(e){if(e.target.closest('[data-lock]'))toast(STATE==='待签认'?LOCK_PENDING:'已签认，请发起变更单或等待新版图纸重签')});
+// 演示基线状态：待重签 / 已签认 / 待签认
+function setState(st){
+  STATE=st;document.getElementById('demoState').value=st;
+  var seal=document.getElementById('baseSeal'),bn=document.getElementById('reBanner'),txt=bn.querySelector('div');
+  seal.className='seal '+(st==='已签认'?'pass':'pend');seal.textContent=st;
+  document.getElementById('reWrap').hidden=st!=='待重签';
+  bn.hidden=st==='已签认';
+  if(st==='待重签'){txt.innerHTML='<b>基线待重签。</b>水电点位图 V2 已于 2026-10-16 签认，本工作项受影响。重签前现场仍按原签认版 V1 施工与核对。';document.getElementById('curRev').textContent='当前生效 r2 · 2026-10-14';document.getElementById('dwText').textContent='水电点位图 V1（原签认版）'}
+  if(st==='已签认'){document.getElementById('curRev').textContent='当前生效 r2 · 2026-10-14';document.getElementById('dwText').textContent='水电点位图 V1（签认版）'}
+  if(st==='待签认'){txt.innerHTML='<b>'+LOCK_PENDING+'。</b>重签稿已提交，等待业主签认；签认前现场仍按原签认版 V1 施工与核对。';document.getElementById('dwText').textContent='水电点位图 V1（原签认版）· 重签稿待签认'}
+  document.getElementById('lockHint').textContent=st==='待签认'?'待签认期间基线锁定，业主退回后才能修改；进度字段不受影响。':'已签认内容锁定，修订只能通过变更单或新版图纸重签；进度字段不受影响。';
+  document.getElementById('posInfo').textContent='底图：水电点位图 V1（基线引用的签认版）· 基线'+st+'，新检查点保存后立即生效，不改变签认状态，并通知业主';
+}
+document.getElementById('demoState').addEventListener('change',function(){setState(this.value)});
+// 进度
+document.getElementById('pct').addEventListener('input',function(){document.getElementById('pbar').style.width=Math.max(0,Math.min(100,+this.value||0))+'%'});
+document.getElementById('saveProg').addEventListener('click',function(){toast('进度已保存（完成度 '+document.getElementById('pct').value+'%）')});
+// 重签表单
+document.getElementById('reBtn').addEventListener('click',function(){openMask('baseMask')});
+var dwSel=document.getElementById('bDw');
+dwSel.addEventListener('change',function(){var f=document.getElementById('f-dw'),p=dwSel.selectedOptions[0].hasAttribute('data-pending');
+  f.classList.toggle('invalid',p);f.querySelector('.err').hidden=!p;if(p)dwSel.value=''});
+document.getElementById('bSubmit').addEventListener('click',function(){
+  var miss=[],chk=[['f-dw','bDw','签认版图纸分册与版本'],['f-desc','bDesc','工作说明'],['f-acc','bAcc','验收标准'],['f-cost','bCost','费用（元）'],['f-due','bDue','计划完成日期'],['f-qc','bQc','质检人']];
+  chk.forEach(function(c){var f=document.getElementById(c[0]),v=document.getElementById(c[1]).value.trim();f.classList.toggle('invalid',!v);if(!v)miss.push(c[2])});
+  var nck=document.querySelectorAll('#ckDraft li').length;if(!nck)miss.push('检查点');
+  var e=document.getElementById('bErr');
+  if(miss.length){e.hidden=false;e.innerHTML='以下字段缺失，无法提交：'+miss.join('、');return}
+  e.hidden=true;closeMask('baseMask');
+  var dw=dwSel.value;setState('待签认');
+  var s=document.getElementById('baseSeal');stamp(s,'pend','待签认');
+  document.getElementById('curRev').textContent='当前生效 r2 · 重签稿（'+dw+'）待业主签认';
+  document.getElementById('reBanner').querySelector('div').innerHTML='<b>'+LOCK_PENDING+'。</b>重签稿已提交，引用 '+esc(dw)+'；签认前现场仍按原签认版 V1 施工与核对。';
+  document.getElementById('revs').insertAdjacentHTML('afterbegin','<li><span class="d">2026-10-27 15:32</span><span>'+demoName()+'提交重签稿（'+esc(dw)+'，检查点 '+nck+' 个），等待业主签认</span></li>');
+  toast('已提交，等待业主重签');
+});
+// 新建检查点
+var pos=null;
+document.getElementById('newCkBtn').addEventListener('click',function(){if(STATE==='待签认'){toast(LOCK_PENDING);return}openMask('ckMask')});
+document.getElementById('pickmap').addEventListener('click',function(e){
+  var svg=this.querySelector('svg'),pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+  var p=pt.matrixTransform(svg.getScreenCTM().inverse());pos=[Math.round(p.x),Math.round(p.y)];
+  document.getElementById('newPin').innerHTML='<g class="pinmark s-none cur" transform="translate('+pos[0]+' '+pos[1]+')"><circle class="halo" r="24"/><circle class="o" r="17"/><text y="4">新</text></g>';
+  document.getElementById('posInfo').textContent='底图：水电点位图 V1 · 二楼 · 坐标 ('+pos[0]+', '+pos[1]+')';
+  document.getElementById('f-pos').classList.remove('invalid');
+});
+document.querySelectorAll('[data-exp]').forEach(function(b){b.addEventListener('click',function(){var t=document.getElementById('cPt');t.value=(t.value?t.value+'\n':'')+b.previousElementSibling.textContent;b.disabled=true;b.textContent='已加入'})});
+document.getElementById('cSave').addEventListener('click',function(){
+  var pt=document.getElementById('cPt').value.trim(),hid=document.querySelector('input[name=hid]:checked'),miss=[];
+  document.getElementById('f-pt').classList.toggle('invalid',!pt);if(!pt)miss.push('检查要点');
+  if(!hid)miss.push('是否隐蔽');
+  document.getElementById('f-pos').classList.toggle('invalid',!pos);if(!pos)miss.push('图纸位置（请在图纸上点选）');
+  var e=document.getElementById('cErr');if(miss.length){e.hidden=false;e.textContent='请补充：'+miss.join('、');return}
+  e.hidden=true;closeMask('ckMask');
+  var id='CK-0'+ckSeq,h=hid.value==='是',name=pt.split('\n')[0],p=pos.slice();
+  // AC-F06-16：已签认或待重签基线新增检查点直接生效，确认后不可修改或删除
+  confirmAct({title:'确认新增检查点 '+id,lead:'基线当前为「'+STATE+'」。新检查点保存后立即生效，不改变基线签认状态。',ok:'确认新增',
+    items:[['工作项','二楼书房 B 墙内线管预埋'],['检查要点',name],['是否隐蔽',h?'是（未放行不得覆盖）':'否'],['位置','水电点位图 V1 · 二楼 · 坐标 ('+p[0]+', '+p[1]+')'],['生效方式','立即生效，基线保持「'+STATE+'」'],['留痕','修订与签认历史追加「新增检查点」记录（'+demoName()+'）'],['知会','向业主 刘先生、陈女士 生成「新增检查点」知会待办']],
+    warn:'保存后与已有检查点一样不可修改或删除。',
+    onOk:function(){
+      ckSeq++;
+      document.getElementById('ckDraft').insertAdjacentHTML('beforeend','<li><span class="idc">'+id+'</span>'+esc(name)+(h?' · 隐蔽':'')+'</li>');
+      document.getElementById('ckList').insertAdjacentHTML('beforeend','<a class="ckrow" href="PAGE-F06-02.html" data-new="'+id+'"><span class="idc">'+id+'</span><span class="t"><b>'+esc(name)+'</b><span>'+(h?'隐蔽 · ':'')+'水电点位图 V1 坐标 ('+p[0]+', '+p[1]+') · 已生效 · 已知会业主</span></span><span class="tag">待核对</span></a>');
+      document.getElementById('ckCount').textContent=document.querySelectorAll('#ckList .ckrow').length+' 个（见下方）';
+      document.getElementById('revs').insertAdjacentHTML('afterbegin','<li><span class="d">2026-10-27 15:35</span><span>'+demoName()+'新增检查点 <b>'+id+'</b>「'+esc(name)+'」，直接生效，基线保持「'+STATE+'」；已向业主生成「新增检查点」知会待办</span></li>');
+      stamp(document.getElementById('baseSeal'),STATE==='已签认'?'pass':'pend',STATE);
+      document.getElementById('cPt').value='';pos=null;document.getElementById('newPin').innerHTML='';
+      document.querySelectorAll('input[name=hid]').forEach(function(r){r.checked=false});
+      document.querySelectorAll('[data-exp]').forEach(function(b){b.disabled=false;b.textContent='加入要点'});
+      toast('检查点 '+id+' 已生效，已通知业主');
+    }});
+});
+document.addEventListener('rolechange',renderFiles);
+renderFiles();
+</script>
+</body>
+</html>

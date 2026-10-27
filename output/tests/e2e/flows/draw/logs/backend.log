@@ -1,0 +1,13 @@
+[2026-10-27 08:21:11 +0000] [553] [INFO] Starting gunicorn 26.2.0
+[2026-10-27 08:21:11 +0000] [553] [INFO] Listening at: http://127.0.0.1:8103 (553)
+[2026-10-27 08:21:11 +0000] [553] [INFO] Using worker: gthread
+[2026-10-27 08:21:11 +0000] [566] [INFO] Booting worker with pid: 566
+[2026-10-27 08:21:11 +0000] [568] [INFO] Booting worker with pid: 568
+[2026-10-27 08:21:11 +0000] [553] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+Bad Request: /api/projects/1/work-items/18/baseline/submit
+Method Not Allowed: /api/projects/1/drawing-versions/3
+Method Not Allowed: /api/projects/1/drawing-versions/3
+[2026-10-27 08:22:35 +0000] [553] [INFO] Handling signal: term
+[2026-10-27 16:22:35 +0800] [566] [INFO] Worker exiting (pid: 566)
+[2026-10-27 16:22:35 +0800] [568] [INFO] Worker exiting (pid: 568)
+[2026-10-27 08:22:35 +0000] [553] [INFO] Shutting down: Master

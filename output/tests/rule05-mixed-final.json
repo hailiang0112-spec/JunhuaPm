@@ -1,0 +1,18 @@
+{
+  "mixed": {
+    "window": "2026-10-27 08:33:07 起 60s",
+    "users": 20,
+    "samples": 2763,
+    "errors": 0,
+    "p95_s": 0.867,
+    "median_s": 0.377,
+    "per_endpoint_p95_s": {
+      "checkpoints": 0.825,
+      "count": 0.804,
+      "overview": 0.814,
+      "detail": 0.776,
+      "todos": 1.02
+    },
+    "errorSamples": []
+  }
+}

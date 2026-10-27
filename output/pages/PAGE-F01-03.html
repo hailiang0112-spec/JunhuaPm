@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F01-03">
+  <title>无权访问 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+[hidden]{display:none!important}
+a.btn{text-decoration:none}
+.btn{white-space:nowrap}
+th{white-space:nowrap}
+.topbar{flex-wrap:wrap;row-gap:var(--space-2)}
+.topbar .ttl{min-width:0}
+.demo{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);padding:var(--space-1) var(--space-2);border:1px dashed var(--border);border-radius:var(--radius-sm)}
+.demo label{display:flex;align-items:center;gap:var(--space-1)}
+.demo .select{min-height:32px;width:auto;font-size:var(--text-sm);padding:var(--space-1) var(--space-2)}
+.side .navitem .badge{margin-left:auto}
+.side-foot{border-top:1px solid var(--border-soft);margin-top:var(--space-4);padding-top:var(--space-2)}
+.phase-ico{display:inline-flex;align-items:center;justify-content:center}
+.sitepick{margin:0 var(--space-1) var(--space-2)}
+.state .ic{display:flex;justify-content:center}
+.state .ic svg{width:32px;height:32px}
+.state h3{font-size:var(--text-lg);color:var(--fg);margin-bottom:var(--space-1)}
+.state p{margin-bottom:var(--space-4)}
+.dialog-hd{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-4);border-bottom:1px solid var(--border-soft)}
+.dialog-hd h2{font-size:var(--text-lg);line-height:var(--leading-tight);flex:1}
+.dialog-bd{padding:var(--space-4);display:grid;gap:var(--space-4)}
+.dialog-ft{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);flex-wrap:wrap}
+.iconbtn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;border-radius:var(--radius-sm);color:var(--muted);cursor:pointer;transition:background var(--motion-fast) var(--ease-standard)}
+.iconbtn:hover{background:var(--surface-warm);color:var(--fg)}
+.iconbtn:active{background:var(--border-soft)}
+.iconbtn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.confirm-summary{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--space-3)}
+.confirm-summary dd{margin-bottom:var(--space-2)}
+.hint{font-size:var(--text-sm);color:var(--muted)}
+.notice{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-sm);font-size:var(--text-sm);line-height:1.5}
+.notice .icon{margin-top:1px}
+.notice.warn{background:var(--warn-soft);color:var(--warn)}
+.notice.bad{background:var(--danger-soft);color:var(--danger)}
+.notice.info{background:var(--accent-soft);color:var(--accent)}
+.notice.plain{background:var(--surface-warm);color:var(--fg-2)}
+.checks{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.checks label{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:var(--text-sm);color:var(--fg);cursor:pointer;background:var(--surface)}
+.checks label:hover{border-color:var(--accent)}
+.checks input{accent-color:var(--accent);width:16px;height:16px}
+.pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.tabbar .tab{position:relative;border:0;background:transparent;font:inherit;font-size:var(--text-xs);cursor:pointer}
+.tabbar .tab .badge{position:absolute;top:6px;left:calc(50% + 6px)}
+.sheet-nav .navgroup{padding-left:0}
+.sheet-nav{display:grid;gap:2px}
+.seal.info{color:var(--info)}
+.seal.mute{color:var(--muted)}
+.seal.plain{color:var(--fg-2)}
+.tag.info{background:var(--info-soft);color:var(--info)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+@media (max-width:767px){
+  .btn.sm{height:40px}
+  .chip{height:40px}
+  .topbar .demo{order:5;width:100%}
+  .mask.sheet{align-items:flex-end;padding:0}
+  .mask.sheet .dialog{border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:85vh}
+  .dialog-ft .btn{flex:1;justify-content:center;height:44px}
+}
+
+
+.auth{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-8) var(--container-gutter-phone)}
+.auth-card{width:min(420px,100%);background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--elev-raised);border:1px solid var(--border-soft);padding:var(--space-8) var(--space-6)}
+.auth-brand{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);font-weight:700}
+.auth-brand .logo{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--accent);color:var(--accent-on);display:flex;align-items:center;justify-content:center;font-size:var(--text-lg)}
+.auth-brand small{display:block;font-weight:400;font-size:var(--text-xs);color:var(--muted)}
+.auth h1{font-size:var(--text-2xl);letter-spacing:var(--tracking-display);line-height:var(--leading-tight);margin-bottom:var(--space-1)}
+.auth .lead{color:var(--muted);font-size:var(--text-sm);margin-bottom:var(--space-6)}
+.form{display:grid;gap:var(--space-4)}
+.auth-foot{margin-top:var(--space-5);font-size:var(--text-sm);color:var(--muted);text-align:center;line-height:1.6}
+.demo-bar{width:min(420px,100%);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3)}
+.demo-bar .select{min-height:32px;width:auto;font-size:var(--text-sm);padding:var(--space-1) var(--space-2)}
+@media (max-width:767px){.auth{justify-content:flex-start;padding-top:var(--space-6)}.auth-card{padding:var(--space-6) var(--space-4)}}
+
+
+.deny{text-align:center}
+.deny .ic{width:64px;height:64px;margin:0 auto var(--space-4);border-radius:50%;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center}
+.deny .ic svg{width:30px;height:30px}
+.deny h1{margin-bottom:var(--space-2)}
+.deny p{color:var(--muted);margin-bottom:var(--space-6)}
+.deny .auth-brand{justify-content:center}
+
+  </style>
+</head>
+<body>
+
+<div class="auth">
+  <section class="auth-card deny" aria-labelledby="denyTitle">
+    <div class="auth-brand"><span class="logo">君</span><div>君华装修项目管理平台<small>图纸与现场一致 · 证据可追溯</small></div></div>
+    <div class="ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+    <h1 id="denyTitle">无权访问该项目</h1>
+    <p>你在该项目中没有任何角色，页面不显示该项目的信息。</p>
+    <a class="btn primary block" href="PAGE-F16-01.html">返回我的待办</a>
+  </section>
+</div>
+
+
+<div class="mask" id="dlgConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="dialog">
+    <div class="dialog-hd"><h2 id="cfTitle">确认</h2><button class="iconbtn" type="button" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="dialog-bd">
+      <div class="hint">请核对以下内容，确认后立即生效。</div>
+      <dl class="confirm-summary" id="cfList"></dl>
+    </div>
+    <div class="dialog-ft"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" id="cfOk">确认</button></div>
+  </div>
+</div>
+<div class="mask" id="dlgCopy" role="dialog" aria-modal="true" aria-labelledby="cpTitle">
+  <div class="dialog">
+    <div class="dialog-hd"><h2 id="cpTitle">请手动复制</h2><button class="iconbtn" type="button" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="dialog-bd"><div class="hint">浏览器未允许自动复制，请长按全选后复制。</div><textarea class="textarea" id="copyFallback" rows="6" readonly></textarea></div>
+    <div class="dialog-ft"><button class="btn" type="button" data-close>关闭</button></div>
+  </div>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+let ROLE=document.body.dataset.role||'业主';
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function toast(m){$$('.toast').forEach(t=>t.remove());const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+function openDlg(id){const m=document.getElementById(id);m.classList.add('show');const f=m.querySelector('.dialog input:not([type=hidden]):not([readonly]),.dialog select,.dialog textarea,.dialog .btn');if(f)setTimeout(()=>f.focus(),30)}
+function closeDlg(x){const m=typeof x==='string'?document.getElementById(x):x.closest('.mask');if(m)m.classList.remove('show')}
+document.addEventListener('click',e=>{const c=e.target.closest('[data-close]');if(c){closeDlg(c);return}if(e.target.classList&&e.target.classList.contains('mask'))e.target.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.mask.show').forEach(m=>m.classList.remove('show'))});
+function setErr(id,msg){const el=document.getElementById(id);const f=el.closest('.field');f.classList.toggle('invalid',!!msg);let e=f.querySelector('.err');if(!e){e=document.createElement('div');e.className='err';e.setAttribute('role','alert');f.appendChild(e)}e.textContent=msg||'';e.hidden=!msg;return !msg}
+function clearErr(scope){$$('.field.invalid',scope).forEach(f=>f.classList.remove('invalid'));$$('.err',scope).forEach(e=>{e.hidden=true;e.textContent=''})}
+function fmtPhone(p,full){return full?p.replace(/(\d{3})(\d{4})(\d{4})/,'$1 $2 $3'):p.slice(0,3)+'****'+p.slice(7)}
+function confirmBox(title,items,okText,onOk,danger){$('#cfTitle').textContent=title;$('#cfList').innerHTML=items.map(([k,v])=>'<dt>'+esc(k)+'</dt><dd>'+v+'</dd>').join('');const b=$('#cfOk');b.textContent=okText;b.className='btn '+(danger?'danger':'primary');b.onclick=()=>{closeDlg('dlgConfirm');onOk()};openDlg('dlgConfirm')}
+function copyText(t,msg){msg=msg||'已复制';const fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();if(ok)toast(msg);else{$('#copyFallback').value=t;openDlg('dlgCopy')}};if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(()=>toast(msg),fb)}else fb()}
+function setView(v){['normal','loading','empty','error','denied'].forEach(k=>{const el=document.getElementById('v-'+k);if(el)el.hidden=k!==v})}
+function refreshView(){const s=$('#demoState')?$('#demoState').value:'normal';if(window.isDenied&&isDenied(ROLE)){setView('denied');return}if(window.customView&&customView(s))return;setView(s)}
+function applyRole(r){ROLE=r;document.body.dataset.role=r;$$('[data-roles]').forEach(el=>{el.hidden=!el.dataset.roles.split(',').includes(r)});$$('[data-phone]').forEach(el=>{el.textContent=fmtPhone(el.dataset.phone,r==='公司管理员')});if(window.onRole)onRole(r);refreshView()}
+document.addEventListener('DOMContentLoaded',()=>{const rs=$('#demoRole');if(rs){rs.value=ROLE;rs.addEventListener('change',()=>applyRole(rs.value))}const ss=$('#demoState');if(ss)ss.addEventListener('change',refreshView);if(window.init)init();applyRole(ROLE)});
+
+function init(){}
+</script>
+</body>
+</html>

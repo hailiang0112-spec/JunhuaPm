@@ -1,0 +1,20 @@
+/* PAGE-F03-02 项目结构：页面特有样式（取自原型，只用 Token 变量） */
+.pg-f0302 .tabs{display:flex;gap:var(--space-1);border-bottom:1px solid var(--border);margin-bottom:var(--space-4);overflow-x:auto}
+.pg-f0302 .tabs button{border:0;background:none;font:500 var(--text-base) var(--font-body);color:var(--muted);padding:var(--space-3) var(--space-4);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;min-height:44px;transition:color var(--motion-fast) var(--ease-standard)}
+.pg-f0302 .tabs button:hover{color:var(--fg)} .pg-f0302 .tabs button:active{background:var(--surface-warm)} .pg-f0302 .tabs button:focus-visible{outline:none;box-shadow:inset var(--focus-ring)}
+.pg-f0302 .tabs button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.pg-f0302 .tabs .cnt{font-size:var(--text-xs);color:var(--muted);margin-left:var(--space-1)}
+.pg-f0302 tr.sel{background:var(--accent-soft)}
+.pg-f0302 tr.off td{color:var(--muted)}
+.pg-f0302 .ops{display:flex;gap:var(--space-1);justify-content:flex-end;flex-wrap:nowrap}
+.pg-f0302 .rec{font-variant-numeric:tabular-nums}
+.pg-f0302 .rec.zero{color:var(--muted)}
+.pg-f0302 .toolbar{display:flex;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-3) var(--space-4);align-items:center}
+.pg-f0302 .toolbar .select,.pg-f0302 .toolbar .input{width:auto;min-width:140px;min-height:36px;font-size:var(--text-sm)}
+@media (max-width:767px){.pg-f0302 .toolbar .select,.pg-f0302 .toolbar .input{flex:1 1 140px}}
+.pg-f0302 .pager{display:flex;align-items:center;gap:var(--space-2);justify-content:flex-end;padding:var(--space-2) var(--space-4) var(--space-3);font-size:var(--text-sm);color:var(--muted);flex-wrap:wrap}
+.pg-f0302 .rulebox{display:flex;gap:var(--space-2);align-items:flex-start;font-size:var(--text-sm);color:var(--fg-2);background:var(--surface-warm);border-radius:var(--radius-sm);padding:var(--space-3);margin-bottom:var(--space-4)}
+.pg-f0302 .rulebox .icon{color:var(--info);margin-top:2px}
+.pg-f0302 .blocked{border:1px solid color-mix(in oklab,var(--danger),transparent 60%);background:var(--danger-soft);color:var(--danger);border-radius:var(--radius-sm);padding:var(--space-3);font-size:var(--text-sm);font-weight:600}
+.pg-f0302 .field.invalid .select,.pg-f0302 .field.invalid .textarea{border-color:var(--danger)}
+.pg-f0302 .chk{font-size:var(--text-sm);display:inline-flex;gap:var(--space-1);align-items:center;white-space:nowrap}

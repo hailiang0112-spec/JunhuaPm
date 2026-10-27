@@ -1,0 +1,39 @@
+/* PAGE-F04-02 图纸查看器（原型 PAGE-F04-02.html 页面样式） */
+.pg-f0402 .tools{display:flex;align-items:flex-end;gap:var(--space-3);flex-wrap:wrap;padding:var(--space-3) var(--space-4)}
+.pg-f0402 .tools .field{min-width:200px}
+.pg-f0402 .zoom{display:flex;align-items:center;gap:var(--space-1)}
+.pg-f0402 .zoom .pct{min-width:52px;text-align:center;font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+.pg-f0402 .tgl{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;font-size:var(--text-sm);cursor:pointer}
+.pg-f0402 .tgl input{width:18px;height:18px;accent-color:var(--accent)}
+.pg-f0402 .vgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:var(--space-4);align-items:start}
+.pg-f0402 .vgrid>*{min-width:0}
+.pg-f0402 .vwrap{height:62vh;min-height:360px;overflow:auto;background:var(--surface-warm);border-top:1px solid var(--border-soft);-webkit-overflow-scrolling:touch;cursor:grab;touch-action:pan-x pan-y}
+.pg-f0402 .vwrap.drag{cursor:grabbing}
+.pg-f0402 .vwrap.nopins .dpin{display:none}
+.pg-f0402 .vwrap .state{padding:var(--space-8) var(--space-4)}
+.pg-f0402 .vhd{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-2) var(--space-4);font-size:var(--text-sm)}
+.pg-f0402 .vhd>span{min-width:0;overflow-wrap:anywhere}
+.pg-f0402 .legend{display:flex;gap:var(--space-3);flex-wrap:wrap;font-size:var(--text-xs);color:var(--muted);padding:var(--space-2) var(--space-4);border-top:1px solid var(--border-soft)}
+.pg-f0402 .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:var(--space-1);vertical-align:-1px}
+.pg-f0402 .cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+.pg-f0402 .cmp>*{min-width:0}
+.pg-f0402 .cmp .vwrap{height:46vh;min-height:260px}
+.pg-f0402 .notes{display:flex;flex-direction:column}
+.pg-f0402 .note{padding:var(--space-3) 0;border-top:1px solid var(--border-soft);font-size:var(--text-sm);display:flex;flex-direction:column;gap:var(--space-1)}
+.pg-f0402 .note:first-child{border-top:0;padding-top:0}
+.pg-f0402 .note .h{display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
+.pg-f0402 .note .h b{font-weight:600}
+.pg-f0402 .note .m{font-size:var(--text-xs);color:var(--muted)}
+.pg-f0402 .pinpanel .empty{font-size:var(--text-sm);color:var(--muted)}
+.pg-f0402 .pages{display:flex;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-2) var(--space-4) 0}
+.pg-f0402 .ro{display:flex;gap:var(--space-2);align-items:center;font-size:var(--text-xs);color:var(--muted)}
+.pg-f0402 .ro .icon{width:14px;height:14px}
+@media (max-width:1199px){.pg-f0402 .vgrid{grid-template-columns:1fr}}
+@media (max-width:767px){
+  .pg-f0402 .cmp{grid-template-columns:1fr}
+  .pg-f0402 .tools .field{min-width:0;flex:1 1 100%}
+  .pg-f0402 .tools #cmpBtn{flex:1 1 100%;justify-content:center}
+  .pg-f0402 .vwrap{height:52vh}
+  .pg-f0402 .cmp .vwrap{height:40vh}
+  .pg-f0402 .banner{flex-wrap:wrap}.pg-f0402 .banner .act{margin-left:0}
+}

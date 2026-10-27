@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-id" content="PAGE-F06-01">
+  <meta name="description" content="按状态、工段、楼层筛选检查点，印章标签显示不得覆盖、待放行、超时等状态。">
+  <title>检查点 · 君华装修项目管理平台</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+[hidden]{display:none!important}
+a.btn{text-decoration:none;color:var(--fg)}
+a.btn.primary{color:var(--accent-on)}
+.tabbar{z-index:40}.mask{z-index:50}.toast{z-index:60}
+.topbar{flex-wrap:wrap}
+.topbar .ttl{min-width:0}
+.demo{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--muted);white-space:nowrap}
+.demo .select{min-height:32px;width:auto;font-size:var(--text-sm);padding:0 var(--space-2)}
+.side .sitepick{width:100%;margin-bottom:var(--space-2);cursor:pointer;overflow:hidden}
+.side .sitepick:hover{border-color:var(--accent)}
+.side .sitepick:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.navitem .badge{margin-left:auto}
+.tab{border:0;background:none;font-family:inherit;cursor:pointer;min-height:44px}
+.tab-ic{position:relative;display:inline-flex}
+.tab-badge{position:absolute;top:-6px;right:-12px;min-width:16px;height:16px;padding:0 4px;border-radius:var(--radius-pill);background:var(--danger);color:var(--accent-on);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.crumb{font-size:var(--text-sm);color:var(--muted);display:flex;gap:var(--space-1);flex-wrap:wrap;align-items:center;margin-bottom:var(--space-2)}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.crumb .icon{width:14px;height:14px}
+.banner{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--warn-soft);color:var(--fg);border:1px solid color-mix(in oklab,var(--warn),transparent 70%);margin-bottom:var(--space-4);font-size:var(--text-sm)}
+.banner>.icon{color:var(--warn);margin-top:1px}
+.banner b{font-weight:600}
+.banner.bad{background:var(--danger-soft);border-color:color-mix(in oklab,var(--danger),transparent 70%)}
+.banner.bad>.icon{color:var(--danger)}
+.banner.note{background:var(--info-soft);border-color:color-mix(in oklab,var(--info),transparent 70%)}
+.banner.note>.icon{color:var(--info)}
+.banner .act{margin-left:auto;flex:none}
+.dlg-hd{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border-bottom:1px solid var(--border-soft)}
+.dlg-hd h2{font-size:var(--text-lg);font-weight:600;line-height:var(--leading-tight)}
+.dlg-bd{padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)}
+.dlg-ft{display:flex;gap:var(--space-2);justify-content:flex-end;padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);position:sticky;bottom:0;background:var(--surface-overlay)}
+.icon-btn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg-2);cursor:pointer;transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard)}
+.icon-btn:hover{border-color:var(--accent);background:var(--surface-warm)}
+.icon-btn:active{background:var(--border-soft)}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.icon-btn.ghost{border-color:transparent;background:none}
+.confirm-summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-1) var(--space-3)}
+.confirm-summary dd{margin-bottom:0}
+.cf-warn{font-size:var(--text-sm);color:var(--danger);display:flex;gap:var(--space-2)}
+.kv{display:grid;grid-template-columns:128px minmax(0,1fr);gap:var(--space-2) var(--space-4);font-size:var(--text-sm)}
+.kv dt{color:var(--muted)}
+.kv dd{color:var(--fg)}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--font-mono);font-size:var(--text-xs)}
+.sheet-nav{padding:var(--space-2)}
+.more-dialog{align-self:flex-end;width:100%;max-height:80vh}
+.err-list{margin:var(--space-1) 0 0 var(--space-4);font-size:var(--text-sm)}
+@media (max-width:767px){
+  .kv{grid-template-columns:1fr;gap:0}
+  .kv dd{margin-bottom:var(--space-2)}
+  .topbar{gap:var(--space-2)}
+  .topbar .demo{order:-1;width:100%;justify-content:flex-end}
+  .mask{padding:0;align-items:flex-end}
+  .dialog{border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh}
+}
+
+.filters{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-3) var(--space-4)}
+.chips{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.chip .n{margin-left:var(--space-1);font-variant-numeric:tabular-nums;color:var(--muted)}
+.chip.on .n{color:inherit}
+.selrow{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.selrow .field{flex:1 1 160px;max-width:220px}
+.sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4);margin-bottom:var(--space-4)}
+.sum .kpi .vl{font-size:var(--text-2xl)}
+.sum .kpi .vl.bad{color:var(--danger)}
+.sum .kpi .vl.warn{color:var(--warn)}
+.sum .kpi .vl.ok{color:var(--success)}
+td.seal-cell{width:150px}
+td .nm{font-weight:600;color:var(--fg)}
+td .sub{font-size:var(--text-xs);color:var(--muted)}
+.idc{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted);white-space:nowrap}
+.cards{display:none;flex-direction:column;gap:var(--space-3);padding:var(--space-3)}
+.ckcard{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--border-soft);border-radius:var(--radius-md);background:var(--surface);text-decoration:none;color:inherit;min-height:44px;transition:border-color var(--motion-fast) var(--ease-standard)}
+.ckcard:hover{border-color:var(--accent)}
+.ckcard:active{background:var(--surface-warm)}
+.ckcard:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.ckcard .top{display:flex;align-items:flex-start;gap:var(--space-2)}
+.ckcard .top .nm{flex:1;font-weight:600}
+.ckcard .meta{font-size:var(--text-xs);color:var(--muted)}
+.ckcard .info{font-size:var(--text-sm);color:var(--fg-2)}
+.pager{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-top:1px solid var(--border-soft);font-size:var(--text-sm);color:var(--muted)}
+.phase-tag{display:inline-flex;align-items:center;gap:var(--space-1);white-space:nowrap}
+.hid{font-size:var(--text-xs);color:var(--fg-2);white-space:nowrap}
+@media (max-width:1199px){.sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){
+  .tablewrap{display:none}
+  .cards{display:flex}
+  .selrow .field{max-width:none}
+  .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:var(--space-1);-webkit-overflow-scrolling:touch}
+  .chip{flex:none;height:36px}
+  .sum{gap:var(--space-2)}
+}
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="logo">君</span><span class="nm">君华 · 项目管理</span></div>
+    <button type="button" class="sitepick" aria-label="切换工地，当前君华新城 · 联排别墅"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">君华新城 · 联排别墅</span><span class="spacer"></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <nav aria-label="工地导航">
+<a class="navitem" href="PAGE-F16-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="nm">我的待办</span><span class="badge" aria-label="7 项">7</span></a>
+<div class="navgroup">总览</div>
+<a class="navitem" href="PAGE-F10-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nm">项目总览</span></a>
+<a class="navitem" href="PAGE-F10-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="m2 16 10 5 10-5"/></svg><span class="nm">楼层 / 房间</span></a>
+<div class="navgroup">施工阶段</div>
+<a class="navitem" href="PAGE-F10-03.html?phase=p1"><span class="phase-dot" style="background:var(--phase-1)" aria-hidden="true"></span><span class="nm">砌墙</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p2"><span class="phase-dot" style="background:var(--phase-2)" aria-hidden="true"></span><span class="nm">水电</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p3"><span class="phase-dot" style="background:var(--phase-3)" aria-hidden="true"></span><span class="nm">铺砖</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p4"><span class="phase-dot" style="background:var(--phase-4)" aria-hidden="true"></span><span class="nm">木工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p5"><span class="phase-dot" style="background:var(--phase-5)" aria-hidden="true"></span><span class="nm">油灰工</span></a>
+<a class="navitem" href="PAGE-F10-03.html?phase=p6"><span class="phase-dot" style="background:var(--phase-6)" aria-hidden="true"></span><span class="nm">安装收尾</span></a>
+<div class="navgroup">证据链</div>
+<a class="navitem" href="PAGE-F04-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg><span class="nm">图纸</span></a>
+<a class="navitem" href="PAGE-F05-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 7h-4L9 3Z"/><path d="M5 14h14v4H5z"/><path d="M4 21h16"/></svg><span class="nm">基线签认</span></a>
+<a class="navitem on" href="PAGE-F06-01.html" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="nm">检查点</span><span class="badge" aria-label="5 项">5</span></a>
+<a class="navitem" href="PAGE-F07-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M9 15h6M12 12v6"/></svg><span class="nm">变更单</span></a>
+<a class="navitem" href="PAGE-F08-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg><span class="nm">问题</span></a>
+<div class="navgroup">房屋档案</div>
+<a class="navitem" href="PAGE-F12-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg><span class="nm">档案资料</span></a>
+<a class="navitem" href="PAGE-F13-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span class="nm">补充事项</span></a>
+<a class="navitem" href="PAGE-F13-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg><span class="nm">公告栏</span></a>
+<a class="navitem" href="PAGE-F15-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span class="nm">付款节点</span></a>
+<div class="navgroup">项目设置</div>
+<a class="navitem" href="PAGE-F01-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span class="nm">成员与项目</span></a>
+<a class="navitem" href="PAGE-F03-02.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nm">项目结构</span></a>
+<a class="navitem" href="PAGE-F03-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span class="nm">数据导入导出</span></a>
+<a class="navitem" href="PAGE-F17-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg><span class="nm">审计与证据包</span></a>
+<div data-roles="公司管理员"><div class="navgroup">公司</div>
+<a class="navitem" href="PAGE-F01-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span class="nm">项目管理</span></a>
+<a class="navitem" href="PAGE-F03-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="nm">公司模板</span></a>
+<a class="navitem" href="PAGE-F09-01.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4V4Z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7V4Z"/></svg><span class="nm">公司经验库</span></a></div>
+<div class="navgroup"></div>
+<a class="navitem" href="PAGE-F02-03.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nm">个人设置</span></a>
+    </nav>
+  </aside>
+  <main class="main" id="main">
+
+<header class="topbar">
+  <div class="ttl"><h1>检查点</h1><div class="sub">君华新城 · 联排别墅 · 共 14 个检查点 · 放行时限 24 小时</div></div>
+  <span class="spacer"></span>
+  <label class="demo">演示身份<select class="select" id="demoRole"><option selected>业主</option><option>业主代理人</option><option>项目经理</option><option>设计经理</option><option>质检</option><option>预算专员</option><option>公司管理员</option></select></label>
+</header>
+
+<div class="sum" aria-label="检查点概况">
+  <div class="kpi"><div class="lb">不得覆盖</div><div class="vl bad num" id="kNo">4</div><div class="target">隐蔽且未放行</div></div>
+  <div class="kpi"><div class="lb">待放行</div><div class="vl warn num">2</div><div class="target">其中 1 项已超时</div></div>
+  <div class="kpi"><div class="lb">不一致</div><div class="vl bad num">3</div><div class="target">含放行后发现 1 项</div></div>
+  <div class="kpi"><div class="lb">已放行</div><div class="vl ok num">4</div><div class="target">含代理放行 2 项</div></div>
+</div>
+
+<section class="card" aria-label="检查点列表">
+  <div class="filters">
+    <div class="chips" role="group" aria-label="按状态筛选" id="chips"></div>
+    <div class="selrow">
+      <div class="field"><label for="fPhase">工段</label><select class="select" id="fPhase"><option value="">全部工段</option><option>砌墙</option><option>水电</option><option>铺砖</option><option>木工</option><option>油灰工</option><option>安装收尾</option></select></div>
+      <div class="field"><label for="fFloor">楼层</label><select class="select" id="fFloor"><option value="">全部楼层</option><option>负一楼</option><option>夹层</option><option>一楼</option><option>二楼</option><option>三楼</option><option>楼顶阳台</option></select></div>
+    </div>
+  </div>
+  <div class="tablewrap scroll-x">
+    <table>
+      <thead><tr><th>状态</th><th>编号</th><th>检查点</th><th>楼层 / 房间</th><th>工段</th><th>隐蔽</th><th>当前情况</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div class="state" id="empty" hidden>
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="width:32px;height:32px"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+    <p>没有符合筛选条件的检查点。</p>
+    <p style="margin-top:var(--space-3)"><button type="button" class="btn" id="clearF">清除筛选</button></p>
+  </div>
+  <div class="pager"><span id="pgTxt">共 14 条 · 每页 20 条</span><span class="spacer"></span><button type="button" class="btn sm" disabled>上一页</button><button type="button" class="btn sm" disabled>下一页</button></div>
+</section>
+
+  </main>
+</div>
+<nav class="tabbar" aria-label="手机底部导航"><a class="tab" href="PAGE-F16-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="tab-badge" aria-label="7 项">7</span></span>待办</a><a class="tab on" href="PAGE-F06-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="tab-badge" aria-label="5 项">5</span></span>检查点</a><a class="tab" href="PAGE-F04-01.html"><span class="tab-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg></span>图纸</a><button type="button" class="tab" id="moreBtn" aria-haspopup="dialog"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>更多</button></nav>
+
+<div class="mask" id="confirmMask" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="dialog">
+    <div class="dlg-hd"><h2 id="cfTitle">确认</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="dlg-bd">
+      <p id="cfLead" class="muted"></p>
+      <dl class="confirm-summary" id="cfList"></dl>
+      <p class="cf-warn" id="cfWarn" hidden><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span></span></p>
+    </div>
+    <div class="dlg-ft"><button type="button" class="btn" data-close>返回修改</button><button type="button" class="btn primary" id="cfOk">确认</button></div>
+  </div>
+</div>
+<div class="mask" id="moreMask" role="dialog" aria-modal="true" aria-label="全部导航">
+  <div class="dialog more-dialog">
+    <div class="dlg-hd"><h2>全部导航</h2><span class="spacer"></span><button type="button" class="icon-btn ghost" data-close aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <nav class="sheet-nav" id="moreNav" aria-label="全部导航"></nav>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sel=document.getElementById('demoRole');
+  var NAMES={'业主':'刘先生','业主代理人':'刘太太','项目经理':'张工','设计经理':'李工','质检':'王工','预算专员':'赵会计','公司管理员':'周经理'};
+  window.demoRole=function(){return sel.value};
+  window.demoName=function(){return NAMES[sel.value]};
+  window.applyRoles=function(root){
+    var r=sel.value;
+    (root||document).querySelectorAll('[data-roles]').forEach(function(el){el.hidden=el.dataset.roles.split(' ').indexOf(r)<0});
+  };
+  sel.addEventListener('change',function(){applyRoles();document.dispatchEvent(new CustomEvent('rolechange',{detail:sel.value}))});
+  window.toast=function(msg){
+    document.querySelectorAll('.toast').forEach(function(t){t.remove()});
+    var t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;
+    document.body.appendChild(t);setTimeout(function(){t.remove()},3200);
+  };
+  var lastFocus=null;
+  window.openMask=function(id){var m=document.getElementById(id);lastFocus=document.activeElement;m.classList.add('show');var f=m.querySelector('[autofocus],button,input,select,textarea');if(f)f.focus();};
+  window.closeMask=function(id){document.getElementById(id).classList.remove('show');if(lastFocus&&lastFocus.focus)lastFocus.focus();};
+  document.addEventListener('click',function(e){
+    var c=e.target.closest('[data-close]');if(c){closeMask(c.closest('.mask').id);return}
+    var o=e.target.closest('[data-open]');if(o){openMask(o.dataset.open)}
+    if(e.target.classList&&e.target.classList.contains('mask'))closeMask(e.target.id);
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.querySelector('.mask.show');if(m)closeMask(m.id)}});
+  var cfOk=document.getElementById('cfOk'),cfCb=null;
+  window.confirmAct=function(o){
+    document.getElementById('cfTitle').textContent=o.title;
+    document.getElementById('cfLead').textContent=o.lead||'';
+    var dl=document.getElementById('cfList');dl.innerHTML='';
+    (o.items||[]).forEach(function(kv){var dt=document.createElement('dt');dt.textContent=kv[0];var dd=document.createElement('dd');dd.textContent=kv[1];dl.appendChild(dt);dl.appendChild(dd)});
+    var w=document.getElementById('cfWarn');w.hidden=!o.warn;w.lastChild.textContent=o.warn||'';
+    cfOk.textContent=o.ok||'确认';cfOk.className='btn '+(o.danger?'danger':'primary');
+    cfCb=o.onOk;openMask('confirmMask');
+  };
+  cfOk.addEventListener('click',function(){closeMask('confirmMask');if(cfCb)cfCb()});
+  window.stamp=function(el,cls,text){el.className='seal '+cls;el.textContent=text;void el.offsetWidth;el.classList.add('just')};
+  var mb=document.getElementById('moreBtn');
+  mb.addEventListener('click',function(){
+    var box=document.getElementById('moreNav');
+    if(!box.childElementCount){box.innerHTML=document.querySelector('.side nav').innerHTML;applyRoles(box)}
+    openMask('moreMask');
+  });
+  applyRoles();
+})();
+</script>
+<script>
+var PH={'砌墙':1,'水电':2,'铺砖':3,'木工':4,'油灰工':5,'安装收尾':6};
+var SEAL={after:['stop','放行后发现不一致'],bad:['stop','不一致'],early:['stop','未放行先覆盖'],late:['stop','超时'],nocover:['stop','不得覆盖'],pend:['pend','待放行'],todo:null,pass:['pass','已放行'],proxy:['proxy','代理放行']};
+var RANK=['after','bad','early','late','nocover','pend','todo','pass','proxy'];
+var D=[
+ {id:'CK-012',n:'管道井封堵',f:'负一楼',r:'卫生间',p:'砌墙',h:1,s:'pass',c:'一致',rel:1,cov:1,i:'刘先生 2026-10-20 放行 · 已覆盖'},
+ {id:'CK-031',n:'门洞净宽 900mm',f:'二楼',r:'书房 B',p:'砌墙',h:0,s:'bad',c:'不一致',i:'实测 860mm · 王工 2026-10-26 15:42 · 覆盖前 · 问题 WT-024'},
+ {id:'CK-033',n:'墙内线管预埋走向',f:'二楼',r:'书房 B',p:'砌墙',h:1,s:'late',c:'一致',i:'结论一致 · 待放行已等 30 小时（时限 24 小时）'},
+ {id:'CK-008',n:'隔墙门洞过梁',f:'一楼',r:'车库',p:'砌墙',h:1,s:'after',c:'不一致',rel:1,i:'刘先生 2026-10-18 放行；王工 2026-10-25 复核不一致'},
+ {id:'CK-022',n:'烟道预留洞口位置',f:'一楼',r:'厨房',p:'砌墙',h:0,s:'bad',c:'不一致',i:'偏移 120mm · 处置：补签变更单 BG-003（待业主签认）'},
+ {id:'CK-019',n:'隔墙底部防潮层',f:'负一楼',r:'设备间',p:'砌墙',h:1,s:'early',c:'',cov:1,i:'张工 2026-10-24 标记已覆盖，此前未放行'},
+ {id:'CK-028',n:'隔墙拉结筋间距',f:'一楼',r:'客厅',p:'砌墙',h:1,s:'nocover',c:'',i:'待质检核对'},
+ {id:'CK-043',n:'强电底盒高度',f:'二楼',r:'书房 B',p:'砌墙',h:1,s:'nocover',c:'',i:'待质检核对'},
+ {id:'CK-041',n:'给水管走向',f:'二楼',r:'主卫',p:'水电',h:1,s:'nocover',c:'',i:'待质检核对'},
+ {id:'CK-035',n:'新砌墙体垂直度',f:'三楼',r:'主卧',p:'砌墙',h:0,s:'pend',c:'一致',i:'结论一致 · 待放行已等 5 小时'},
+ {id:'CK-036',n:'门洞位置',f:'二楼',r:'次卧',p:'砌墙',h:0,s:'todo',c:'',i:'待质检核对'},
+ {id:'CK-026',n:'砌体顶部斜砌',f:'夹层',r:'楼梯间',p:'砌墙',h:1,s:'proxy',c:'一致',rel:1,i:'刘太太 2026-10-22 代理放行'},
+ {id:'CK-044',n:'空调预留孔',f:'二楼',r:'次卧',p:'砌墙',h:0,s:'pass',c:'一致',rel:1,i:'刘先生 2026-10-21 放行'},
+ {id:'CK-046',n:'床头插座点位',f:'二楼',r:'主卧',p:'砌墙',h:1,s:'proxy',c:'一致',rel:1,i:'刘太太 2026-10-24 代理放行'}
+];
+var F=[
+ ['全部',function(){return true}],
+ ['不得覆盖',function(d){return d.h&&!d.rel&&!d.cov}],
+ ['待核对',function(d){return !d.c}],
+ ['待放行',function(d){return (d.c==='一致'||d.c==='已变更')&&!d.rel}],
+ ['超时',function(d){return d.s==='late'}],
+ ['不一致',function(d){return d.s==='bad'}],
+ ['放行后发现不一致',function(d){return d.s==='after'}],
+ ['未放行先覆盖',function(d){return d.s==='early'}],
+ ['已放行',function(d){return d.rel&&d.s!=='after'}]
+];
+var cur=0;
+D.sort(function(a,b){return RANK.indexOf(a.s)-RANK.indexOf(b.s)});
+function sealH(d){var s=SEAL[d.s];return s?'<span class="seal '+s[0]+'">'+s[1]+'</span>':'<span class="tag">待核对</span>'}
+function chips(){
+  var ph=document.getElementById('fPhase').value,fl=document.getElementById('fFloor').value;
+  document.getElementById('chips').innerHTML=F.map(function(f,i){
+    var n=D.filter(function(d){return f[1](d)&&(!ph||d.p===ph)&&(!fl||d.f===fl)}).length;
+    return '<button type="button" class="chip'+(i===cur?' on':'')+'" aria-pressed="'+(i===cur)+'" data-i="'+i+'">'+f[0]+'<span class="n">'+n+'</span></button>'}).join('');
+}
+function render(){
+  var ph=document.getElementById('fPhase').value,fl=document.getElementById('fFloor').value;
+  var rows=D.filter(function(d){return F[cur][1](d)&&(!ph||d.p===ph)&&(!fl||d.f===fl)});
+  document.getElementById('tbody').innerHTML=rows.map(function(d){
+    return '<tr class="row-link" tabindex="0" data-href="PAGE-F06-02.html"><td class="seal-cell">'+sealH(d)+'</td><td class="idc">'+d.id+'</td><td><span class="nm">'+d.n+'</span></td><td>'+d.f+' · '+d.r+'</td><td><span class="phase-tag"><span class="phase-dot" style="background:var(--phase-'+PH[d.p]+')"></span>'+d.p+'</span></td><td class="hid">'+(d.h?'隐蔽':'—')+'</td><td class="sub">'+d.i+'</td></tr>'}).join('');
+  document.getElementById('cards').innerHTML=rows.map(function(d){
+    return '<a class="ckcard" href="PAGE-F06-02.html"><div class="top"><span class="nm">'+d.f+' '+d.r+' · '+d.n+'</span>'+sealH(d)+'</div><div class="meta">'+d.id+' · '+d.p+(d.h?' · 隐蔽':'')+'</div><div class="info">'+d.i+'</div></a>'}).join('');
+  document.getElementById('empty').hidden=rows.length>0;
+  document.querySelector('.tablewrap').style.visibility=rows.length?'':'hidden';
+  document.getElementById('pgTxt').textContent='共 '+rows.length+' 条 · 每页 20 条';
+  chips();
+}
+document.getElementById('chips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;cur=+c.dataset.i;render()});
+document.getElementById('fPhase').addEventListener('change',render);
+document.getElementById('fFloor').addEventListener('change',render);
+document.getElementById('clearF').addEventListener('click',function(){cur=0;document.getElementById('fPhase').value='';document.getElementById('fFloor').value='';render()});
+document.getElementById('tbody').addEventListener('click',function(e){var r=e.target.closest('tr');if(r)location.href=r.dataset.href});
+document.getElementById('tbody').addEventListener('keydown',function(e){var r=e.target.closest('tr');if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();location.href=r.dataset.href}});
+render();
+</script>
+</body>
+</html>

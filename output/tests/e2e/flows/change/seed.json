@@ -1,0 +1,19 @@
+{
+ "pid": 1,
+ "studyCp": 1,
+ "studyCode": "CK-001",
+ "kitchen": [
+  11,
+  42
+ ],
+ "kitchenNames": [
+  "一楼厨房新砌隔墙",
+  "一楼厨房强弱电、燃气报警与给排水"
+ ],
+ "co2": 2,
+ "co2Code": "BG-002",
+ "overdue7": 2,
+ "overdue3": 3,
+ "dup": 4,
+ "dupCode": "WT-004"
+}
